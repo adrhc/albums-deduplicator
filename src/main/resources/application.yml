@@ -1,0 +1,10 @@
+spring.main.banner-mode: OFF
+#logging.pattern.console: "%clr(%d{${LOG_DATEFORMAT_PATTERN:yyyy-MM-dd HH:mm:ss.SSS}}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%5.5t]){faint} %clr(%logger.%M){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"
+logging.level.ro.go.adrhc: DEBUG
+#logging.org.springframework.context.annotation: ERROR
+feign.client.config.default.loggerLevel: BASIC
+#logging.file.name: m3u8-playlists-manager.log
+
+supported-extensions:
+  - jpeg
+  - jpg
