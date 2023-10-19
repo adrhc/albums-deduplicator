@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
+import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadataFactory;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadataProvider;
 import ro.go.adrhc.deduplicator.datasource.index.FilesIndex;
 import ro.go.adrhc.deduplicator.datasource.index.FilesIndexFactory;
@@ -14,6 +15,8 @@ import ro.go.adrhc.persistence.lucene.tokenizer.LuceneTokenizer;
 import ro.go.adrhc.util.io.FileSystemUtils;
 import ro.go.adrhc.util.io.SimpleDirectory;
 
+import java.util.concurrent.ExecutorService;
+
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
 @Configuration
@@ -21,9 +24,10 @@ import static org.springframework.beans.factory.config.ConfigurableBeanFactory.S
 public class FilesIndexConfig {
 	private final AppPaths appPaths;
 	private final AppProperties appProperties;
+	private final ExecutorService metadataExecutorService;
 	private final FilesIndexProperties indexProperties;
 	private final FileSystemUtils fsUtils;
-	private final FileMetadataProvider metadataProvider;
+	private final FileMetadataFactory metadataFactory;
 
 	/**
 	 * AppPaths values can be changed from the command line, that's why SCOPE_PROTOTYPE is used.
@@ -37,7 +41,7 @@ public class FilesIndexConfig {
 	@Bean
 	public FilesIndexFactory filesIndexFactory() {
 		return new FilesIndexFactory(indexProperties,
-				luceneTokenizer(), filesDirectory(), metadataProvider);
+				luceneTokenizer(), filesDirectory(), fileMetadataProvider());
 	}
 
 	/**
@@ -52,5 +56,10 @@ public class FilesIndexConfig {
 	public SimpleDirectory filesDirectory() {
 		return SimpleDirectory.of(fsUtils, appPaths::getFilesPath,
 				appProperties.getSupportedExtensions()::supports);
+	}
+
+	@Bean
+	public FileMetadataProvider fileMetadataProvider() {
+		return new FileMetadataProvider(metadataExecutorService, filesDirectory(), metadataFactory);
 	}
 }

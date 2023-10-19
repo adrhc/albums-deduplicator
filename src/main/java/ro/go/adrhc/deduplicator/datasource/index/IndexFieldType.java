@@ -1,5 +1,5 @@
 package ro.go.adrhc.deduplicator.datasource.index;
 
 public enum IndexFieldType {
-	filePath, fileNameNoExt, size, lastModified
+	filePath, fileNameNoExt, size, lastModified, fileHash
 }

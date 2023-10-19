@@ -5,6 +5,8 @@ logging.level.ro.go.adrhc: DEBUG
 feign.client.config.default.loggerLevel: BASIC
 #logging.file.name: m3u8-playlists-manager.log
 
+metadata-loading-threads: 1c
+
 supported-extensions:
   - jpeg
   - jpg

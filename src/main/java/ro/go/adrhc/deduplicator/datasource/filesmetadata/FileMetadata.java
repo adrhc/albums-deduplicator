@@ -14,8 +14,5 @@ public class FileMetadata {
 	private final Path path;
 	private final Instant lastModified;
 	private final long size;
-
-	public boolean hasPath() {
-		return path != null;
-	}
+	private final String fileHash;
 }

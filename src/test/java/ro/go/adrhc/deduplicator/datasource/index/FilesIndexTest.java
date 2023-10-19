@@ -17,6 +17,7 @@ import ro.go.adrhc.persistence.lucene.tokenizer.LuceneTokenizer;
 import ro.go.adrhc.persistence.lucene.write.DocumentIndexWriterTemplate;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 @SpringBootTest(classes = LuceneTestConfiguration.class,
@@ -42,6 +43,8 @@ class FilesIndexTest {
 		AppPathsGenerator.populateTestPaths(tempDir, appPaths);
 		FilesIndex metadataIndex = filesMetadataIndex();
 		metadataIndex.createOrReplaceIndex();
+
+		Files.createFile(appPaths.getFilesPath().resolve("some-file.jpg"));
 		metadataIndex.update();
 
 //		// document adding
