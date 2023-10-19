@@ -40,6 +40,3 @@ build/
 /dependency-tree.txt
 /spring-shell.log
 *youtube-dl*.sh
-
-# Project exclude paths
-/.mvn/
