@@ -26,7 +26,7 @@ public class FileMetadataToDocumentConverter {
 		Document doc = new Document();
 
 		doc.add(storedButNotAnalyzed(IndexFieldType.filePath, metadata.getPath()));
-		doc.add(storedButNotAnalyzed(IndexFieldType.size, metadata.getPath()));
+		doc.add(storedButNotAnalyzed(IndexFieldType.size, metadata.getSize()));
 		doc.add(storedButNotAnalyzed(IndexFieldType.lastModified, metadata.getLastModified()));
 		doc.add(storedButNotAnalyzed(IndexFieldType.fileHash, metadata.getFileHash()));
 

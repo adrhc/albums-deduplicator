@@ -1,5 +1,6 @@
 package ro.go.adrhc.deduplicator.datasource.index;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.io.TempDir;
@@ -16,6 +17,7 @@ import ro.go.adrhc.deduplicator.stub.DocumentGenerator;
 import ro.go.adrhc.persistence.lucene.tokenizer.LuceneTokenizer;
 import ro.go.adrhc.persistence.lucene.write.DocumentIndexWriterTemplate;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -44,7 +46,11 @@ class FilesIndexTest {
 		FilesIndex metadataIndex = filesMetadataIndex();
 		metadataIndex.createOrReplaceIndex();
 
-		Files.createFile(appPaths.getFilesPath().resolve("some-file.jpg"));
+		Path path = Files.createFile(appPaths.getFilesPath().resolve("some-file.jpg"));
+		try (FileWriter writer = new FileWriter(path.toFile())) {
+			IOUtils.write("bla bla bla", writer);
+		}
+
 		metadataIndex.update();
 
 //		// document adding
