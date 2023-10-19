@@ -8,3 +8,23 @@ feign.client.config.default.loggerLevel: BASIC
 supported-extensions:
   - jpeg
   - jpg
+
+lucene:
+  tokenizer:
+    min-token-length: 2
+  search:
+    max-results-per-search: 25
+    result-includes-missing-files: false
+  query:
+    # tokens to search exactly (aka, without using levenshtein-distance, aka fuzzy)
+    # default: lucene.tokenizer.min-token-length + 1
+    to-match-exactly-max-token-length: 3
+    # minimum words to fuzzy match when fuzzy-words.size > minimum-word-to-match
+    # and fuzzy-words.size * part1 / part2 < minimum-word-to-match
+    minimum-word-to-match: 2
+    # tokens searched using levenshtein-distance
+    # minimum-word-to-match formula: part1 / part2
+    minimum-word-to-match-when-missing-duration-part1: 5
+    minimum-word-to-match-when-missing-duration-part2: 6
+    # see LevenshteinAutomata.MAXIMUM_SUPPORTED_DISTANCE
+    levenshtein-distance: 1

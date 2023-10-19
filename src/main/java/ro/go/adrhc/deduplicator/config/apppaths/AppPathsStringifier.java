@@ -1,4 +1,4 @@
-package ro.go.adrhc.deduplicator.config.contextpaths;
+package ro.go.adrhc.deduplicator.config.apppaths;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -10,22 +10,22 @@ import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
-public class ContextPathsStringifier {
+public class AppPathsStringifier {
 	private final FileSystemUtils fsUtils;
 
-	public String toString(ContextPaths contextPaths) {
-		return StringUtils.concat(toContextPathInfos(contextPaths));
+	public String toString(AppPaths appPaths) {
+		return StringUtils.concat(toContextPathInfos(appPaths));
 	}
 
-	private Stream<ContextPathDetails> toContextPathInfos(ContextPaths contextPaths) {
+	private Stream<AppPathDetails> toContextPathInfos(AppPaths appPaths) {
 		return Stream.of(
-				new ContextPathDetails(contextPaths.getIndexPathParent(), "index parent-path"),
-				new ContextPathDetails(contextPaths.getIndexPath(), "index path"),
-				new ContextPathDetails(contextPaths.getFilesPath(), "files path"));
+				new AppPathDetails(appPaths.getIndexPathParent(), "index parent-path"),
+				new AppPathDetails(appPaths.getIndexPath(), "index path"),
+				new AppPathDetails(appPaths.getFilesPath(), "files path"));
 	}
 
 	@RequiredArgsConstructor
-	private class ContextPathDetails {
+	private class AppPathDetails {
 		private final Path path;
 		private final String description;
 
@@ -35,7 +35,7 @@ public class ContextPathsStringifier {
 				return "%s is not set because is not provided!".formatted(description);
 			} else {
 				String pathAndDescription = "%s (%s) exists: ".formatted(path, description);
-				return "%-74s%b".formatted(pathAndDescription, ContextPathsStringifier.this.fsUtils.exists(path));
+				return "%-74s%b".formatted(pathAndDescription, AppPathsStringifier.this.fsUtils.exists(path));
 			}
 		}
 	}

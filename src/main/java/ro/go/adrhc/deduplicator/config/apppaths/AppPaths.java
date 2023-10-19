@@ -1,4 +1,4 @@
-package ro.go.adrhc.deduplicator.config.contextpaths;
+package ro.go.adrhc.deduplicator.config.apppaths;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +18,7 @@ import static ro.go.adrhc.util.io.PathUtils.parentOf;
 @Setter
 @Slf4j
 @ToString
-public class ContextPaths implements Cloneable {
+public class AppPaths implements Cloneable {
 	private Path indexPath;
 	private Path filesPath;
 
@@ -26,8 +26,8 @@ public class ContextPaths implements Cloneable {
 		return parentOf(indexPath).orElse(null);
 	}
 
-	public void copy(ContextPaths contextPaths) {
-		update(contextPaths.indexPath, contextPaths.filesPath);
+	public void copy(AppPaths appPaths) {
+		update(appPaths.indexPath, appPaths.filesPath);
 	}
 
 	public void update(Path indexPath, Path filesPath) {
@@ -36,9 +36,9 @@ public class ContextPaths implements Cloneable {
 	}
 
 	@Override
-	public ContextPaths clone() {
+	public AppPaths clone() {
 		try {
-			return (ContextPaths) super.clone();
+			return (AppPaths) super.clone();
 		} catch (CloneNotSupportedException e) {
 			throw new AssertionError();
 		}
