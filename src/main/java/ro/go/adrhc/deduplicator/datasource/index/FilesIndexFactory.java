@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadataProvider;
 import ro.go.adrhc.deduplicator.datasource.index.changes.IndexChangesProvider;
+import ro.go.adrhc.deduplicator.datasource.index.config.FilesIndexProperties;
 import ro.go.adrhc.deduplicator.lib.LuceneFactories;
 import ro.go.adrhc.persistence.lucene.IndexAdmin;
 import ro.go.adrhc.persistence.lucene.IndexUpdater;

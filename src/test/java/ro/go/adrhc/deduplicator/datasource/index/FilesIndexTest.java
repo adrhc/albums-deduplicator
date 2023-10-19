@@ -12,6 +12,7 @@ import org.springframework.shell.Shell;
 import ro.go.adrhc.deduplicator.ExcludeShellAutoConfiguration;
 import ro.go.adrhc.deduplicator.config.LuceneTestConfiguration;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
+import ro.go.adrhc.deduplicator.datasource.index.config.FilesIndexProperties;
 import ro.go.adrhc.deduplicator.stub.AppPathsGenerator;
 import ro.go.adrhc.deduplicator.stub.DocumentGenerator;
 import ro.go.adrhc.persistence.lucene.tokenizer.LuceneTokenizer;

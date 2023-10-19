@@ -10,7 +10,7 @@ import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadataFactory;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadataProvider;
 import ro.go.adrhc.deduplicator.datasource.index.FilesIndex;
 import ro.go.adrhc.deduplicator.datasource.index.FilesIndexFactory;
-import ro.go.adrhc.deduplicator.datasource.index.FilesIndexProperties;
+import ro.go.adrhc.deduplicator.datasource.index.config.FilesIndexProperties;
 import ro.go.adrhc.persistence.lucene.tokenizer.LuceneTokenizer;
 import ro.go.adrhc.util.io.FileSystemUtils;
 import ro.go.adrhc.util.io.SimpleDirectory;

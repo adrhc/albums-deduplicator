@@ -2,7 +2,7 @@ package ro.go.adrhc.deduplicator.lib;
 
 import lombok.experimental.UtilityClass;
 import org.apache.lucene.search.FuzzyQuery;
-import ro.go.adrhc.deduplicator.datasource.index.FilesIndexProperties;
+import ro.go.adrhc.deduplicator.datasource.index.config.FilesIndexProperties;
 import ro.go.adrhc.persistence.lucene.read.DocumentIndexReaderTemplate;
 
 import java.nio.file.Path;
