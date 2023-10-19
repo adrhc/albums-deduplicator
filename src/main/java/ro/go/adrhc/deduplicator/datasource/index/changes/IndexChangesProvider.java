@@ -26,7 +26,6 @@ public class IndexChangesProvider<T> {
 		return indexReaderTemplate.useReader(
 				indexReader -> indexReader
 						.getAll(Set.of(idField))
-						.stream()
 						.map(doc -> doc.get(idField))
 						.toList());
 	}

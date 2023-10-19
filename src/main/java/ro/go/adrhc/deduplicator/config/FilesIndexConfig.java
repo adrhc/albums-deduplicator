@@ -11,6 +11,7 @@ import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadataProvider;
 import ro.go.adrhc.deduplicator.datasource.index.FilesIndex;
 import ro.go.adrhc.deduplicator.datasource.index.FilesIndexFactory;
 import ro.go.adrhc.deduplicator.datasource.index.config.FilesIndexProperties;
+import ro.go.adrhc.deduplicator.datasource.index.dedup.DocumentToFileMetadataConverter;
 import ro.go.adrhc.persistence.lucene.tokenizer.LuceneTokenizer;
 import ro.go.adrhc.util.io.FileSystemUtils;
 import ro.go.adrhc.util.io.SimpleDirectory;
@@ -28,10 +29,8 @@ public class FilesIndexConfig {
 	private final FilesIndexProperties indexProperties;
 	private final FileSystemUtils fsUtils;
 	private final FileMetadataFactory metadataFactory;
+	private final DocumentToFileMetadataConverter toFileMetadataConverter;
 
-	/**
-	 * AppPaths values can be changed from the command line, that's why SCOPE_PROTOTYPE is used.
-	 */
 	@Bean
 	@Scope(SCOPE_PROTOTYPE)
 	public FilesIndex audioFilesMetadataIndex() {
@@ -40,7 +39,7 @@ public class FilesIndexConfig {
 
 	@Bean
 	public FilesIndexFactory filesIndexFactory() {
-		return new FilesIndexFactory(indexProperties,
+		return new FilesIndexFactory(indexProperties, toFileMetadataConverter,
 				luceneTokenizer(), filesDirectory(), fileMetadataProvider());
 	}
 

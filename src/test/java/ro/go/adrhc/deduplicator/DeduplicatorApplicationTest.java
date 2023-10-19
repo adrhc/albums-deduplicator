@@ -14,7 +14,7 @@ import org.springframework.shell.Shell;
 @MockBean(classes = {Shell.class})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class DeduplicatorApplicationTest {
-    @Test
-    void contextLoads() {
-    }
+	@Test
+	void contextLoads() {
+	}
 }

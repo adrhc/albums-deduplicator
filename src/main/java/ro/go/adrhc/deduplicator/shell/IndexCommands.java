@@ -23,6 +23,12 @@ public class IndexCommands {
 		log.debug("\n{} index created!", appPaths.getIndexPath());
 	}
 
+	@ShellMethod(value = "Create the index at the provided path (remove it first, if existing).",
+			key = {"find-dups", "find-duplicates"})
+	public void findDuplicates() throws IOException {
+		log.debug("\n{}", filesIndex().findDuplicates());
+	}
+
 	@Lookup
 	protected FilesIndex filesIndex() {
 		return null;

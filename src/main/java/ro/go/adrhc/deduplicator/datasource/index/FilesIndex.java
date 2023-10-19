@@ -6,8 +6,13 @@ import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadataProvider;
 import ro.go.adrhc.deduplicator.datasource.index.changes.IndexChanges;
 import ro.go.adrhc.deduplicator.datasource.index.changes.IndexChangesProvider;
+import ro.go.adrhc.deduplicator.datasource.index.dedup.DocumentToFileMetadataConverter;
+import ro.go.adrhc.deduplicator.datasource.index.dedup.FileMetadataDuplicates;
 import ro.go.adrhc.persistence.lucene.IndexAdmin;
 import ro.go.adrhc.persistence.lucene.IndexUpdater;
+import ro.go.adrhc.persistence.lucene.read.DocumentIndexReader;
+import ro.go.adrhc.persistence.lucene.read.DocumentIndexReaderTemplate;
+import ro.go.adrhc.util.EnumUtils;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -16,7 +21,9 @@ import java.util.Collection;
 @RequiredArgsConstructor
 @Slf4j
 public class FilesIndex {
+	private final DocumentToFileMetadataConverter toFileMetadataConverter;
 	private final FileMetadataProvider metadataProvider;
+	private final DocumentIndexReaderTemplate indexReaderTemplate;
 	private final IndexAdmin<FileMetadata> indexAdmin;
 	private final IndexUpdater<FileMetadata> indexUpdater;
 	private final IndexChangesProvider<Path> indexChangesProvider;
@@ -32,6 +39,16 @@ public class FilesIndex {
 		} else {
 			log.debug("\nNo changes detected!");
 		}
+	}
+
+	public FileMetadataDuplicates findDuplicates() throws IOException {
+		return indexReaderTemplate.useReader(this::doFind);
+	}
+
+	private FileMetadataDuplicates doFind(DocumentIndexReader indexReader) {
+		return indexReader.getAll(EnumUtils.toNamesSet(IndexFieldType.class))
+				.map(toFileMetadataConverter::convert)
+				.collect(FileMetadataDuplicates::create, FileMetadataDuplicates::add, FileMetadataDuplicates::addAll);
 	}
 
 	private void applyIndexChanges(IndexChanges<Path> changes) throws IOException {
