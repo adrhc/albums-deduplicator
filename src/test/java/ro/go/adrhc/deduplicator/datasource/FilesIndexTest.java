@@ -50,7 +50,7 @@ class FilesIndexTest {
 
 	private FilesIndex createAndPopulate(ImageFileSpecification... specifications) throws IOException {
 		FilesIndex metadataIndex = filesMetadataIndex();
-		metadataIndex.createOrReplaceIndex();
+		metadataIndex.createOrReplace();
 		fileGenerator.createImageFiles(specifications);
 		metadataIndex.update();
 		return metadataIndex;

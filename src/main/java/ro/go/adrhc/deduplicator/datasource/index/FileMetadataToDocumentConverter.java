@@ -12,8 +12,8 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.Set;
 
-import static ro.go.adrhc.persistence.lucene.write.FieldFactory.storedAndAnalyzed;
-import static ro.go.adrhc.persistence.lucene.write.FieldFactory.storedButNotAnalyzed;
+import static ro.go.adrhc.persistence.lucene.field.FieldFactory.storedAndAnalyzed;
+import static ro.go.adrhc.persistence.lucene.field.FieldFactory.storedButNotAnalyzed;
 import static ro.go.adrhc.util.io.FilenameUtils.filenameNoExt;
 
 @RequiredArgsConstructor

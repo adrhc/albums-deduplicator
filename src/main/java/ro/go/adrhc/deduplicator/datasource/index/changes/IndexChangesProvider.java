@@ -6,7 +6,7 @@ import ro.go.adrhc.persistence.lucene.read.DocumentIndexReaderTemplate;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 public class IndexChangesProvider<T> {
@@ -15,18 +15,12 @@ public class IndexChangesProvider<T> {
 	private final DocumentIndexReaderTemplate indexReaderTemplate;
 
 	public IndexChanges<T> getChanges() throws IOException {
-		ActualData<T> actualData = actualDataSupplier.get();
-		List<String> docsToRemove = searchAllIds().stream()
-				.filter(id -> !actualData.remove(id))
-				.toList();
-		return new IndexChanges<>(actualData, docsToRemove);
+		return indexReaderTemplate.transformFieldStream(idField, this::transformFieldStream);
 	}
 
-	private List<String> searchAllIds() throws IOException {
-		return indexReaderTemplate.useReader(
-				indexReader -> indexReader
-						.getAll(Set.of(idField))
-						.map(doc -> doc.get(idField))
-						.toList());
+	private IndexChanges<T> transformFieldStream(Stream<String> fieldStream) throws IOException {
+		ActualData<T> actualData = actualDataSupplier.get();
+		List<String> docsToRemove = fieldStream.filter(id -> !actualData.remove(id)).toList();
+		return new IndexChanges<>(actualData, docsToRemove);
 	}
 }

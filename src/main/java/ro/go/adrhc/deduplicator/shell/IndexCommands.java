@@ -19,7 +19,7 @@ public class IndexCommands {
 	@ShellMethod(value = "Create the index at the provided path (remove it first, if existing).",
 			key = {"create", "index"})
 	public void create() throws IOException {
-		filesIndex().createOrReplaceIndex();
+		filesIndex().createOrReplace();
 		log.debug("\n{} index created!", appPaths.getIndexPath());
 	}
 

@@ -9,59 +9,50 @@ import ro.go.adrhc.deduplicator.datasource.index.changes.IndexChangesProvider;
 import ro.go.adrhc.deduplicator.datasource.index.config.FilesIndexProperties;
 import ro.go.adrhc.deduplicator.datasource.index.dedup.DocumentToFileMetadataConverter;
 import ro.go.adrhc.deduplicator.lib.LuceneFactories;
-import ro.go.adrhc.persistence.lucene.IndexAdmin;
-import ro.go.adrhc.persistence.lucene.IndexUpdater;
+import ro.go.adrhc.persistence.lucene.FSLuceneIndex;
 import ro.go.adrhc.persistence.lucene.read.DocumentIndexReaderTemplate;
 import ro.go.adrhc.persistence.lucene.tokenizer.LuceneTokenizer;
-import ro.go.adrhc.util.io.SimpleDirectory;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Optional;
 
 import static ro.go.adrhc.deduplicator.datasource.index.changes.DefaultActualData.actualPaths;
+import static ro.go.adrhc.deduplicator.lib.LuceneFactories.standardTokenizer;
+import static ro.go.adrhc.persistence.lucene.FSLuceneIndex.createFSIndex;
 
 @RequiredArgsConstructor
 public class FilesIndexFactory {
 	private final FilesIndexProperties indexProperties;
 	private final DocumentToFileMetadataConverter toFileMetadataConverter;
-	private final LuceneTokenizer luceneTokenizer;
-	private final SimpleDirectory filesDirectory;
-	private final FileMetadataProvider metadataProvider;
+	private final FileMetadataProvider fileMetadataProvider;
 
 	public FilesIndex create(Path indexPath) {
-		IndexUpdater<FileMetadata> indexUpdater = createIndexUpdater(indexPath);
+		DocumentIndexReaderTemplate indexReaderTemplate = LuceneFactories.create(indexProperties, indexPath);
 		return new FilesIndex(
-				toFileMetadataConverter, metadataProvider,
-				indexReaderTemplate(indexPath), indexUpdater,
-				createIndexAdmin(indexUpdater, indexPath),
-				fsIndexChangesProvider(indexPath));
+				toFileMetadataConverter,
+				fileMetadataProvider,
+				indexReaderTemplate,
+				createFSLuceneIndex(indexPath),
+				fsIndexChangesProvider(indexReaderTemplate));
 	}
 
-	private IndexChangesProvider<Path> fsIndexChangesProvider(Path indexPath) {
+	private IndexChangesProvider<Path> fsIndexChangesProvider(
+			DocumentIndexReaderTemplate indexReaderTemplate) {
 		return new IndexChangesProvider<>(IndexFieldType.filePath.name(),
-				() -> actualPaths(filesDirectory::getAllPaths),
-				LuceneFactories.create(indexProperties, indexPath));
+				() -> actualPaths(fileMetadataProvider::loadAllPaths),
+				indexReaderTemplate);
 	}
 
-	private FileMetadataToDocumentConverter createAudioMetadataToDocumentConverter() {
-		return new FileMetadataToDocumentConverter(luceneTokenizer);
+	private FSLuceneIndex<FileMetadata> createFSLuceneIndex(Path indexPath) {
+		LuceneTokenizer luceneTokenizer = standardTokenizer(indexProperties);
+		return createFSIndex(IndexFieldType.filePath,
+				luceneTokenizer, toDocumentConverter(luceneTokenizer), indexPath);
 	}
 
-	private DocumentIndexReaderTemplate indexReaderTemplate(Path indexPath) {
-		return LuceneFactories.create(indexProperties, indexPath);
-	}
-
-	private IndexAdmin<FileMetadata> createIndexAdmin(IndexUpdater<FileMetadata> indexUpdater, Path indexPath) {
-		return new IndexAdmin<>(indexUpdater, indexPath);
-	}
-
-	private IndexUpdater<FileMetadata> createIndexUpdater(Path indexPath) {
-		return IndexUpdater.create(IndexFieldType.filePath,
-				indexPath, luceneTokenizer, toDocumentConverter());
-	}
-
-	private SneakyFunction<FileMetadata, Optional<Document>, IOException> toDocumentConverter() {
-		return am -> Optional.of(createAudioMetadataToDocumentConverter().convert(am));
+	private SneakyFunction<FileMetadata, Optional<Document>, IOException>
+	toDocumentConverter(LuceneTokenizer luceneTokenizer) {
+		FileMetadataToDocumentConverter toDocumentConverter = new FileMetadataToDocumentConverter(luceneTokenizer);
+		return am -> Optional.of(toDocumentConverter.convert(am));
 	}
 }

@@ -19,9 +19,13 @@ import static ro.go.adrhc.util.ConcurrencyUtils.safelyGetAll;
 @RequiredArgsConstructor
 @Slf4j
 public class FileMetadataProvider {
+	private final FileMetadataFactory metadataFactory;
 	private final ExecutorService metadataExecutorService;
 	private final SimpleDirectory filesDirectory;
-	private final FileMetadataFactory metadataFactory;
+
+	public List<Path> loadAllPaths() throws IOException {
+		return filesDirectory.getAllPaths();
+	}
 
 	public List<FileMetadata> loadAllMetadata() throws IOException {
 		return loadMetadata(filesDirectory.getAllPaths());
@@ -31,12 +35,12 @@ public class FileMetadataProvider {
 		// load the file paths and start metadata loading (using CompletableFuture)
 		Stream<CompletableFuture<Optional<FileMetadata>>> futures = paths.stream()
 				.flatMap(this::getContainedPaths)
-				.map(this::asyncAudioMetadataSupplierOf);
+				.map(this::asyncMetadataSupplier);
 		// wait then get
 		return safelyGetAll(futures).flatMap(Optional::stream).toList();
 	}
 
-	private CompletableFuture<Optional<FileMetadata>> asyncAudioMetadataSupplierOf(Path path) {
+	private CompletableFuture<Optional<FileMetadata>> asyncMetadataSupplier(Path path) {
 		return CompletableFuture.supplyAsync(() -> metadataFactory.create(path), metadataExecutorService);
 	}
 

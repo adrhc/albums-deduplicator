@@ -8,8 +8,7 @@ import ro.go.adrhc.deduplicator.datasource.index.changes.IndexChanges;
 import ro.go.adrhc.deduplicator.datasource.index.changes.IndexChangesProvider;
 import ro.go.adrhc.deduplicator.datasource.index.dedup.DocumentToFileMetadataConverter;
 import ro.go.adrhc.deduplicator.datasource.index.dedup.FileMetadataDuplicates;
-import ro.go.adrhc.persistence.lucene.IndexAdmin;
-import ro.go.adrhc.persistence.lucene.IndexUpdater;
+import ro.go.adrhc.persistence.lucene.FSLuceneIndex;
 import ro.go.adrhc.persistence.lucene.read.DocumentIndexReader;
 import ro.go.adrhc.persistence.lucene.read.DocumentIndexReaderTemplate;
 import ro.go.adrhc.util.EnumUtils;
@@ -24,12 +23,11 @@ public class FilesIndex {
 	private final DocumentToFileMetadataConverter toFileMetadataConverter;
 	private final FileMetadataProvider metadataProvider;
 	private final DocumentIndexReaderTemplate indexReaderTemplate;
-	private final IndexUpdater<FileMetadata> indexUpdater;
-	private final IndexAdmin<FileMetadata> indexAdmin;
+	private final FSLuceneIndex<FileMetadata> luceneIndex;
 	private final IndexChangesProvider<Path> indexChangesProvider;
 
-	public void createOrReplaceIndex() throws IOException {
-		indexAdmin.createOrReplaceIndex(metadataProvider.loadAllMetadata());
+	public void createOrReplace() throws IOException {
+		luceneIndex.createOrReplace(metadataProvider.loadAllMetadata());
 	}
 
 	public void update() throws IOException {
@@ -53,11 +51,11 @@ public class FilesIndex {
 
 	private void applyIndexChanges(IndexChanges<Path> changes) throws IOException {
 		log.debug("\nremoving {} missing songs from the index", changes.indexIdsMissingActualDataSize());
-		indexUpdater.removeByIds(changes.indexIdsMissingActualData());
+		luceneIndex.removeByIds(changes.indexIdsMissingActualData());
 		log.debug("\nloading {} new songs metadata", changes.notIndexedActualDataSize());
-		Collection<FileMetadata> songsMetadata = metadataProvider
+		Collection<FileMetadata> fileMetadata = metadataProvider
 				.loadMetadata(changes.notIndexedActualDataCollection());
-		log.debug("\nadding {} metadata records to the index", songsMetadata.size());
-		indexUpdater.addItems(songsMetadata);
+		log.debug("\nadding {} metadata records to the index", fileMetadata.size());
+		luceneIndex.addItems(fileMetadata);
 	}
 }
