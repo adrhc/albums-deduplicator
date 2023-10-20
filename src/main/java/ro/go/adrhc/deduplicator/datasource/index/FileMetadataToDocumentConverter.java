@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.springframework.stereotype.Component;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.persistence.lucene.tokenizer.LuceneTokenizer;
 
@@ -16,6 +17,7 @@ import static ro.go.adrhc.persistence.lucene.field.FieldFactory.storedAndAnalyze
 import static ro.go.adrhc.persistence.lucene.field.FieldFactory.storedButNotAnalyzed;
 import static ro.go.adrhc.util.io.FilenameUtils.filenameNoExt;
 
+@Component
 @RequiredArgsConstructor
 @Slf4j
 public class FileMetadataToDocumentConverter {

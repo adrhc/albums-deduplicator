@@ -11,6 +11,7 @@ import ro.go.adrhc.persistence.lucene.read.DocumentIndexReader;
 import ro.go.adrhc.persistence.lucene.read.DocumentIndexReaderTemplate;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
@@ -55,7 +56,7 @@ public class FilesIndex<MID, M> {
 
 	private IndexChanges<MID> getIndexChanges() throws IOException {
 		return indexReaderTemplate.transformFieldStream(idField,
-				curry(this::transformFieldStream, metadataProvider.loadAllIds()));
+				curry(this::transformFieldStream, new ArrayList<>(metadataProvider.loadAllIds())));
 	}
 
 	private IndexChanges<MID> transformFieldStream(List<MID> paths, Stream<String> fieldStream) {
@@ -71,5 +72,6 @@ public class FilesIndex<MID, M> {
 				.loadByIds(changes.notIndexedActualDataCollection());
 		log.debug("\nadding {} metadata records to the index", fileMetadata.size());
 		luceneIndex.addItems(fileMetadata);
+		log.debug("\n{} index updated!", luceneIndex.getIndexPath());
 	}
 }

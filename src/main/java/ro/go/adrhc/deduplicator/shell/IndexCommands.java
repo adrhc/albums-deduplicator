@@ -29,7 +29,6 @@ public class IndexCommands {
 	public void update() {
 		try {
 			filesIndex().update();
-			log.debug("\n{} index updated!", appPaths.getIndexPath());
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			log.debug("\n{} index update failed!", appPaths.getIndexPath());
