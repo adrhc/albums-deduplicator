@@ -23,6 +23,17 @@ public class IndexCommands {
 		log.debug("\n{} index created!", appPaths.getIndexPath());
 	}
 
+	@ShellMethod(value = "Update the index at the provided path.", key = {"update", "reindex"})
+	public void update() {
+		try {
+			filesIndex().update();
+			log.debug("\n{} index updated!", appPaths.getIndexPath());
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			log.debug("\n{} index update failed!", appPaths.getIndexPath());
+		}
+	}
+
 	@ShellMethod(value = "Create the index at the provided path (remove it first, if existing).",
 			key = {"find-dups", "find-duplicates"})
 	public void findDuplicates() throws IOException {
