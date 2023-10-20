@@ -14,7 +14,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ro.go.adrhc</groupId>
-    <artifactId>deduplicator</artifactId>
+    <artifactId>albums-deduplicator</artifactId>
     <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
     <name>deduplicator</name>
