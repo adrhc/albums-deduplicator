@@ -1,40 +1,51 @@
 package ro.go.adrhc.deduplicator.datasource.index;
 
-import com.rainerhahnekamp.sneakythrow.functional.SneakyFunction;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
-import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadataProvider;
-import ro.go.adrhc.deduplicator.datasource.index.changes.ActualData;
-import ro.go.adrhc.deduplicator.datasource.index.changes.IndexChanges;
+import ro.go.adrhc.deduplicator.datasource.filesmetadata.MetadataProvider;
 import ro.go.adrhc.deduplicator.datasource.index.dedup.DocumentToFileMetadataConverter;
 import ro.go.adrhc.deduplicator.datasource.index.dedup.FileMetadataDuplicates;
 import ro.go.adrhc.persistence.lucene.FSLuceneIndex;
 import ro.go.adrhc.persistence.lucene.read.DocumentIndexReader;
 import ro.go.adrhc.persistence.lucene.read.DocumentIndexReaderTemplate;
-import ro.go.adrhc.util.EnumUtils;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.Collection;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
-import static ro.go.adrhc.deduplicator.datasource.index.changes.DefaultActualData.actualPaths;
+import static ro.go.adrhc.util.EnumUtils.toNamesSet;
+import static ro.go.adrhc.util.fn.SneakyBiFunctionUtils.curry;
 
 @RequiredArgsConstructor
 @Slf4j
-public class FilesIndex {
+public class FilesIndex<MID, M> {
+	private final String idField;
 	private final DocumentToFileMetadataConverter toFileMetadataConverter;
-	private final FileMetadataProvider metadataProvider;
+	private final MetadataProvider<MID, M> metadataProvider;
+	private final Function<String, MID> metadataIdParser;
 	private final DocumentIndexReaderTemplate indexReaderTemplate;
-	private final FSLuceneIndex<FileMetadata> luceneIndex;
-	private final SneakyFunction<ActualData<Path>, IndexChanges<Path>, IOException> indexChangesProvider;
+	private final FSLuceneIndex<M> luceneIndex;
+
+	public FileMetadataDuplicates findDuplicates() throws IOException {
+		return indexReaderTemplate.useReader(this::doFind);
+	}
+
+	private FileMetadataDuplicates doFind(DocumentIndexReader indexReader) {
+		Stream<FileMetadata> metadataStream = indexReader
+				.getAll(toNamesSet(IndexFieldType.class))
+				.map(toFileMetadataConverter::convert);
+		return FileMetadataDuplicates.of(metadataStream);
+	}
 
 	public void createOrReplace() throws IOException {
-		luceneIndex.createOrReplace(metadataProvider.loadAllMetadata());
+		luceneIndex.createOrReplace(metadataProvider.loadAll());
 	}
 
 	public void update() throws IOException {
-		IndexChanges<Path> changes = getIndexChanges();
+		IndexChanges<MID> changes = getIndexChanges();
 		if (changes.hasChanges()) {
 			applyIndexChanges(changes);
 		} else {
@@ -42,26 +53,22 @@ public class FilesIndex {
 		}
 	}
 
-	public FileMetadataDuplicates findDuplicates() throws IOException {
-		return indexReaderTemplate.useReader(this::doFind);
+	private IndexChanges<MID> getIndexChanges() throws IOException {
+		return indexReaderTemplate.transformFieldStream(idField,
+				curry(this::transformFieldStream, metadataProvider.loadAllIds()));
 	}
 
-	private FileMetadataDuplicates doFind(DocumentIndexReader indexReader) {
-		return indexReader.getAll(EnumUtils.toNamesSet(IndexFieldType.class))
-				.map(toFileMetadataConverter::convert)
-				.collect(FileMetadataDuplicates::create, FileMetadataDuplicates::add, FileMetadataDuplicates::addAll);
+	private IndexChanges<MID> transformFieldStream(List<MID> paths, Stream<String> fieldStream) {
+		List<String> docsToRemove = fieldStream.filter(id -> !paths.remove(metadataIdParser.apply(id))).toList();
+		return new IndexChanges<>(paths, docsToRemove);
 	}
 
-	private IndexChanges<Path> getIndexChanges() throws IOException {
-		return indexChangesProvider.apply(actualPaths(metadataProvider.loadAllPaths()));
-	}
-
-	private void applyIndexChanges(IndexChanges<Path> changes) throws IOException {
+	private void applyIndexChanges(IndexChanges<MID> changes) throws IOException {
 		log.debug("\nremoving {} missing songs from the index", changes.indexIdsMissingActualDataSize());
 		luceneIndex.removeByIds(changes.indexIdsMissingActualData());
 		log.debug("\nloading {} new songs metadata", changes.notIndexedActualDataSize());
-		Collection<FileMetadata> fileMetadata = metadataProvider
-				.loadMetadata(changes.notIndexedActualDataCollection());
+		Collection<M> fileMetadata = metadataProvider
+				.loadByIds(changes.notIndexedActualDataCollection());
 		log.debug("\nadding {} metadata records to the index", fileMetadata.size());
 		luceneIndex.addItems(fileMetadata);
 	}

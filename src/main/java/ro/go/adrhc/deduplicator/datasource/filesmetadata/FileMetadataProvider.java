@@ -18,20 +18,23 @@ import static ro.go.adrhc.util.ConcurrencyUtils.safelyGetAll;
 
 @RequiredArgsConstructor
 @Slf4j
-public class FileMetadataProvider {
+public class FileMetadataProvider implements MetadataProvider<Path, FileMetadata> {
 	private final FileMetadataFactory metadataFactory;
 	private final ExecutorService metadataExecutorService;
 	private final SimpleDirectory filesDirectory;
 
-	public List<Path> loadAllPaths() throws IOException {
+	@Override
+	public List<Path> loadAllIds() throws IOException {
 		return filesDirectory.getAllPaths();
 	}
 
-	public List<FileMetadata> loadAllMetadata() throws IOException {
-		return loadMetadata(filesDirectory.getAllPaths());
+	@Override
+	public List<FileMetadata> loadAll() throws IOException {
+		return loadByIds(filesDirectory.getAllPaths());
 	}
 
-	public List<FileMetadata> loadMetadata(Collection<Path> paths) {
+	@Override
+	public List<FileMetadata> loadByIds(Collection<Path> paths) {
 		// load the file paths and start metadata loading (using CompletableFuture)
 		Stream<CompletableFuture<Optional<FileMetadata>>> futures = paths.stream()
 				.flatMap(this::getContainedPaths)

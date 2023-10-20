@@ -5,14 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.apache.lucene.document.Document;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadataProvider;
-import ro.go.adrhc.deduplicator.datasource.index.changes.ActualData;
-import ro.go.adrhc.deduplicator.datasource.index.changes.IndexChanges;
-import ro.go.adrhc.deduplicator.datasource.index.changes.IndexChangesProvider;
 import ro.go.adrhc.deduplicator.datasource.index.config.FilesIndexProperties;
 import ro.go.adrhc.deduplicator.datasource.index.dedup.DocumentToFileMetadataConverter;
 import ro.go.adrhc.deduplicator.lib.LuceneFactories;
 import ro.go.adrhc.persistence.lucene.FSLuceneIndex;
-import ro.go.adrhc.persistence.lucene.read.DocumentIndexReaderTemplate;
 import ro.go.adrhc.persistence.lucene.tokenizer.LuceneTokenizer;
 
 import java.io.IOException;
@@ -28,20 +24,11 @@ public class FilesIndexFactory {
 	private final DocumentToFileMetadataConverter toFileMetadataConverter;
 	private final FileMetadataProvider fileMetadataProvider;
 
-	public FilesIndex create(Path indexPath) {
-		DocumentIndexReaderTemplate indexReaderTemplate = LuceneFactories.create(indexProperties, indexPath);
-		return new FilesIndex(
-				toFileMetadataConverter,
-				fileMetadataProvider,
-				indexReaderTemplate,
-				createFSLuceneIndex(indexPath),
-				fsIndexChangesProvider(indexReaderTemplate));
-	}
-
-	private SneakyFunction<ActualData<Path>, IndexChanges<Path>, IOException>
-	fsIndexChangesProvider(DocumentIndexReaderTemplate indexReaderTemplate) {
-		return (ActualData<Path> actualData) -> new IndexChangesProvider<Path>
-				(IndexFieldType.filePath.name(), indexReaderTemplate).getChanges(actualData);
+	public FilesIndex<Path, FileMetadata> create(Path indexPath) {
+		return new FilesIndex<>(IndexFieldType.filePath.name(),
+				toFileMetadataConverter, fileMetadataProvider, Path::of,
+				LuceneFactories.create(indexProperties, indexPath),
+				createFSLuceneIndex(indexPath));
 	}
 
 	private FSLuceneIndex<FileMetadata> createFSLuceneIndex(Path indexPath) {

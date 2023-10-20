@@ -18,6 +18,12 @@ public class FileMetadataDuplicates {
 		return new FileMetadataDuplicates(new HashMap<>());
 	}
 
+	public static FileMetadataDuplicates of(Stream<FileMetadata> metadataStream) {
+		FileMetadataDuplicates duplicates = create();
+		metadataStream.forEach(duplicates::add);
+		return duplicates;
+	}
+
 	public void addAll(FileMetadataDuplicates otherDuplicates) {
 		this.duplicates.putAll(otherDuplicates.duplicates);
 	}

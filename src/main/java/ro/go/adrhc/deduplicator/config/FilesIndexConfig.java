@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
+import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadataProviderFactory;
 import ro.go.adrhc.deduplicator.datasource.index.FilesIndex;
 import ro.go.adrhc.deduplicator.datasource.index.FilesIndexFactory;
@@ -12,6 +13,8 @@ import ro.go.adrhc.deduplicator.datasource.index.config.FilesIndexProperties;
 import ro.go.adrhc.deduplicator.datasource.index.dedup.DocumentToFileMetadataConverter;
 import ro.go.adrhc.util.io.FileSystemUtils;
 import ro.go.adrhc.util.io.SimpleDirectory;
+
+import java.nio.file.Path;
 
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
@@ -27,7 +30,7 @@ public class FilesIndexConfig {
 
 	@Bean
 	@Scope(SCOPE_PROTOTYPE)
-	public FilesIndex audioFilesMetadataIndex() {
+	public FilesIndex<Path, FileMetadata> filesIndex() {
 		return filesIndexFactory().create(appPaths.getIndexPath());
 	}
 
