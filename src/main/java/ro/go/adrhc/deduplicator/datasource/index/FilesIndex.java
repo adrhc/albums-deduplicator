@@ -6,7 +6,7 @@ import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.MetadataProvider;
 import ro.go.adrhc.deduplicator.datasource.index.dedup.DocumentToFileMetadataConverter;
 import ro.go.adrhc.deduplicator.datasource.index.dedup.FileMetadataDuplicates;
-import ro.go.adrhc.persistence.lucene.FSLuceneIndex;
+import ro.go.adrhc.persistence.lucene.FSTypedIndex;
 import ro.go.adrhc.persistence.lucene.read.DocumentIndexReader;
 import ro.go.adrhc.persistence.lucene.read.DocumentIndexReaderTemplate;
 
@@ -28,7 +28,7 @@ public class FilesIndex<MID, M> {
 	private final MetadataProvider<MID, M> metadataProvider;
 	private final Function<String, MID> metadataIdParser;
 	private final DocumentIndexReaderTemplate indexReaderTemplate;
-	private final FSLuceneIndex<M> luceneIndex;
+	private final FSTypedIndex<M> luceneIndex;
 
 	public FileMetadataDuplicates findDuplicates() throws IOException {
 		return indexReaderTemplate.useReader(this::doFind);
