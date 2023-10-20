@@ -18,8 +18,8 @@ public class DefaultActualData<T> implements ActualData<T> {
 	private final List<T> data;
 
 	public static DefaultActualData<Path> actualPaths(
-			SneakySupplier<List<Path>, IOException> dataSupplier) throws IOException {
-		return new DefaultActualData<>(Path::of, new ArrayList<>(dataSupplier.get()));
+			SneakySupplier<List<Path>, IOException> pathsSupplier) throws IOException {
+		return new DefaultActualData<>(Path::of, new ArrayList<>(pathsSupplier.get()));
 	}
 
 	@Override

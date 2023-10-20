@@ -35,10 +35,10 @@ public class FilesIndexFactory {
 				indexReaderTemplate(indexPath),
 				createIndexAdmin(indexPath),
 				createIndexUpdater(indexPath),
-				indexChangesProvider(indexPath));
+				fsIndexChangesProvider(indexPath));
 	}
 
-	private IndexChangesProvider<Path> indexChangesProvider(Path indexPath) {
+	private IndexChangesProvider<Path> fsIndexChangesProvider(Path indexPath) {
 		return new IndexChangesProvider<>(IndexFieldType.filePath.name(),
 				() -> actualPaths(filesDirectory::getAllPaths),
 				LuceneFactories.create(indexProperties, indexPath));
