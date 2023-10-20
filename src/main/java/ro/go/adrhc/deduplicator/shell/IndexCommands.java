@@ -37,8 +37,7 @@ public class IndexCommands {
 		}
 	}
 
-	@ShellMethod(value = "Create the index at the provided path (remove it first, if existing).",
-			key = {"find-dups", "find-duplicates"})
+	@ShellMethod(value = "Create the index at the provided path (remove it first, if existing).", key = {"find-dups"})
 	public void findDuplicates() throws IOException {
 		log.debug("\n{}", filesIndexDuplicatesSearchService().find());
 	}
