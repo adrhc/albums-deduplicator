@@ -35,7 +35,7 @@ public class FilesIndexConfig {
 
 	@Bean
 	@Scope(SCOPE_PROTOTYPE)
-	public FullFilesIndexUpdateService fullFilesIndexUpdateService() {
+	public FullFilesIndexUpdateService<Path, FileMetadata> fullFilesIndexUpdateService() {
 		return filesIndexFactories.createFullFilesIndexUpdateService(appPaths.getIndexPath());
 	}
 }
