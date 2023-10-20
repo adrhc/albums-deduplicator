@@ -13,7 +13,7 @@ import org.springframework.shell.Shell;
 @ExcludeShellAutoConfiguration
 @MockBean(classes = {Shell.class})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class DeduplicatorApplicationTest {
+public class AlbumsDeduplicatorApplicationTest {
 	@Test
 	void contextLoads() {
 	}

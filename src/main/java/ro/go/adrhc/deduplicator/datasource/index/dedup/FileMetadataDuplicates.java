@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.util.pair.Pair;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -34,7 +31,8 @@ public class FileMetadataDuplicates {
 	public Stream<Pair<String, Set<FileMetadata>>> getDuplicates() {
 		return duplicates.entrySet().stream()
 				.filter(e -> e.getValue().size() > 1)
-				.map(Pair::ofMapEntry);
+				.map(Pair::ofMapEntry)
+				.sorted(Comparator.comparing(this::duplicatesCount));
 	}
 
 	public long count() {
@@ -55,8 +53,13 @@ public class FileMetadataDuplicates {
 
 	private String toString(Pair<String, Set<FileMetadata>> duplicate) {
 		return """
-				Duplicates for %s:
+				%d duplicates for %s:
 				%s"""
-				.formatted(duplicate.key(), concat(duplicate.value().stream().map(FileMetadata::getPath)));
+				.formatted(duplicate.value().size(), duplicate.key(),
+						concat(FileMetadata::getPath, duplicate.value()));
+	}
+
+	private int duplicatesCount(Pair<?, Set<FileMetadata>> duplicate) {
+		return duplicate.value().size();
 	}
 }

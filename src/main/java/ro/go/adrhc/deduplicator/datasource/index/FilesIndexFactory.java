@@ -30,11 +30,11 @@ public class FilesIndexFactory {
 	private final FileMetadataProvider metadataProvider;
 
 	public FilesIndex create(Path indexPath) {
+		IndexUpdater<FileMetadata> indexUpdater = createIndexUpdater(indexPath);
 		return new FilesIndex(
 				toFileMetadataConverter, metadataProvider,
-				indexReaderTemplate(indexPath),
-				createIndexAdmin(indexPath),
-				createIndexUpdater(indexPath),
+				indexReaderTemplate(indexPath), indexUpdater,
+				createIndexAdmin(indexUpdater, indexPath),
 				fsIndexChangesProvider(indexPath));
 	}
 
@@ -52,8 +52,8 @@ public class FilesIndexFactory {
 		return LuceneFactories.create(indexProperties, indexPath);
 	}
 
-	private IndexAdmin<FileMetadata> createIndexAdmin(Path indexPath) {
-		return IndexAdmin.create(indexPath, luceneTokenizer, toDocumentConverter());
+	private IndexAdmin<FileMetadata> createIndexAdmin(IndexUpdater<FileMetadata> indexUpdater, Path indexPath) {
+		return new IndexAdmin<>(indexUpdater, indexPath);
 	}
 
 	private IndexUpdater<FileMetadata> createIndexUpdater(Path indexPath) {

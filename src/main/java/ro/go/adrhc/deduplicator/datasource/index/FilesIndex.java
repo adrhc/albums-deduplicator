@@ -24,8 +24,8 @@ public class FilesIndex {
 	private final DocumentToFileMetadataConverter toFileMetadataConverter;
 	private final FileMetadataProvider metadataProvider;
 	private final DocumentIndexReaderTemplate indexReaderTemplate;
-	private final IndexAdmin<FileMetadata> indexAdmin;
 	private final IndexUpdater<FileMetadata> indexUpdater;
+	private final IndexAdmin<FileMetadata> indexAdmin;
 	private final IndexChangesProvider<Path> indexChangesProvider;
 
 	public void createOrReplaceIndex() throws IOException {

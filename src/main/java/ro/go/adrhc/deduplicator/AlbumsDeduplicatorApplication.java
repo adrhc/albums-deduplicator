@@ -7,8 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Hello world!
  */
 @SpringBootApplication
-public class DeduplicatorApplication {
+public class AlbumsDeduplicatorApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(DeduplicatorApplication.class, args);
+		SpringApplication.run(AlbumsDeduplicatorApplication.class, args);
 	}
 }
