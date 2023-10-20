@@ -1,11 +1,12 @@
 package ro.go.adrhc.deduplicator.datasource.index;
 
+import com.rainerhahnekamp.sneakythrow.functional.SneakyFunction;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadataProvider;
+import ro.go.adrhc.deduplicator.datasource.index.changes.ActualData;
 import ro.go.adrhc.deduplicator.datasource.index.changes.IndexChanges;
-import ro.go.adrhc.deduplicator.datasource.index.changes.IndexChangesProvider;
 import ro.go.adrhc.deduplicator.datasource.index.dedup.DocumentToFileMetadataConverter;
 import ro.go.adrhc.deduplicator.datasource.index.dedup.FileMetadataDuplicates;
 import ro.go.adrhc.persistence.lucene.FSLuceneIndex;
@@ -17,6 +18,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collection;
 
+import static ro.go.adrhc.deduplicator.datasource.index.changes.DefaultActualData.actualPaths;
+
 @RequiredArgsConstructor
 @Slf4j
 public class FilesIndex {
@@ -24,14 +27,14 @@ public class FilesIndex {
 	private final FileMetadataProvider metadataProvider;
 	private final DocumentIndexReaderTemplate indexReaderTemplate;
 	private final FSLuceneIndex<FileMetadata> luceneIndex;
-	private final IndexChangesProvider<Path> indexChangesProvider;
+	private final SneakyFunction<ActualData<Path>, IndexChanges<Path>, IOException> indexChangesProvider;
 
 	public void createOrReplace() throws IOException {
 		luceneIndex.createOrReplace(metadataProvider.loadAllMetadata());
 	}
 
 	public void update() throws IOException {
-		IndexChanges<Path> changes = indexChangesProvider.getChanges();
+		IndexChanges<Path> changes = getIndexChanges();
 		if (changes.hasChanges()) {
 			applyIndexChanges(changes);
 		} else {
@@ -47,6 +50,10 @@ public class FilesIndex {
 		return indexReader.getAll(EnumUtils.toNamesSet(IndexFieldType.class))
 				.map(toFileMetadataConverter::convert)
 				.collect(FileMetadataDuplicates::create, FileMetadataDuplicates::add, FileMetadataDuplicates::addAll);
+	}
+
+	private IndexChanges<Path> getIndexChanges() throws IOException {
+		return indexChangesProvider.apply(actualPaths(metadataProvider.loadAllPaths()));
 	}
 
 	private void applyIndexChanges(IndexChanges<Path> changes) throws IOException {

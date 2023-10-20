@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.apache.lucene.document.Document;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadataProvider;
+import ro.go.adrhc.deduplicator.datasource.index.changes.ActualData;
+import ro.go.adrhc.deduplicator.datasource.index.changes.IndexChanges;
 import ro.go.adrhc.deduplicator.datasource.index.changes.IndexChangesProvider;
 import ro.go.adrhc.deduplicator.datasource.index.config.FilesIndexProperties;
 import ro.go.adrhc.deduplicator.datasource.index.dedup.DocumentToFileMetadataConverter;
@@ -17,7 +19,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Optional;
 
-import static ro.go.adrhc.deduplicator.datasource.index.changes.DefaultActualData.actualPaths;
 import static ro.go.adrhc.deduplicator.lib.LuceneFactories.standardTokenizer;
 import static ro.go.adrhc.persistence.lucene.FSLuceneIndex.createFSIndex;
 
@@ -37,11 +38,10 @@ public class FilesIndexFactory {
 				fsIndexChangesProvider(indexReaderTemplate));
 	}
 
-	private IndexChangesProvider<Path> fsIndexChangesProvider(
-			DocumentIndexReaderTemplate indexReaderTemplate) {
-		return new IndexChangesProvider<>(IndexFieldType.filePath.name(),
-				() -> actualPaths(fileMetadataProvider::loadAllPaths),
-				indexReaderTemplate);
+	private SneakyFunction<ActualData<Path>, IndexChanges<Path>, IOException>
+	fsIndexChangesProvider(DocumentIndexReaderTemplate indexReaderTemplate) {
+		return (ActualData<Path> actualData) -> new IndexChangesProvider<Path>
+				(IndexFieldType.filePath.name(), indexReaderTemplate).getChanges(actualData);
 	}
 
 	private FSLuceneIndex<FileMetadata> createFSLuceneIndex(Path indexPath) {

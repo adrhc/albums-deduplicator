@@ -19,7 +19,11 @@ public class DefaultActualData<T> implements ActualData<T> {
 
 	public static DefaultActualData<Path> actualPaths(
 			SneakySupplier<List<Path>, IOException> pathsSupplier) throws IOException {
-		return new DefaultActualData<>(Path::of, new ArrayList<>(pathsSupplier.get()));
+		return actualPaths(pathsSupplier.get());
+	}
+
+	public static DefaultActualData<Path> actualPaths(List<Path> paths) {
+		return new DefaultActualData<>(Path::of, new ArrayList<>(paths));
 	}
 
 	@Override
