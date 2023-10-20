@@ -10,7 +10,7 @@ import java.io.IOException;
 @Component
 public class DocumentGenerator {
 	public Document create() throws IOException {
-		return toDocumentConverter().convert(FileMetadataGenerator.create()).orElseThrow();
+		return toDocumentConverter().convert(FileMetadataGenerator.create());
 	}
 
 	@Lookup

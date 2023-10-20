@@ -22,7 +22,7 @@ public class FileMetadataToDocumentConverter {
 	private final LuceneTokenizer luceneTokenizer;
 
 	@NonNull
-	public Optional<Document> convert(@NonNull FileMetadata metadata) {
+	public Document convert(@NonNull FileMetadata metadata) {
 		Document doc = new Document();
 
 		doc.add(storedButNotAnalyzed(IndexFieldType.filePath, metadata.getPath()));
@@ -33,10 +33,11 @@ public class FileMetadataToDocumentConverter {
 		Optional<Field> filenameNoExt = filenameNoExt(metadata.getPath()).flatMap(this::toField);
 		if (filenameNoExt.isPresent()) {
 			doc.add(filenameNoExt.get());
-			return Optional.of(doc);
 		} else {
-			return Optional.empty();
+			log.warn("\n{} has a weird name!", metadata.getPath());
 		}
+
+		return doc;
 	}
 
 	/**

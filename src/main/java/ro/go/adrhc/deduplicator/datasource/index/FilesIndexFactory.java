@@ -1,6 +1,8 @@
 package ro.go.adrhc.deduplicator.datasource.index;
 
+import com.rainerhahnekamp.sneakythrow.functional.SneakyFunction;
 import lombok.RequiredArgsConstructor;
+import org.apache.lucene.document.Document;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadataProvider;
 import ro.go.adrhc.deduplicator.datasource.index.changes.IndexChangesProvider;
@@ -13,7 +15,9 @@ import ro.go.adrhc.persistence.lucene.read.DocumentIndexReaderTemplate;
 import ro.go.adrhc.persistence.lucene.tokenizer.LuceneTokenizer;
 import ro.go.adrhc.util.io.SimpleDirectory;
 
+import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Optional;
 
 import static ro.go.adrhc.deduplicator.datasource.index.changes.DefaultActualData.actualPaths;
 
@@ -49,11 +53,15 @@ public class FilesIndexFactory {
 	}
 
 	private IndexAdmin<FileMetadata> createIndexAdmin(Path indexPath) {
-		return IndexAdmin.create(indexPath, luceneTokenizer, createAudioMetadataToDocumentConverter()::convert);
+		return IndexAdmin.create(indexPath, luceneTokenizer, toDocumentConverter());
 	}
 
 	private IndexUpdater<FileMetadata> createIndexUpdater(Path indexPath) {
 		return IndexUpdater.create(IndexFieldType.filePath,
-				indexPath, luceneTokenizer, createAudioMetadataToDocumentConverter()::convert);
+				indexPath, luceneTokenizer, toDocumentConverter());
+	}
+
+	private SneakyFunction<FileMetadata, Optional<Document>, IOException> toDocumentConverter() {
+		return am -> Optional.of(createAudioMetadataToDocumentConverter().convert(am));
 	}
 }
