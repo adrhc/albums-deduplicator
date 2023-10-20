@@ -8,6 +8,8 @@ import org.springframework.shell.standard.ShellMethod;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.index.FilesIndex;
+import ro.go.adrhc.deduplicator.datasource.index.FilesIndexDuplicatesSearchService;
+import ro.go.adrhc.deduplicator.datasource.index.FullFilesIndexUpdateService;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -28,7 +30,7 @@ public class IndexCommands {
 	@ShellMethod(value = "Update the index at the provided path.", key = {"update", "reindex"})
 	public void update() {
 		try {
-			filesIndex().update();
+			fullFilesIndexUpdateService().update();
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			log.debug("\n{} index update failed!", appPaths.getIndexPath());
@@ -38,11 +40,21 @@ public class IndexCommands {
 	@ShellMethod(value = "Create the index at the provided path (remove it first, if existing).",
 			key = {"find-dups", "find-duplicates"})
 	public void findDuplicates() throws IOException {
-		log.debug("\n{}", filesIndex().findDuplicates());
+		log.debug("\n{}", filesIndexDuplicatesSearchService().find());
 	}
 
 	@Lookup
 	protected FilesIndex<Path, FileMetadata> filesIndex() {
+		return null;
+	}
+
+	@Lookup
+	protected FilesIndexDuplicatesSearchService filesIndexDuplicatesSearchService() {
+		return null;
+	}
+
+	@Lookup
+	protected FullFilesIndexUpdateService<Path, FileMetadata> fullFilesIndexUpdateService() {
 		return null;
 	}
 }

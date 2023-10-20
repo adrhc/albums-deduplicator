@@ -13,6 +13,8 @@ import ro.go.adrhc.deduplicator.ExcludeShellAutoConfiguration;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.index.FilesIndex;
+import ro.go.adrhc.deduplicator.datasource.index.FilesIndexDuplicatesSearchService;
+import ro.go.adrhc.deduplicator.datasource.index.FullFilesIndexUpdateService;
 import ro.go.adrhc.deduplicator.datasource.index.dedup.FileMetadataDuplicates;
 import ro.go.adrhc.deduplicator.stub.AppPathsGenerator;
 import ro.go.adrhc.deduplicator.stub.FileGenerator;
@@ -40,22 +42,29 @@ class FilesIndexTest {
 	void findDuplicates(@TempDir Path tempDir) throws IOException {
 		AppPathsGenerator.populateTestPaths(tempDir, appPaths);
 
-		FilesIndex<Path, FileMetadata> metadataIndex = createAndPopulate(of("1sr-file.jpg"),
-				of("2nd-file.jpg"), new ImageFileSpecification("3rd-file.jpg", 512));
+		createAndPopulate(of("1sr-file.jpg"), of("2nd-file.jpg"),
+				new ImageFileSpecification("3rd-file.jpg", 512));
 
-		FileMetadataDuplicates duplicates = metadataIndex.findDuplicates();
+		FileMetadataDuplicates duplicates = filesIndexDuplicatesSearchService().find();
 		log.debug("\n{}", duplicates);
 	}
 
-	private FilesIndex<Path, FileMetadata> createAndPopulate(ImageFileSpecification... specifications) throws IOException {
+	private void createAndPopulate(ImageFileSpecification... specifications) throws IOException {
 		FilesIndex<Path, FileMetadata> metadataIndex = filesMetadataIndex();
 		metadataIndex.createOrReplace();
 		fileGenerator.createImageFiles(specifications);
-		metadataIndex.update();
-		return metadataIndex;
+		fullFilesIndexUpdateService().update();
 	}
 
 	private FilesIndex<Path, FileMetadata> filesMetadataIndex() {
 		return ac.getBean(FilesIndex.class); // SCOPE_PROTOTYPE
+	}
+
+	private FilesIndexDuplicatesSearchService filesIndexDuplicatesSearchService() {
+		return ac.getBean(FilesIndexDuplicatesSearchService.class); // SCOPE_PROTOTYPE
+	}
+
+	private FullFilesIndexUpdateService<Path, FileMetadata> fullFilesIndexUpdateService() {
+		return ac.getBean(FullFilesIndexUpdateService.class); // SCOPE_PROTOTYPE
 	}
 }

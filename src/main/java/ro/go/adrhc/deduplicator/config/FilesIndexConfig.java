@@ -7,7 +7,9 @@ import org.springframework.context.annotation.Scope;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.index.FilesIndex;
-import ro.go.adrhc.deduplicator.datasource.index.FilesIndexFactory;
+import ro.go.adrhc.deduplicator.datasource.index.FilesIndexDuplicatesSearchService;
+import ro.go.adrhc.deduplicator.datasource.index.FilesIndexFactories;
+import ro.go.adrhc.deduplicator.datasource.index.FullFilesIndexUpdateService;
 
 import java.nio.file.Path;
 
@@ -17,11 +19,23 @@ import static org.springframework.beans.factory.config.ConfigurableBeanFactory.S
 @RequiredArgsConstructor
 public class FilesIndexConfig {
 	private final AppPaths appPaths;
-	private final FilesIndexFactory filesIndexFactory;
+	private final FilesIndexFactories filesIndexFactories;
 
 	@Bean
 	@Scope(SCOPE_PROTOTYPE)
 	public FilesIndex<Path, FileMetadata> filesIndex() {
-		return filesIndexFactory.create(appPaths.getIndexPath());
+		return filesIndexFactories.createFilesIndex(appPaths.getIndexPath());
+	}
+
+	@Bean
+	@Scope(SCOPE_PROTOTYPE)
+	public FilesIndexDuplicatesSearchService filesIndexDuplicatesSearchService() {
+		return filesIndexFactories.createFilesIndexDuplicatesSearchService(appPaths.getIndexPath());
+	}
+
+	@Bean
+	@Scope(SCOPE_PROTOTYPE)
+	public FullFilesIndexUpdateService fullFilesIndexUpdateService() {
+		return filesIndexFactories.createFullFilesIndexUpdateService(appPaths.getIndexPath());
 	}
 }
