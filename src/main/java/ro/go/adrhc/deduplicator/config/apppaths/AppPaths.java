@@ -12,7 +12,7 @@ import java.nio.file.Path;
 
 import static ro.go.adrhc.util.io.PathUtils.parentOf;
 
-@ConfigurationProperties(prefix = "context-paths")
+@ConfigurationProperties(prefix = "app-paths")
 @Component
 @Getter
 @Setter
@@ -21,6 +21,7 @@ import static ro.go.adrhc.util.io.PathUtils.parentOf;
 public class AppPaths implements Cloneable {
 	private Path indexPath;
 	private Path filesPath;
+	private Path duplicatesPath;
 
 	public Path getIndexPathParent() {
 		return parentOf(indexPath).orElse(null);
