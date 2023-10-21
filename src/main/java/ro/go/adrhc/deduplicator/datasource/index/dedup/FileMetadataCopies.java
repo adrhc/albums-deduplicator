@@ -18,7 +18,7 @@ public class FileMetadataCopies {
 	public void add(FileMetadata metadata) {
 		if (original == null) {
 			original = metadata;
-		} else if (metadata.isAfter(original)) {
+		} else if (metadata.isBefore(original)) {
 			duplicates.add(original);
 			original = metadata;
 		} else {
