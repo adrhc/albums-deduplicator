@@ -7,7 +7,6 @@ import ro.go.adrhc.deduplicator.datasource.AppDirectoryFactories;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.MetadataProvider;
 import ro.go.adrhc.deduplicator.datasource.index.config.FilesIndexProperties;
-import ro.go.adrhc.deduplicator.datasource.index.dedup.DocumentToFileMetadataConverter;
 import ro.go.adrhc.deduplicator.datasource.index.services.FilesIndexDuplicatesMngmtService;
 import ro.go.adrhc.deduplicator.datasource.index.services.FullFilesIndexUpdateService;
 import ro.go.adrhc.persistence.lucene.FSTypedIndex;

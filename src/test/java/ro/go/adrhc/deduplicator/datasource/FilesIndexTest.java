@@ -13,7 +13,7 @@ import ro.go.adrhc.deduplicator.ExcludeShellAutoConfiguration;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.index.FilesIndex;
-import ro.go.adrhc.deduplicator.datasource.index.dedup.FileMetadataDuplicates;
+import ro.go.adrhc.deduplicator.datasource.index.services.FileMetadataDuplicates;
 import ro.go.adrhc.deduplicator.datasource.index.services.FilesIndexDuplicatesMngmtService;
 import ro.go.adrhc.deduplicator.datasource.index.services.FullFilesIndexUpdateService;
 import ro.go.adrhc.deduplicator.stub.AppPathsGenerator;
