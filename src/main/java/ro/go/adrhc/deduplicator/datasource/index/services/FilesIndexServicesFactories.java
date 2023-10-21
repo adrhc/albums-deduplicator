@@ -21,7 +21,7 @@ import static ro.go.adrhc.persistence.lucene.index.LuceneIndexFactories.createFS
 
 @Component
 @RequiredArgsConstructor
-public class FilesIndexServiceFactories {
+public class FilesIndexServicesFactories {
 	private final FilesIndexProperties indexProperties;
 	private final LuceneTokenizer luceneTokenizer;
 	private final DocumentToFileMetadataConverter toFileMetadataConverter;
