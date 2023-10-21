@@ -16,25 +16,25 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class FileMetadataDocumentsProvider implements DocumentsProvider {
-	private final FileMetadataProvider fileMetadataProvider;
+	private final FileMetadataProvider metadataProvider;
 	private final FileMetadataToDocumentConverter toDocumentConverter;
 
 	@Override
 	public List<Document> loadAll() throws IOException {
-		Collection<FileMetadata> metadata = fileMetadataProvider.loadAll();
+		Collection<FileMetadata> metadata = metadataProvider.loadAll();
 		return ConversionUtils.convertAll(toDocumentConverter::convert, metadata);
 	}
 
 	@Override
 	public List<String> loadAllIds() throws IOException {
-		Collection<Path> paths = fileMetadataProvider.loadAllIds();
+		Collection<Path> paths = metadataProvider.loadAllIds();
 		return ConversionUtils.convertAll(Path::toString, paths);
 	}
 
 	@Override
 	public List<Document> loadByIds(Collection<String> collection) {
 		Collection<Path> paths = ConversionUtils.convertAll(Path::of, collection);
-		List<FileMetadata> metadata = fileMetadataProvider.loadByIds(paths);
+		List<FileMetadata> metadata = metadataProvider.loadByIds(paths);
 		return ConversionUtils.convertAll(toDocumentConverter::convert, metadata);
 	}
 }
