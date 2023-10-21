@@ -47,7 +47,7 @@ public class FilesIndexFactories {
 				createFSTypedIndex(indexPath));
 	}
 
-	public DocumentIndexReaderTemplate createDocumentIndexReaderTemplate(Path indexPath) {
+	private DocumentIndexReaderTemplate createDocumentIndexReaderTemplate(Path indexPath) {
 		return new DocumentIndexReaderTemplate(
 				indexProperties.getSearch().getMaxResultsPerSearch(), indexPath);
 	}
