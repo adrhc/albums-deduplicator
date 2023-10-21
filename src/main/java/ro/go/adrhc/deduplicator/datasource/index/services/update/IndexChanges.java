@@ -1,4 +1,4 @@
-package ro.go.adrhc.deduplicator.datasource.index.services;
+package ro.go.adrhc.deduplicator.datasource.index.services.update;
 
 import java.util.Collection;
 

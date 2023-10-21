@@ -8,8 +8,8 @@ import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.index.FilesIndex;
 import ro.go.adrhc.deduplicator.datasource.index.FilesIndexFactories;
-import ro.go.adrhc.deduplicator.datasource.index.services.FilesIndexDuplicatesMngmtService;
-import ro.go.adrhc.deduplicator.datasource.index.services.FullFilesIndexUpdateService;
+import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDuplicatesMngmtService;
+import ro.go.adrhc.deduplicator.datasource.index.services.update.FullFilesIndexUpdateService;
 
 import java.nio.file.Path;
 

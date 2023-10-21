@@ -1,10 +1,11 @@
-package ro.go.adrhc.deduplicator.datasource.index;
+package ro.go.adrhc.deduplicator.datasource.index.serde;
 
 import lombok.NonNull;
 import org.apache.lucene.document.Document;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
+import ro.go.adrhc.deduplicator.datasource.index.IndexFieldType;
 
 import java.nio.file.Path;
 import java.time.Instant;

@@ -1,4 +1,4 @@
-package ro.go.adrhc.deduplicator.datasource.index.services;
+package ro.go.adrhc.deduplicator.datasource.index.services.dedup;
 
 import lombok.RequiredArgsConstructor;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;

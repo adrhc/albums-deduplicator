@@ -1,4 +1,4 @@
-package ro.go.adrhc.deduplicator.datasource.index.services;
+package ro.go.adrhc.deduplicator.datasource.index.services.update;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
