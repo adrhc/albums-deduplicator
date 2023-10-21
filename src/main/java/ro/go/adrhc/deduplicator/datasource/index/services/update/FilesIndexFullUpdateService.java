@@ -2,8 +2,8 @@ package ro.go.adrhc.deduplicator.datasource.index.services.update;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ro.go.adrhc.deduplicator.datasource.index.domain.MetadataProvider;
 import ro.go.adrhc.persistence.lucene.FSTypedIndex;
+import ro.go.adrhc.persistence.lucene.domain.MetadataProvider;
 import ro.go.adrhc.persistence.lucene.read.DocumentIndexReaderTemplate;
 
 import java.io.IOException;

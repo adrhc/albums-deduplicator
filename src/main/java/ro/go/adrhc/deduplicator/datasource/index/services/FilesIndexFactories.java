@@ -8,11 +8,12 @@ import ro.go.adrhc.deduplicator.datasource.index.config.FilesIndexProperties;
 import ro.go.adrhc.deduplicator.datasource.index.domain.DocumentToFileMetadataConverter;
 import ro.go.adrhc.deduplicator.datasource.index.domain.FileMetadataToDocumentConverter;
 import ro.go.adrhc.deduplicator.datasource.index.domain.IndexFieldType;
-import ro.go.adrhc.deduplicator.datasource.index.domain.MetadataProvider;
 import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDedupService;
 import ro.go.adrhc.deduplicator.datasource.index.services.update.FilesIndexFullUpdateService;
 import ro.go.adrhc.persistence.lucene.FSTypedIndex;
+import ro.go.adrhc.persistence.lucene.domain.MetadataProvider;
 import ro.go.adrhc.persistence.lucene.read.DocumentIndexReaderTemplate;
+import ro.go.adrhc.persistence.lucene.services.IndexCreateService;
 import ro.go.adrhc.persistence.lucene.tokenizer.LuceneTokenizer;
 
 import java.nio.file.Path;
@@ -30,8 +31,8 @@ public class FilesIndexFactories {
 	private final AppDirectoryFactories appDirectoryFactories;
 	private final MetadataProvider<Path, FileMetadata> metadataProvider;
 
-	public FilesIndexCreateService<Path, FileMetadata> createFilesIndexCreateService(Path indexPath) {
-		return new FilesIndexCreateService<>(metadataProvider, createFSTypedIndex(indexPath));
+	public IndexCreateService<Path, FileMetadata> createFilesIndexCreateService(Path indexPath) {
+		return new IndexCreateService<>(metadataProvider, createFSTypedIndex(indexPath));
 	}
 
 	public FilesIndexDedupService createFilesIndexDedupService(Path indexPath, Path filesRoot) {

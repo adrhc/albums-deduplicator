@@ -2,7 +2,7 @@ package ro.go.adrhc.deduplicator.datasource.filesmetadata;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ro.go.adrhc.deduplicator.datasource.index.domain.MetadataProvider;
+import ro.go.adrhc.persistence.lucene.domain.MetadataProvider;
 import ro.go.adrhc.util.io.SimpleDirectory;
 
 import java.io.IOException;
