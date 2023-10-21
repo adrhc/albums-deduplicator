@@ -24,11 +24,12 @@ public class DuplicatesCommands {
 		log.debug("\n{}", filesIndexDuplicatesMngmtService().find());
 	}
 
-	@ShellMethod(value = "Remove the duplicates then update the index.", key = {"remove-dups"})
+	@ShellMethod(value = "Remove the duplicates, update the index and show duplicates.", key = {"remove-dups"})
 	public void removeDuplicates() throws IOException {
 		if (filesIndexDuplicatesMngmtService().removeDups()) {
 			fullFilesIndexUpdateService().update();
 		}
+		findDuplicates();
 	}
 
 	@Lookup

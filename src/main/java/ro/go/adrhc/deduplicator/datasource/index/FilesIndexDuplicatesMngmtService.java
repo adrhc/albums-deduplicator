@@ -46,7 +46,10 @@ public class FilesIndexDuplicatesMngmtService {
 		return !origDupAndTargetPaths.isEmpty();
 	}
 
-	private void logOrigDupAndTargetPaths(List<List<UnaryPair<Path>>> origDupAndTargetPaths) throws IOException {
+	private void logOrigDupAndTargetPaths(List<List<UnaryPair<Path>>> origDupAndTargetPaths) {
+		if (origDupAndTargetPaths.isEmpty()) {
+			return;
+		}
 		log.debug("\n{}", concat("\n\n", origDupAndTargetPaths.stream()
 				.map(set -> concat(set.stream()
 						.map(p -> "%s -> %s".formatted(p.key(), p.value()))))));

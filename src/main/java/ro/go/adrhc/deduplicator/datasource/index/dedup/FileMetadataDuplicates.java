@@ -40,12 +40,17 @@ public class FileMetadataDuplicates {
 	}
 
 	public String toString() {
-		return """
-				%s
-								
-				Found %d files containing duplicates!"""
-				.formatted(stream()
-						.map(FileMetadataCopies::toString)
-						.collect(Collectors.joining("\n\n")), count());
+		long count = count();
+		if (count == 0) {
+			return "There are no duplicates!";
+		} else {
+			return """
+					%s
+									
+					Found %d files containing duplicates!"""
+					.formatted(stream()
+							.map(FileMetadataCopies::toString)
+							.collect(Collectors.joining("\n\n")), count);
+		}
 	}
 }
