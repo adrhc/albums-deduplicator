@@ -1,4 +1,4 @@
-package ro.go.adrhc.deduplicator.datasource.index.services;
+package ro.go.adrhc.deduplicator.datasource.index.core;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.lucene.document.Document;

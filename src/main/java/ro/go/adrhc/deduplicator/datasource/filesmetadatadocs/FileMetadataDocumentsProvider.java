@@ -1,4 +1,4 @@
-package ro.go.adrhc.deduplicator.datasource.index.domain;
+package ro.go.adrhc.deduplicator.datasource.filesmetadatadocs;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.lucene.document.Document;

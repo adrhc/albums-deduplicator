@@ -3,7 +3,7 @@ package ro.go.adrhc.deduplicator.datasource.index.services.dedup;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
-import ro.go.adrhc.deduplicator.datasource.index.services.FilesIndexReaderTemplate;
+import ro.go.adrhc.deduplicator.datasource.index.core.FilesIndexReaderTemplate;
 import ro.go.adrhc.util.Assert;
 import ro.go.adrhc.util.io.SimpleDirectory;
 

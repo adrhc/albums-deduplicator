@@ -2,9 +2,10 @@ package ro.go.adrhc.deduplicator.datasource.index.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import ro.go.adrhc.deduplicator.datasource.filesmetadatadocs.FileMetadataDocumentsProvider;
 import ro.go.adrhc.deduplicator.datasource.index.config.FilesIndexProperties;
+import ro.go.adrhc.deduplicator.datasource.index.core.FilesIndexReaderTemplate;
 import ro.go.adrhc.deduplicator.datasource.index.domain.DocumentToFileMetadataConverter;
-import ro.go.adrhc.deduplicator.datasource.index.domain.FileMetadataDocumentsProvider;
 import ro.go.adrhc.deduplicator.datasource.index.domain.IndexFieldType;
 import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDedupService;
 import ro.go.adrhc.persistence.lucene.core.read.DocumentIndexReaderTemplate;
@@ -33,11 +34,6 @@ public class FilesIndexFactories {
 				duplicatesDirectory, filesRoot);
 	}
 
-	public FilesIndexReaderTemplate createFilesIndexReaderTemplate(Path indexPath) {
-		return new FilesIndexReaderTemplate(toFileMetadataConverter,
-				createDocumentIndexReaderTemplate(indexPath));
-	}
-
 	public IndexFullUpdateService indexFullUpdateService(Path indexPath) {
 		return new IndexFullUpdateService(IndexFieldType.filePath.name(),
 				fileMetadataDocumentsProvider,
@@ -47,6 +43,11 @@ public class FilesIndexFactories {
 
 	public IndexCreateService createFilesIndexCreateService(Path indexPath) {
 		return new IndexCreateService(fileMetadataDocumentsProvider, createFSLuceneIndex(indexPath));
+	}
+
+	private FilesIndexReaderTemplate createFilesIndexReaderTemplate(Path indexPath) {
+		return new FilesIndexReaderTemplate(toFileMetadataConverter,
+				createDocumentIndexReaderTemplate(indexPath));
 	}
 
 	private DocumentIndexReaderTemplate createDocumentIndexReaderTemplate(Path indexPath) {
