@@ -21,7 +21,7 @@ import static ro.go.adrhc.persistence.lucene.index.LuceneIndexFactories.createFS
 
 @Component
 @RequiredArgsConstructor
-public class FilesIndexFactories {
+public class FilesIndexServiceFactories {
 	private final FilesIndexProperties indexProperties;
 	private final LuceneTokenizer luceneTokenizer;
 	private final DocumentToFileMetadataConverter toFileMetadataConverter;
@@ -34,7 +34,7 @@ public class FilesIndexFactories {
 				duplicatesDirectory, filesRoot);
 	}
 
-	public IndexFullUpdateService indexFullUpdateService(Path indexPath) {
+	public IndexFullUpdateService createFilesIndexFullUpdateService(Path indexPath) {
 		return new IndexFullUpdateService(IndexFieldType.filePath.name(),
 				fileMetadataDocumentsProvider,
 				createDocumentIndexReaderTemplate(indexPath),
