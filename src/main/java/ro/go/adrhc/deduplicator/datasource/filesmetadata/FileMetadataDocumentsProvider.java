@@ -1,10 +1,9 @@
-package ro.go.adrhc.deduplicator.datasource.index.domain;
+package ro.go.adrhc.deduplicator.datasource.filesmetadata;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.lucene.document.Document;
 import org.springframework.stereotype.Component;
-import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
-import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadataProvider;
+import ro.go.adrhc.deduplicator.datasource.index.domain.FileMetadataToDocumentConverter;
 import ro.go.adrhc.persistence.lucene.domain.DocumentsProvider;
 import ro.go.adrhc.util.conversion.ConversionUtils;
 

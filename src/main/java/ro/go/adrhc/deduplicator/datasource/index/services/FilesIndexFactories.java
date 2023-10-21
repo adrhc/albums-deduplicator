@@ -2,9 +2,9 @@ package ro.go.adrhc.deduplicator.datasource.index.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadataDocumentsProvider;
 import ro.go.adrhc.deduplicator.datasource.index.config.FilesIndexProperties;
 import ro.go.adrhc.deduplicator.datasource.index.domain.DocumentToFileMetadataConverter;
-import ro.go.adrhc.deduplicator.datasource.index.domain.FileMetadataDocumentsProvider;
 import ro.go.adrhc.deduplicator.datasource.index.domain.IndexFieldType;
 import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDedupService;
 import ro.go.adrhc.deduplicator.datasource.index.services.update.FilesIndexFullUpdateService;
