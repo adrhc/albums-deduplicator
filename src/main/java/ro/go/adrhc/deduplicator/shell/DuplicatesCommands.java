@@ -7,8 +7,8 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
-import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDuplicatesMngmtService;
-import ro.go.adrhc.deduplicator.datasource.index.services.update.FullFilesIndexUpdateService;
+import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDedupService;
+import ro.go.adrhc.deduplicator.datasource.index.services.update.FilesIndexFullUpdateService;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -33,12 +33,12 @@ public class DuplicatesCommands {
 	}
 
 	@Lookup
-	protected FilesIndexDuplicatesMngmtService filesIndexDuplicatesMngmtService() {
+	protected FilesIndexDedupService filesIndexDuplicatesMngmtService() {
 		return null;
 	}
 
 	@Lookup
-	protected FullFilesIndexUpdateService<Path, FileMetadata> fullFilesIndexUpdateService() {
+	protected FilesIndexFullUpdateService<Path, FileMetadata> fullFilesIndexUpdateService() {
 		return null;
 	}
 }

@@ -1,4 +1,4 @@
-package ro.go.adrhc.deduplicator.datasource.index.serde;
+package ro.go.adrhc.deduplicator.datasource.index.domain;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -7,7 +7,6 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.springframework.stereotype.Component;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
-import ro.go.adrhc.deduplicator.datasource.index.IndexFieldType;
 import ro.go.adrhc.persistence.lucene.tokenizer.LuceneTokenizer;
 
 import java.io.IOException;

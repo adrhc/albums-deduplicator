@@ -12,10 +12,10 @@ import org.springframework.shell.Shell;
 import ro.go.adrhc.deduplicator.ExcludeShellAutoConfiguration;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
-import ro.go.adrhc.deduplicator.datasource.index.FilesIndex;
-import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FileMetadataDuplicates;
-import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDuplicatesMngmtService;
-import ro.go.adrhc.deduplicator.datasource.index.services.update.FullFilesIndexUpdateService;
+import ro.go.adrhc.deduplicator.datasource.index.services.FilesIndexCreateService;
+import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FileMetadataCopiesCollection;
+import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDedupService;
+import ro.go.adrhc.deduplicator.datasource.index.services.update.FilesIndexFullUpdateService;
 import ro.go.adrhc.deduplicator.stub.AppPathsGenerator;
 import ro.go.adrhc.deduplicator.stub.FileGenerator;
 import ro.go.adrhc.deduplicator.stub.ImageFileSpecification;
@@ -30,7 +30,7 @@ import static ro.go.adrhc.deduplicator.stub.ImageFileSpecification.of;
 @MockBean(classes = {Shell.class})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Slf4j
-class FilesIndexTest {
+class FilesIndexCreateServiceTest {
 	@Autowired
 	private ApplicationContext ac;
 	@Autowired
@@ -45,26 +45,26 @@ class FilesIndexTest {
 		createAndPopulate(of("1sr-file.jpg"), of("2nd-file.jpg"),
 				new ImageFileSpecification("3rd-file.jpg", 512));
 
-		FileMetadataDuplicates duplicates = filesIndexDuplicatesMngmtService().find();
+		FileMetadataCopiesCollection duplicates = filesIndexDuplicatesMngmtService().find();
 		log.debug("\n{}", duplicates);
 	}
 
 	private void createAndPopulate(ImageFileSpecification... specifications) throws IOException {
-		FilesIndex<Path, FileMetadata> metadataIndex = filesMetadataIndex();
+		FilesIndexCreateService<Path, FileMetadata> metadataIndex = filesMetadataIndex();
 		metadataIndex.createOrReplace();
 		fileGenerator.createImageFiles(specifications);
 		fullFilesIndexUpdateService().update();
 	}
 
-	private FilesIndex<Path, FileMetadata> filesMetadataIndex() {
-		return ac.getBean(FilesIndex.class); // SCOPE_PROTOTYPE
+	private FilesIndexCreateService<Path, FileMetadata> filesMetadataIndex() {
+		return ac.getBean(FilesIndexCreateService.class); // SCOPE_PROTOTYPE
 	}
 
-	private FilesIndexDuplicatesMngmtService filesIndexDuplicatesMngmtService() {
-		return ac.getBean(FilesIndexDuplicatesMngmtService.class); // SCOPE_PROTOTYPE
+	private FilesIndexDedupService filesIndexDuplicatesMngmtService() {
+		return ac.getBean(FilesIndexDedupService.class); // SCOPE_PROTOTYPE
 	}
 
-	private FullFilesIndexUpdateService<Path, FileMetadata> fullFilesIndexUpdateService() {
-		return ac.getBean(FullFilesIndexUpdateService.class); // SCOPE_PROTOTYPE
+	private FilesIndexFullUpdateService<Path, FileMetadata> fullFilesIndexUpdateService() {
+		return ac.getBean(FilesIndexFullUpdateService.class); // SCOPE_PROTOTYPE
 	}
 }

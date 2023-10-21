@@ -3,8 +3,8 @@ package ro.go.adrhc.deduplicator.datasource.index.services.dedup;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
-import ro.go.adrhc.deduplicator.datasource.index.IndexFieldType;
-import ro.go.adrhc.deduplicator.datasource.index.serde.DocumentToFileMetadataConverter;
+import ro.go.adrhc.deduplicator.datasource.index.domain.DocumentToFileMetadataConverter;
+import ro.go.adrhc.deduplicator.datasource.index.domain.IndexFieldType;
 import ro.go.adrhc.persistence.lucene.read.DocumentIndexReader;
 import ro.go.adrhc.persistence.lucene.read.DocumentIndexReaderTemplate;
 import ro.go.adrhc.util.Assert;
@@ -25,18 +25,18 @@ import static ro.go.adrhc.util.text.StringUtils.concat;
 
 @RequiredArgsConstructor
 @Slf4j
-public class FilesIndexDuplicatesMngmtService {
+public class FilesIndexDedupService {
 	private final DocumentToFileMetadataConverter toFileMetadataConverter;
 	private final DocumentIndexReaderTemplate indexReaderTemplate;
 	private final SimpleDirectory duplicatesDirectory;
 	private final Supplier<Path> filesPathSupplier;
 
-	public FileMetadataDuplicates find() throws IOException {
+	public FileMetadataCopiesCollection find() throws IOException {
 		return indexReaderTemplate.useReader(this::doFind);
 	}
 
 	public boolean removeDups() throws IOException {
-		FileMetadataDuplicates duplicates = find();
+		FileMetadataCopiesCollection duplicates = find();
 		Path filesPath = filesPathSupplier.get();
 		List<List<UnaryPair<Path>>> origDupAndTargetPaths =
 				duplicates.stream().map(copies -> origDupAndTargetPaths(filesPath, copies)).toList();
@@ -81,10 +81,10 @@ public class FilesIndexDuplicatesMngmtService {
 		return pathPairs;
 	}
 
-	private FileMetadataDuplicates doFind(DocumentIndexReader indexReader) {
+	private FileMetadataCopiesCollection doFind(DocumentIndexReader indexReader) {
 		Stream<FileMetadata> metadataStream = indexReader
 				.getAll(toNamesSet(IndexFieldType.class))
 				.map(toFileMetadataConverter::convert);
-		return FileMetadataDuplicates.of(metadataStream);
+		return FileMetadataCopiesCollection.of(metadataStream);
 	}
 }

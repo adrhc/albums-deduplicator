@@ -17,7 +17,7 @@ import static ro.go.adrhc.util.fn.SneakyBiFunctionUtils.curry;
 
 @RequiredArgsConstructor
 @Slf4j
-public class FullFilesIndexUpdateService<MID, M> {
+public class FilesIndexFullUpdateService<MID, M> {
 	private final String idField;
 	private final MetadataProvider<MID, M> metadataProvider;
 	private final Function<String, MID> metadataIdParser;
@@ -45,7 +45,7 @@ public class FullFilesIndexUpdateService<MID, M> {
 
 	private void applyIndexChanges(IndexChanges<MID> changes) throws IOException {
 		log.debug("\nremoving {} missing songs from the index", changes.indexIdsMissingActualDataSize());
-		luceneIndex.removeByIds(changes.indexIdsMissingActualData());
+		luceneIndex.removeByIds(changes.indexIdsMissingData());
 		log.debug("\nloading {} new songs metadata", changes.notIndexedActualDataSize());
 		Collection<M> fileMetadata = metadataProvider
 				.loadByIds(changes.notIndexedActualDataCollection());

@@ -1,4 +1,4 @@
-package ro.go.adrhc.deduplicator.datasource.index;
+package ro.go.adrhc.deduplicator.datasource.index.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -7,10 +7,11 @@ import ro.go.adrhc.deduplicator.datasource.AppDirectoryFactories;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.MetadataProvider;
 import ro.go.adrhc.deduplicator.datasource.index.config.FilesIndexProperties;
-import ro.go.adrhc.deduplicator.datasource.index.serde.DocumentToFileMetadataConverter;
-import ro.go.adrhc.deduplicator.datasource.index.serde.FileMetadataToDocumentConverter;
-import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDuplicatesMngmtService;
-import ro.go.adrhc.deduplicator.datasource.index.services.update.FullFilesIndexUpdateService;
+import ro.go.adrhc.deduplicator.datasource.index.domain.DocumentToFileMetadataConverter;
+import ro.go.adrhc.deduplicator.datasource.index.domain.FileMetadataToDocumentConverter;
+import ro.go.adrhc.deduplicator.datasource.index.domain.IndexFieldType;
+import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDedupService;
+import ro.go.adrhc.deduplicator.datasource.index.services.update.FilesIndexFullUpdateService;
 import ro.go.adrhc.persistence.lucene.FSTypedIndex;
 import ro.go.adrhc.persistence.lucene.read.DocumentIndexReaderTemplate;
 import ro.go.adrhc.persistence.lucene.tokenizer.LuceneTokenizer;
@@ -31,19 +32,19 @@ public class FilesIndexFactories {
 	private final AppDirectoryFactories appDirectoryFactories;
 	private final MetadataProvider<Path, FileMetadata> metadataProvider;
 
-	public FilesIndex<Path, FileMetadata> createFilesIndex(Path indexPath) {
-		return new FilesIndex<>(metadataProvider, createFSTypedIndex(indexPath));
+	public FilesIndexCreateService<Path, FileMetadata> createFilesIndexCreateService(Path indexPath) {
+		return new FilesIndexCreateService<>(metadataProvider, createFSTypedIndex(indexPath));
 	}
 
-	public FilesIndexDuplicatesMngmtService createFilesIndexDuplicatesSearchService(Path indexPath) {
-		return new FilesIndexDuplicatesMngmtService(toFileMetadataConverter,
+	public FilesIndexDedupService createFilesIndexDedupService(Path indexPath) {
+		return new FilesIndexDedupService(toFileMetadataConverter,
 				createDocumentIndexReaderTemplate(indexPath),
 				appDirectoryFactories.duplicatesDirectory(),
 				appPaths::getFilesPath);
 	}
 
-	public FullFilesIndexUpdateService<Path, FileMetadata> createFullFilesIndexUpdateService(Path indexPath) {
-		return new FullFilesIndexUpdateService<>(IndexFieldType.filePath.name(),
+	public FilesIndexFullUpdateService<Path, FileMetadata> createFilesIndexFullUpdateService(Path indexPath) {
+		return new FilesIndexFullUpdateService<>(IndexFieldType.filePath.name(),
 				metadataProvider, Path::of, createDocumentIndexReaderTemplate(indexPath),
 				createFSTypedIndex(indexPath));
 	}

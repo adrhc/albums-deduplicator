@@ -6,10 +6,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
-import ro.go.adrhc.deduplicator.datasource.index.FilesIndex;
-import ro.go.adrhc.deduplicator.datasource.index.FilesIndexFactories;
-import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDuplicatesMngmtService;
-import ro.go.adrhc.deduplicator.datasource.index.services.update.FullFilesIndexUpdateService;
+import ro.go.adrhc.deduplicator.datasource.index.services.FilesIndexCreateService;
+import ro.go.adrhc.deduplicator.datasource.index.services.FilesIndexFactories;
+import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDedupService;
+import ro.go.adrhc.deduplicator.datasource.index.services.update.FilesIndexFullUpdateService;
 
 import java.nio.file.Path;
 
@@ -23,19 +23,19 @@ public class FilesIndexConfig {
 
 	@Bean
 	@Scope(SCOPE_PROTOTYPE)
-	public FilesIndex<Path, FileMetadata> filesIndex() {
-		return filesIndexFactories.createFilesIndex(appPaths.getIndexPath());
+	public FilesIndexCreateService<Path, FileMetadata> filesIndex() {
+		return filesIndexFactories.createFilesIndexCreateService(appPaths.getIndexPath());
 	}
 
 	@Bean
 	@Scope(SCOPE_PROTOTYPE)
-	public FilesIndexDuplicatesMngmtService filesIndexDuplicatesMngmtService() {
-		return filesIndexFactories.createFilesIndexDuplicatesSearchService(appPaths.getIndexPath());
+	public FilesIndexDedupService filesIndexDuplicatesMngmtService() {
+		return filesIndexFactories.createFilesIndexDedupService(appPaths.getIndexPath());
 	}
 
 	@Bean
 	@Scope(SCOPE_PROTOTYPE)
-	public FullFilesIndexUpdateService<Path, FileMetadata> fullFilesIndexUpdateService() {
-		return filesIndexFactories.createFullFilesIndexUpdateService(appPaths.getIndexPath());
+	public FilesIndexFullUpdateService<Path, FileMetadata> fullFilesIndexUpdateService() {
+		return filesIndexFactories.createFilesIndexFullUpdateService(appPaths.getIndexPath());
 	}
 }

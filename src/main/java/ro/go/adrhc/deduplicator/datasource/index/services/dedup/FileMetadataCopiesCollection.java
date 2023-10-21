@@ -10,15 +10,15 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RequiredArgsConstructor
-public class FileMetadataDuplicates {
+public class FileMetadataCopiesCollection {
 	private final Map<String, FileMetadataCopies> duplicates;
 
-	public static FileMetadataDuplicates create() {
-		return new FileMetadataDuplicates(new HashMap<>());
+	public static FileMetadataCopiesCollection create() {
+		return new FileMetadataCopiesCollection(new HashMap<>());
 	}
 
-	public static FileMetadataDuplicates of(Stream<FileMetadata> metadataStream) {
-		FileMetadataDuplicates duplicates = create();
+	public static FileMetadataCopiesCollection of(Stream<FileMetadata> metadataStream) {
+		FileMetadataCopiesCollection duplicates = create();
 		metadataStream.forEach(duplicates::add);
 		return duplicates;
 	}

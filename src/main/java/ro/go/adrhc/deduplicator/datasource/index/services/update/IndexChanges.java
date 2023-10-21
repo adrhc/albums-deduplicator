@@ -3,23 +3,23 @@ package ro.go.adrhc.deduplicator.datasource.index.services.update;
 import java.util.Collection;
 
 /**
- * @param notIndexedActualData      exist on FS but not in the index
- * @param indexIdsMissingActualData exist in the index but not on FS
+ * @param notIndexed          contains not indexed data
+ * @param indexIdsMissingData contains indexed ids for which the indexed data no longer exist
  */
-public record IndexChanges<T>(Collection<T> notIndexedActualData, Collection<String> indexIdsMissingActualData) {
+public record IndexChanges<T>(Collection<T> notIndexed, Collection<String> indexIdsMissingData) {
 	public boolean hasChanges() {
-		return !notIndexedActualData.isEmpty() || !indexIdsMissingActualData.isEmpty();
+		return !notIndexed.isEmpty() || !indexIdsMissingData.isEmpty();
 	}
 
 	public Collection<T> notIndexedActualDataCollection() {
-		return notIndexedActualData;
+		return notIndexed;
 	}
 
 	public int notIndexedActualDataSize() {
-		return notIndexedActualData.size();
+		return notIndexed.size();
 	}
 
 	public int indexIdsMissingActualDataSize() {
-		return indexIdsMissingActualData.size();
+		return indexIdsMissingData.size();
 	}
 }
