@@ -1,4 +1,4 @@
-package ro.go.adrhc.deduplicator.datasource.filesmetadata;
+package ro.go.adrhc.deduplicator.datasource.index.domain;
 
 import java.io.IOException;
 import java.util.Collection;
