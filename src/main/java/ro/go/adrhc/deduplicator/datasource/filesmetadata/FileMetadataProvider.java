@@ -30,11 +30,6 @@ public class FileMetadataProvider implements MetadataProvider<Path, FileMetadata
 	}
 
 	@Override
-	public List<FileMetadata> loadAll() throws IOException {
-		return loadByIds(filesDirectory.getAllPaths());
-	}
-
-	@Override
 	public List<FileMetadata> loadByIds(Collection<Path> paths) {
 		// load the file paths and start metadata loading (using CompletableFuture)
 		Stream<CompletableFuture<Optional<FileMetadata>>> futures = paths.stream()
