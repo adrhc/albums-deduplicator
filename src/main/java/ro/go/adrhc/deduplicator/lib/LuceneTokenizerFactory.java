@@ -3,7 +3,7 @@ package ro.go.adrhc.deduplicator.lib;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ro.go.adrhc.deduplicator.datasource.index.config.FilesIndexProperties;
-import ro.go.adrhc.persistence.lucene.tokenizer.LuceneTokenizer;
+import ro.go.adrhc.persistence.lucene.domain.tokenizer.LuceneTokenizer;
 
 @Component
 @RequiredArgsConstructor

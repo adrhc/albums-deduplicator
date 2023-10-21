@@ -7,16 +7,16 @@ import ro.go.adrhc.deduplicator.datasource.index.domain.DocumentToFileMetadataCo
 import ro.go.adrhc.deduplicator.datasource.index.domain.FileMetadataDocumentsProvider;
 import ro.go.adrhc.deduplicator.datasource.index.domain.IndexFieldType;
 import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDedupService;
-import ro.go.adrhc.persistence.lucene.FSLuceneIndex;
-import ro.go.adrhc.persistence.lucene.read.DocumentIndexReaderTemplate;
+import ro.go.adrhc.persistence.lucene.core.read.DocumentIndexReaderTemplate;
+import ro.go.adrhc.persistence.lucene.domain.tokenizer.LuceneTokenizer;
+import ro.go.adrhc.persistence.lucene.index.FSLuceneIndex;
 import ro.go.adrhc.persistence.lucene.services.IndexCreateService;
 import ro.go.adrhc.persistence.lucene.services.update.IndexFullUpdateService;
-import ro.go.adrhc.persistence.lucene.tokenizer.LuceneTokenizer;
 import ro.go.adrhc.util.io.SimpleDirectory;
 
 import java.nio.file.Path;
 
-import static ro.go.adrhc.persistence.lucene.LuceneIndexFactories.createFSIndex;
+import static ro.go.adrhc.persistence.lucene.index.LuceneIndexFactories.createFSIndex;
 
 @Component
 @RequiredArgsConstructor

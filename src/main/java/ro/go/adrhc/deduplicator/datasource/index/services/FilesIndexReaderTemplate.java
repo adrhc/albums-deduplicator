@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.lucene.document.Document;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.index.domain.DocumentToFileMetadataConverter;
-import ro.go.adrhc.persistence.lucene.read.DocumentIndexReaderTemplate;
+import ro.go.adrhc.persistence.lucene.core.read.DocumentIndexReaderTemplate;
 
 import java.io.IOException;
 import java.util.function.Function;
