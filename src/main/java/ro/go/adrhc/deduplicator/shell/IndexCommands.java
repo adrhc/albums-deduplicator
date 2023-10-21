@@ -7,7 +7,7 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
 import ro.go.adrhc.persistence.lucene.services.IndexCreateService;
-import ro.go.adrhc.persistence.lucene.services.update.FilesIndexFullUpdateService;
+import ro.go.adrhc.persistence.lucene.services.update.IndexFullUpdateService;
 
 import java.io.IOException;
 
@@ -27,7 +27,7 @@ public class IndexCommands {
 	@ShellMethod(value = "Update the index at the provided path.", key = {"update", "reindex"})
 	public void update() {
 		try {
-			fullFilesIndexUpdateService().update();
+			indexFullUpdateService().update();
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			log.debug("\n{} index update failed!", appPaths.getIndexPath());
@@ -40,7 +40,7 @@ public class IndexCommands {
 	}
 
 	@Lookup
-	protected FilesIndexFullUpdateService fullFilesIndexUpdateService() {
+	protected IndexFullUpdateService indexFullUpdateService() {
 		return null;
 	}
 }

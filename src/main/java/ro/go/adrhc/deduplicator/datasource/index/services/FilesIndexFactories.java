@@ -10,7 +10,7 @@ import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDedupS
 import ro.go.adrhc.persistence.lucene.FSLuceneIndex;
 import ro.go.adrhc.persistence.lucene.read.DocumentIndexReaderTemplate;
 import ro.go.adrhc.persistence.lucene.services.IndexCreateService;
-import ro.go.adrhc.persistence.lucene.services.update.FilesIndexFullUpdateService;
+import ro.go.adrhc.persistence.lucene.services.update.IndexFullUpdateService;
 import ro.go.adrhc.persistence.lucene.tokenizer.LuceneTokenizer;
 import ro.go.adrhc.util.io.SimpleDirectory;
 
@@ -38,8 +38,8 @@ public class FilesIndexFactories {
 				createDocumentIndexReaderTemplate(indexPath));
 	}
 
-	public FilesIndexFullUpdateService createFilesIndexFullUpdateService(Path indexPath) {
-		return new FilesIndexFullUpdateService(IndexFieldType.filePath.name(),
+	public IndexFullUpdateService indexFullUpdateService(Path indexPath) {
+		return new IndexFullUpdateService(IndexFieldType.filePath.name(),
 				fileMetadataDocumentsProvider,
 				createDocumentIndexReaderTemplate(indexPath),
 				createFSLuceneIndex(indexPath));

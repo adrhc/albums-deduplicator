@@ -17,7 +17,7 @@ import ro.go.adrhc.deduplicator.stub.AppPathsGenerator;
 import ro.go.adrhc.deduplicator.stub.FileGenerator;
 import ro.go.adrhc.deduplicator.stub.ImageFileSpecification;
 import ro.go.adrhc.persistence.lucene.services.IndexCreateService;
-import ro.go.adrhc.persistence.lucene.services.update.FilesIndexFullUpdateService;
+import ro.go.adrhc.persistence.lucene.services.update.IndexFullUpdateService;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -51,7 +51,7 @@ class FilesIndexCreateServiceTest {
 	private void createAndPopulate(ImageFileSpecification... specifications) throws IOException {
 		filesMetadataIndex().createOrReplace();
 		fileGenerator.createImageFiles(specifications);
-		fullFilesIndexUpdateService().update();
+		indexFullUpdateService().update();
 	}
 
 	private IndexCreateService filesMetadataIndex() {
@@ -62,7 +62,7 @@ class FilesIndexCreateServiceTest {
 		return ac.getBean(FilesIndexDedupService.class); // SCOPE_PROTOTYPE
 	}
 
-	private FilesIndexFullUpdateService fullFilesIndexUpdateService() {
-		return ac.getBean(FilesIndexFullUpdateService.class); // SCOPE_PROTOTYPE
+	private IndexFullUpdateService indexFullUpdateService() {
+		return ac.getBean(IndexFullUpdateService.class); // SCOPE_PROTOTYPE
 	}
 }
