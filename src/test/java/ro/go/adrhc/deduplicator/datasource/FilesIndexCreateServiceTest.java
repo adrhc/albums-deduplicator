@@ -13,11 +13,11 @@ import ro.go.adrhc.deduplicator.ExcludeShellAutoConfiguration;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
 import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FileMetadataCopiesCollection;
 import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDedupService;
-import ro.go.adrhc.deduplicator.datasource.index.services.update.FilesIndexFullUpdateService;
 import ro.go.adrhc.deduplicator.stub.AppPathsGenerator;
 import ro.go.adrhc.deduplicator.stub.FileGenerator;
 import ro.go.adrhc.deduplicator.stub.ImageFileSpecification;
 import ro.go.adrhc.persistence.lucene.services.IndexCreateService;
+import ro.go.adrhc.persistence.lucene.services.update.FilesIndexFullUpdateService;
 
 import java.io.IOException;
 import java.nio.file.Path;

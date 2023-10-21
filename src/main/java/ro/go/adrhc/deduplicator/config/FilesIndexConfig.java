@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Scope;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
 import ro.go.adrhc.deduplicator.datasource.index.services.FilesIndexFactories;
 import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDedupService;
-import ro.go.adrhc.deduplicator.datasource.index.services.update.FilesIndexFullUpdateService;
 import ro.go.adrhc.persistence.lucene.services.IndexCreateService;
+import ro.go.adrhc.persistence.lucene.services.update.FilesIndexFullUpdateService;
 
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 

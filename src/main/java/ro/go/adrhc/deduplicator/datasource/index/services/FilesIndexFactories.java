@@ -7,10 +7,10 @@ import ro.go.adrhc.deduplicator.datasource.index.domain.DocumentToFileMetadataCo
 import ro.go.adrhc.deduplicator.datasource.index.domain.FileMetadataDocumentsProvider;
 import ro.go.adrhc.deduplicator.datasource.index.domain.IndexFieldType;
 import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDedupService;
-import ro.go.adrhc.deduplicator.datasource.index.services.update.FilesIndexFullUpdateService;
 import ro.go.adrhc.persistence.lucene.FSLuceneIndex;
 import ro.go.adrhc.persistence.lucene.read.DocumentIndexReaderTemplate;
 import ro.go.adrhc.persistence.lucene.services.IndexCreateService;
+import ro.go.adrhc.persistence.lucene.services.update.FilesIndexFullUpdateService;
 import ro.go.adrhc.persistence.lucene.tokenizer.LuceneTokenizer;
 import ro.go.adrhc.util.io.SimpleDirectory;
 
