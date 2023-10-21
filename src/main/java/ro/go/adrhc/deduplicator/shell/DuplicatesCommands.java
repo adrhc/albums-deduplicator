@@ -7,8 +7,8 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
-import ro.go.adrhc.deduplicator.datasource.index.FilesIndexDuplicatesMngmtService;
-import ro.go.adrhc.deduplicator.datasource.index.FullFilesIndexUpdateService;
+import ro.go.adrhc.deduplicator.datasource.index.services.FilesIndexDuplicatesMngmtService;
+import ro.go.adrhc.deduplicator.datasource.index.services.FullFilesIndexUpdateService;
 
 import java.io.IOException;
 import java.nio.file.Path;

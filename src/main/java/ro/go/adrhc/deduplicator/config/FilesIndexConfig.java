@@ -7,9 +7,9 @@ import org.springframework.context.annotation.Scope;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.index.FilesIndex;
-import ro.go.adrhc.deduplicator.datasource.index.FilesIndexDuplicatesMngmtService;
 import ro.go.adrhc.deduplicator.datasource.index.FilesIndexFactories;
-import ro.go.adrhc.deduplicator.datasource.index.FullFilesIndexUpdateService;
+import ro.go.adrhc.deduplicator.datasource.index.services.FilesIndexDuplicatesMngmtService;
+import ro.go.adrhc.deduplicator.datasource.index.services.FullFilesIndexUpdateService;
 
 import java.nio.file.Path;
 

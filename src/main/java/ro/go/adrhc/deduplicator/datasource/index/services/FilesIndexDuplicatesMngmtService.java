@@ -1,8 +1,9 @@
-package ro.go.adrhc.deduplicator.datasource.index;
+package ro.go.adrhc.deduplicator.datasource.index.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
+import ro.go.adrhc.deduplicator.datasource.index.IndexFieldType;
 import ro.go.adrhc.deduplicator.datasource.index.dedup.DocumentToFileMetadataConverter;
 import ro.go.adrhc.deduplicator.datasource.index.dedup.FileMetadataCopies;
 import ro.go.adrhc.deduplicator.datasource.index.dedup.FileMetadataDuplicates;
