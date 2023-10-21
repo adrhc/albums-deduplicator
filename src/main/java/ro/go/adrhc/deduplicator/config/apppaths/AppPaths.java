@@ -28,12 +28,13 @@ public class AppPaths implements Cloneable {
 	}
 
 	public void copy(AppPaths appPaths) {
-		update(appPaths.indexPath, appPaths.filesPath);
+		update(appPaths.indexPath, appPaths.filesPath, appPaths.duplicatesPath);
 	}
 
-	public void update(Path indexPath, Path filesPath) {
+	public void update(Path indexPath, Path filesPath, Path duplicatesPath) {
 		this.indexPath = ObjectUtils.defaultIfNull(indexPath, this.indexPath);
 		this.filesPath = ObjectUtils.defaultIfNull(filesPath, this.filesPath);
+		this.duplicatesPath = ObjectUtils.defaultIfNull(filesPath, this.duplicatesPath);
 	}
 
 	@Override

@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Scope;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.index.FilesIndex;
-import ro.go.adrhc.deduplicator.datasource.index.FilesIndexDuplicatesSearchService;
+import ro.go.adrhc.deduplicator.datasource.index.FilesIndexDuplicatesMngmtService;
 import ro.go.adrhc.deduplicator.datasource.index.FilesIndexFactories;
 import ro.go.adrhc.deduplicator.datasource.index.FullFilesIndexUpdateService;
 
@@ -29,7 +29,7 @@ public class FilesIndexConfig {
 
 	@Bean
 	@Scope(SCOPE_PROTOTYPE)
-	public FilesIndexDuplicatesSearchService filesIndexDuplicatesSearchService() {
+	public FilesIndexDuplicatesMngmtService filesIndexDuplicatesMngmtService() {
 		return filesIndexFactories.createFilesIndexDuplicatesSearchService(appPaths.getIndexPath());
 	}
 

@@ -15,4 +15,8 @@ public class FileMetadata {
 	private final Instant lastModified;
 	private final long size;
 	private final String fileHash;
+
+	public boolean isAfter(FileMetadata metadata) {
+		return lastModified.isAfter(metadata.lastModified);
+	}
 }

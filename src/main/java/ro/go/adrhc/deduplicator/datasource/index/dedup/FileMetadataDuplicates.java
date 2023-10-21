@@ -2,17 +2,16 @@ package ro.go.adrhc.deduplicator.datasource.index.dedup;
 
 import lombok.RequiredArgsConstructor;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
-import ro.go.adrhc.util.pair.Pair;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static ro.go.adrhc.util.text.StringUtils.concat;
-
 @RequiredArgsConstructor
 public class FileMetadataDuplicates {
-	private final Map<String, Set<FileMetadata>> duplicates;
+	private final Map<String, FileMetadataCopies> duplicates;
 
 	public static FileMetadataDuplicates create() {
 		return new FileMetadataDuplicates(new HashMap<>());
@@ -24,48 +23,29 @@ public class FileMetadataDuplicates {
 		return duplicates;
 	}
 
-	public void addAll(FileMetadataDuplicates otherDuplicates) {
-		this.duplicates.putAll(otherDuplicates.duplicates);
-	}
-
 	public void add(FileMetadata metadata) {
-		Set<FileMetadata> metadataSet = duplicates
-				.computeIfAbsent(metadata.getFileHash(), it -> new HashSet<>());
-		metadataSet.add(metadata);
+		FileMetadataCopies metadataCopies = duplicates
+				.computeIfAbsent(metadata.getFileHash(), hash -> new FileMetadataCopies());
+		metadataCopies.add(metadata);
 	}
 
-	public Stream<Pair<String, Set<FileMetadata>>> getDuplicates() {
-		return duplicates.entrySet().stream()
-				.filter(e -> e.getValue().size() > 1)
-				.map(Pair::ofMapEntry)
-				.sorted(Comparator.comparing(this::duplicatesCount));
+	public Stream<FileMetadataCopies> stream() {
+		return duplicates.values().stream()
+				.filter(FileMetadataCopies::hasDuplicates)
+				.sorted(Comparator.comparing(FileMetadataCopies::duplicatesCount));
 	}
 
 	public long count() {
-		return duplicates.entrySet().stream()
-				.filter(e -> e.getValue().size() > 1)
-				.count();
+		return stream().count();
 	}
 
 	public String toString() {
 		return """
 				%s
 								
-				Found %d duplicates!"""
-				.formatted(getDuplicates()
-						.map(this::toString)
+				Found %d files containing duplicates!"""
+				.formatted(stream()
+						.map(FileMetadataCopies::toString)
 						.collect(Collectors.joining("\n\n")), count());
-	}
-
-	private String toString(Pair<String, Set<FileMetadata>> duplicate) {
-		return """
-				%d duplicates for %s:
-				%s"""
-				.formatted(duplicate.value().size(), duplicate.key(),
-						concat(FileMetadata::getPath, duplicate.value()));
-	}
-
-	private int duplicatesCount(Pair<?, Set<FileMetadata>> duplicate) {
-		return duplicate.value().size();
 	}
 }

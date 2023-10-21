@@ -21,7 +21,8 @@ public class AppPathsStringifier {
 		return Stream.of(
 				new AppPathDetails(appPaths.getIndexPathParent(), "index parent-path"),
 				new AppPathDetails(appPaths.getIndexPath(), "index path"),
-				new AppPathDetails(appPaths.getFilesPath(), "files path"));
+				new AppPathDetails(appPaths.getFilesPath(), "files path"),
+				new AppPathDetails(appPaths.getDuplicatesPath(), "duplicates path"));
 	}
 
 	@RequiredArgsConstructor

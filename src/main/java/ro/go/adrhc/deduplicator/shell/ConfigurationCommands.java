@@ -25,8 +25,9 @@ public class ConfigurationCommands {
 
 	@ShellMethod("Set (optionally) the paths of the used resources.")
 	public void setPaths(@ShellOption(defaultValue = NULL) Path indexPath,
-			@ShellOption(defaultValue = NULL) Path filesPath) {
-		appPaths.update(indexPath, filesPath);
+			@ShellOption(defaultValue = NULL) Path filesPath,
+			@ShellOption(defaultValue = NULL) Path duplicatesPath) {
+		appPaths.update(indexPath, filesPath, duplicatesPath);
 		log.debug("\n{}", stringifier.toString(appPaths));
 	}
 

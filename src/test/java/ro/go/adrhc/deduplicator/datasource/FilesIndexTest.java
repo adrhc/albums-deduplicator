@@ -13,7 +13,7 @@ import ro.go.adrhc.deduplicator.ExcludeShellAutoConfiguration;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.index.FilesIndex;
-import ro.go.adrhc.deduplicator.datasource.index.FilesIndexDuplicatesSearchService;
+import ro.go.adrhc.deduplicator.datasource.index.FilesIndexDuplicatesMngmtService;
 import ro.go.adrhc.deduplicator.datasource.index.FullFilesIndexUpdateService;
 import ro.go.adrhc.deduplicator.datasource.index.dedup.FileMetadataDuplicates;
 import ro.go.adrhc.deduplicator.stub.AppPathsGenerator;
@@ -45,7 +45,7 @@ class FilesIndexTest {
 		createAndPopulate(of("1sr-file.jpg"), of("2nd-file.jpg"),
 				new ImageFileSpecification("3rd-file.jpg", 512));
 
-		FileMetadataDuplicates duplicates = filesIndexDuplicatesSearchService().find();
+		FileMetadataDuplicates duplicates = filesIndexDuplicatesMngmtService().find();
 		log.debug("\n{}", duplicates);
 	}
 
@@ -60,8 +60,8 @@ class FilesIndexTest {
 		return ac.getBean(FilesIndex.class); // SCOPE_PROTOTYPE
 	}
 
-	private FilesIndexDuplicatesSearchService filesIndexDuplicatesSearchService() {
-		return ac.getBean(FilesIndexDuplicatesSearchService.class); // SCOPE_PROTOTYPE
+	private FilesIndexDuplicatesMngmtService filesIndexDuplicatesMngmtService() {
+		return ac.getBean(FilesIndexDuplicatesMngmtService.class); // SCOPE_PROTOTYPE
 	}
 
 	private FullFilesIndexUpdateService<Path, FileMetadata> fullFilesIndexUpdateService() {
