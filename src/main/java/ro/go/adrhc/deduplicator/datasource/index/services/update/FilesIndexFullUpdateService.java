@@ -2,28 +2,27 @@ package ro.go.adrhc.deduplicator.datasource.index.services.update;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ro.go.adrhc.persistence.lucene.FSTypedIndex;
-import ro.go.adrhc.persistence.lucene.domain.MetadataProvider;
+import org.apache.lucene.document.Document;
+import ro.go.adrhc.persistence.lucene.FSLuceneIndex;
+import ro.go.adrhc.persistence.lucene.domain.DocumentsProvider;
 import ro.go.adrhc.persistence.lucene.read.DocumentIndexReaderTemplate;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Slf4j
-public class FilesIndexFullUpdateService<MID, M> {
+public class FilesIndexFullUpdateService {
 	private final String idField;
-	private final MetadataProvider<MID, M> metadataProvider;
-	private final Function<String, MID> metadataIdParser;
+	private final DocumentsProvider documentsProvider;
 	private final DocumentIndexReaderTemplate indexReaderTemplate;
-	private final FSTypedIndex<M> luceneIndex;
+	private final FSLuceneIndex fsLuceneIndex;
 
 	public void update() throws IOException {
-		IndexChanges<MID> changes = getIndexChanges();
+		IndexChanges changes = getIndexChanges();
 		if (changes.hasChanges()) {
 			applyIndexChanges(changes);
 		} else {
@@ -31,24 +30,23 @@ public class FilesIndexFullUpdateService<MID, M> {
 		}
 	}
 
-	private IndexChanges<MID> getIndexChanges() throws IOException {
+	private IndexChanges getIndexChanges() throws IOException {
 		return indexReaderTemplate.transformFieldValues(idField, this::toIndexChanges);
 	}
 
-	private IndexChanges<MID> toIndexChanges(Stream<String> fieldStream) throws IOException {
-		List<MID> mids = new ArrayList<>(metadataProvider.loadAllIds());
-		List<String> docsToRemove = fieldStream
-				.filter(id -> !mids.remove(metadataIdParser.apply(id))).toList();
-		return new IndexChanges<>(mids, docsToRemove);
+	private IndexChanges toIndexChanges(Stream<String> indexedIds) throws IOException {
+		List<String> ids = new ArrayList<>(documentsProvider.loadAllIds());
+		List<String> docsToRemove = indexedIds.filter(id -> !ids.remove(id)).toList();
+		return new IndexChanges(ids, docsToRemove);
 	}
 
-	private void applyIndexChanges(IndexChanges<MID> changes) throws IOException {
+	private void applyIndexChanges(IndexChanges changes) throws IOException {
 		log.debug("\nremoving {} missing data from the index", changes.indexIdsMissingDataSize());
-		luceneIndex.removeByIds(changes.indexIdsMissingData());
+		fsLuceneIndex.removeByIds(changes.obsoleteIndexedIds());
 		log.debug("\nextracting {} metadata to index", changes.notIndexedSize());
-		Collection<M> metadata = metadataProvider.loadByIds(changes.notIndexed());
-		log.debug("\nadding {} metadata records to the index", metadata.size());
-		luceneIndex.addItems(metadata);
-		log.debug("\n{} index updated!", luceneIndex.getIndexPath());
+		Collection<Document> documents = documentsProvider.loadByIds(changes.notIndexedIds());
+		log.debug("\nadding {} metadata records to the index", documents.size());
+		fsLuceneIndex.addDocuments(documents);
+		log.debug("\n{} index updated!", fsLuceneIndex.getIndexPath());
 	}
 }

@@ -3,19 +3,19 @@ package ro.go.adrhc.deduplicator.datasource.index.services.update;
 import java.util.Collection;
 
 /**
- * @param notIndexed          contains not indexed data
- * @param indexIdsMissingData contains indexed ids for which the indexed data no longer exist
+ * @param notIndexedIds      contains not indexed data identifiers
+ * @param obsoleteIndexedIds contains indexed ids for which the indexed data no longer exist
  */
-public record IndexChanges<T>(Collection<T> notIndexed, Collection<String> indexIdsMissingData) {
+public record IndexChanges(Collection<String> notIndexedIds, Collection<String> obsoleteIndexedIds) {
 	public boolean hasChanges() {
-		return !notIndexed.isEmpty() || !indexIdsMissingData.isEmpty();
+		return !notIndexedIds.isEmpty() || !obsoleteIndexedIds.isEmpty();
 	}
 
 	public int notIndexedSize() {
-		return notIndexed.size();
+		return notIndexedIds.size();
 	}
 
 	public int indexIdsMissingDataSize() {
-		return indexIdsMissingData.size();
+		return obsoleteIndexedIds.size();
 	}
 }

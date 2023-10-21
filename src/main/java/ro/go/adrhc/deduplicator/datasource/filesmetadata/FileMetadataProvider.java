@@ -2,7 +2,7 @@ package ro.go.adrhc.deduplicator.datasource.filesmetadata;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ro.go.adrhc.persistence.lucene.domain.MetadataProvider;
+import org.springframework.stereotype.Component;
 import ro.go.adrhc.util.io.SimpleDirectory;
 
 import java.io.IOException;
@@ -17,19 +17,22 @@ import java.util.stream.Stream;
 
 import static ro.go.adrhc.util.ConcurrencyUtils.safelyGetAll;
 
+@Component
 @RequiredArgsConstructor
 @Slf4j
-public class FileMetadataProvider implements MetadataProvider<Path, FileMetadata> {
+public class FileMetadataProvider {
 	private final FileMetadataFactory metadataFactory;
 	private final ExecutorService metadataExecutorService;
 	private final SimpleDirectory filesDirectory;
 
-	@Override
+	public List<FileMetadata> loadAll() throws IOException {
+		return loadByIds(loadAllIds());
+	}
+
 	public List<Path> loadAllIds() throws IOException {
 		return filesDirectory.getAllPaths();
 	}
 
-	@Override
 	public List<FileMetadata> loadByIds(Collection<Path> paths) {
 		// load the file paths and start metadata loading (using CompletableFuture)
 		Stream<CompletableFuture<Optional<FileMetadata>>> futures = paths.stream()

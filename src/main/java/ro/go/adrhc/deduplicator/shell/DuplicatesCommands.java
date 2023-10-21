@@ -5,12 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
-import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDedupService;
 import ro.go.adrhc.deduplicator.datasource.index.services.update.FilesIndexFullUpdateService;
 
 import java.io.IOException;
-import java.nio.file.Path;
 
 @ShellComponent("Duplicates management.")
 @RequiredArgsConstructor
@@ -35,7 +33,7 @@ public class DuplicatesCommands {
 	}
 
 	@Lookup
-	protected FilesIndexFullUpdateService<Path, FileMetadata> fullFilesIndexUpdateService() {
+	protected FilesIndexFullUpdateService fullFilesIndexUpdateService() {
 		return null;
 	}
 }

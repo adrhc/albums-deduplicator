@@ -5,13 +5,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
-import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.index.services.FilesIndexFactories;
 import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDedupService;
 import ro.go.adrhc.deduplicator.datasource.index.services.update.FilesIndexFullUpdateService;
 import ro.go.adrhc.persistence.lucene.services.IndexCreateService;
-
-import java.nio.file.Path;
 
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
@@ -23,7 +20,7 @@ public class FilesIndexConfig {
 
 	@Bean
 	@Scope(SCOPE_PROTOTYPE)
-	public IndexCreateService<Path, FileMetadata> filesIndex() {
+	public IndexCreateService filesIndex() {
 		return filesIndexFactories.createFilesIndexCreateService(appPaths.getIndexPath());
 	}
 
@@ -35,7 +32,7 @@ public class FilesIndexConfig {
 
 	@Bean
 	@Scope(SCOPE_PROTOTYPE)
-	public FilesIndexFullUpdateService<Path, FileMetadata> fullFilesIndexUpdateService() {
+	public FilesIndexFullUpdateService fullFilesIndexUpdateService() {
 		return filesIndexFactories.createFilesIndexFullUpdateService(appPaths.getIndexPath());
 	}
 }

@@ -6,12 +6,10 @@ import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
-import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.index.services.update.FilesIndexFullUpdateService;
 import ro.go.adrhc.persistence.lucene.services.IndexCreateService;
 
 import java.io.IOException;
-import java.nio.file.Path;
 
 @ShellComponent("Files index management.")
 @RequiredArgsConstructor
@@ -37,12 +35,12 @@ public class IndexCommands {
 	}
 
 	@Lookup
-	protected IndexCreateService<Path, FileMetadata> filesIndex() {
+	protected IndexCreateService filesIndex() {
 		return null;
 	}
 
 	@Lookup
-	protected FilesIndexFullUpdateService<Path, FileMetadata> fullFilesIndexUpdateService() {
+	protected FilesIndexFullUpdateService fullFilesIndexUpdateService() {
 		return null;
 	}
 }

@@ -11,7 +11,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.shell.Shell;
 import ro.go.adrhc.deduplicator.ExcludeShellAutoConfiguration;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
-import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FileMetadataCopiesCollection;
 import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDedupService;
 import ro.go.adrhc.deduplicator.datasource.index.services.update.FilesIndexFullUpdateService;
@@ -55,7 +54,7 @@ class FilesIndexCreateServiceTest {
 		fullFilesIndexUpdateService().update();
 	}
 
-	private IndexCreateService<Path, FileMetadata> filesMetadataIndex() {
+	private IndexCreateService filesMetadataIndex() {
 		return ac.getBean(IndexCreateService.class); // SCOPE_PROTOTYPE
 	}
 
@@ -63,7 +62,7 @@ class FilesIndexCreateServiceTest {
 		return ac.getBean(FilesIndexDedupService.class); // SCOPE_PROTOTYPE
 	}
 
-	private FilesIndexFullUpdateService<Path, FileMetadata> fullFilesIndexUpdateService() {
+	private FilesIndexFullUpdateService fullFilesIndexUpdateService() {
 		return ac.getBean(FilesIndexFullUpdateService.class); // SCOPE_PROTOTYPE
 	}
 }
