@@ -30,7 +30,7 @@ public class FilesIndexConfig {
 	@Bean
 	@Scope(SCOPE_PROTOTYPE)
 	public FilesIndexDedupService filesIndexDuplicatesMngmtService() {
-		return filesIndexFactories.createFilesIndexDedupService(appPaths.getIndexPath());
+		return filesIndexFactories.createFilesIndexDedupService(appPaths.getIndexPath(), appPaths.getFilesPath());
 	}
 
 	@Bean

@@ -2,7 +2,6 @@ package ro.go.adrhc.deduplicator.datasource.index.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
 import ro.go.adrhc.deduplicator.datasource.AppDirectoryFactories;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.MetadataProvider;
@@ -24,7 +23,6 @@ import static ro.go.adrhc.util.fn.SneakyFunctionUtils.toSneakyFunction;
 @Component
 @RequiredArgsConstructor
 public class FilesIndexFactories {
-	private final AppPaths appPaths;
 	private final FilesIndexProperties indexProperties;
 	private final LuceneTokenizer luceneTokenizer;
 	private final DocumentToFileMetadataConverter toFileMetadataConverter;
@@ -36,11 +34,15 @@ public class FilesIndexFactories {
 		return new FilesIndexCreateService<>(metadataProvider, createFSTypedIndex(indexPath));
 	}
 
-	public FilesIndexDedupService createFilesIndexDedupService(Path indexPath) {
-		return new FilesIndexDedupService(toFileMetadataConverter,
-				createDocumentIndexReaderTemplate(indexPath),
-				appDirectoryFactories.duplicatesDirectory(),
-				appPaths::getFilesPath);
+	public FilesIndexDedupService createFilesIndexDedupService(Path indexPath, Path filesRoot) {
+		return new FilesIndexDedupService(
+				createFilesIndexReaderTemplate(indexPath),
+				appDirectoryFactories.duplicatesDirectory(), filesRoot);
+	}
+
+	public FilesIndexReaderTemplate createFilesIndexReaderTemplate(Path indexPath) {
+		return new FilesIndexReaderTemplate(toFileMetadataConverter,
+				createDocumentIndexReaderTemplate(indexPath));
 	}
 
 	public FilesIndexFullUpdateService<Path, FileMetadata> createFilesIndexFullUpdateService(Path indexPath) {

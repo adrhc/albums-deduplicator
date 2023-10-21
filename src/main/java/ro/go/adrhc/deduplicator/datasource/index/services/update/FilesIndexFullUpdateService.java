@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import static ro.go.adrhc.util.fn.SneakyBiFunctionUtils.curry;
-
 @RequiredArgsConstructor
 @Slf4j
 public class FilesIndexFullUpdateService<MID, M> {
@@ -34,23 +32,23 @@ public class FilesIndexFullUpdateService<MID, M> {
 	}
 
 	private IndexChanges<MID> getIndexChanges() throws IOException {
-		return indexReaderTemplate.transformFieldStream(idField,
-				curry(this::transformFieldStream, new ArrayList<>(metadataProvider.loadAllIds())));
+		return indexReaderTemplate.transformFieldValues(idField, this::toIndexChanges);
 	}
 
-	private IndexChanges<MID> transformFieldStream(List<MID> paths, Stream<String> fieldStream) {
-		List<String> docsToRemove = fieldStream.filter(id -> !paths.remove(metadataIdParser.apply(id))).toList();
-		return new IndexChanges<>(paths, docsToRemove);
+	private IndexChanges<MID> toIndexChanges(Stream<String> fieldStream) throws IOException {
+		List<MID> mids = new ArrayList<>(metadataProvider.loadAllIds());
+		List<String> docsToRemove = fieldStream
+				.filter(id -> !mids.remove(metadataIdParser.apply(id))).toList();
+		return new IndexChanges<>(mids, docsToRemove);
 	}
 
 	private void applyIndexChanges(IndexChanges<MID> changes) throws IOException {
-		log.debug("\nremoving {} missing songs from the index", changes.indexIdsMissingActualDataSize());
+		log.debug("\nremoving {} missing data from the index", changes.indexIdsMissingDataSize());
 		luceneIndex.removeByIds(changes.indexIdsMissingData());
-		log.debug("\nloading {} new songs metadata", changes.notIndexedActualDataSize());
-		Collection<M> fileMetadata = metadataProvider
-				.loadByIds(changes.notIndexedActualDataCollection());
-		log.debug("\nadding {} metadata records to the index", fileMetadata.size());
-		luceneIndex.addItems(fileMetadata);
+		log.debug("\nextracting {} metadata to index", changes.notIndexedSize());
+		Collection<M> metadata = metadataProvider.loadByIds(changes.notIndexed());
+		log.debug("\nadding {} metadata records to the index", metadata.size());
+		luceneIndex.addItems(metadata);
 		log.debug("\n{} index updated!", luceneIndex.getIndexPath());
 	}
 }

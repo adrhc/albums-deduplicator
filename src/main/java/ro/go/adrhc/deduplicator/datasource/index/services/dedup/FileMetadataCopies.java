@@ -6,7 +6,7 @@ import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static ro.go.adrhc.util.text.StringUtils.concat;
 
@@ -30,15 +30,15 @@ public class FileMetadataCopies {
 		return original.getPath();
 	}
 
-	public Set<Path> getDuplicatePaths() {
-		return duplicates.stream().map(FileMetadata::getPath).collect(Collectors.toSet());
+	public Stream<Path> pathsStream() {
+		return duplicates.stream().map(FileMetadata::getPath);
 	}
 
 	public boolean hasDuplicates() {
 		return !duplicates.isEmpty();
 	}
 
-	public int duplicatesCount() {
+	public int count() {
 		return duplicates.size();
 	}
 

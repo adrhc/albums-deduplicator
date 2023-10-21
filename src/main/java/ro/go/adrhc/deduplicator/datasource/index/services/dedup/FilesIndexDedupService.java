@@ -3,88 +3,78 @@ package ro.go.adrhc.deduplicator.datasource.index.services.dedup;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
-import ro.go.adrhc.deduplicator.datasource.index.domain.DocumentToFileMetadataConverter;
-import ro.go.adrhc.deduplicator.datasource.index.domain.IndexFieldType;
-import ro.go.adrhc.persistence.lucene.read.DocumentIndexReader;
-import ro.go.adrhc.persistence.lucene.read.DocumentIndexReaderTemplate;
+import ro.go.adrhc.deduplicator.datasource.index.services.FilesIndexReaderTemplate;
 import ro.go.adrhc.util.Assert;
 import ro.go.adrhc.util.io.SimpleDirectory;
-import ro.go.adrhc.util.pair.UnaryPair;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Supplier;
-import java.util.stream.Stream;
 
-import static ro.go.adrhc.util.EnumUtils.toNamesSet;
+import static ro.go.adrhc.util.fn.BiFunctionUtils.curry;
 import static ro.go.adrhc.util.io.FilenameUtils.filenameNoExt;
 import static ro.go.adrhc.util.text.StringUtils.concat;
 
 @RequiredArgsConstructor
 @Slf4j
 public class FilesIndexDedupService {
-	private final DocumentToFileMetadataConverter toFileMetadataConverter;
-	private final DocumentIndexReaderTemplate indexReaderTemplate;
+	private final FilesIndexReaderTemplate filesIndexReaderTemplate;
 	private final SimpleDirectory duplicatesDirectory;
-	private final Supplier<Path> filesPathSupplier;
+	private final Path filesRoot;
 
 	public FileMetadataCopiesCollection find() throws IOException {
-		return indexReaderTemplate.useReader(this::doFind);
+		return filesIndexReaderTemplate.transformFileMetadata(FileMetadataCopiesCollection::of);
 	}
 
 	public boolean removeDups() throws IOException {
 		FileMetadataCopiesCollection duplicates = find();
-		Path filesPath = filesPathSupplier.get();
-		List<List<UnaryPair<Path>>> origDupAndTargetPaths =
-				duplicates.stream().map(copies -> origDupAndTargetPaths(filesPath, copies)).toList();
-		logOrigDupAndTargetPaths(origDupAndTargetPaths);
-		copyOrigMoveDups(origDupAndTargetPaths);
-		return !origDupAndTargetPaths.isEmpty();
-	}
-
-	private void logOrigDupAndTargetPaths(List<List<UnaryPair<Path>>> origDupAndTargetPaths) {
-		if (origDupAndTargetPaths.isEmpty()) {
-			return;
+		if (duplicates.isEmpty()) {
+			return false;
 		}
-		log.debug("\n{}", concat("\n\n", origDupAndTargetPaths.stream()
-				.map(set -> concat(set.stream()
-						.map(p -> "%s -> %s".formatted(p.key(), p.value()))))));
+		List<OriginalAndDupBackups> originalAndDupBackups =
+				duplicates.stream().map(this::originalAndDupBackups).toList();
+		log.debug("\n{}", concat("\n\n", originalAndDupBackups));
+		copyOrigMoveDups(originalAndDupBackups);
+		return true;
 	}
 
-	private void copyOrigMoveDups(List<List<UnaryPair<Path>>> origDupAndTargetPaths) throws IOException {
-		for (List<UnaryPair<Path>> originalAndDuplicates : origDupAndTargetPaths) {
-			UnaryPair<Path> original = originalAndDuplicates.get(0);
-			duplicatesDirectory.cp(original.key(), original.value());
-			for (int i = 1; i < originalAndDuplicates.size(); i++) {
-				UnaryPair<Path> duplicate = originalAndDuplicates.get(i);
-				duplicatesDirectory.mv(duplicate.key(), duplicate.value());
+	private void copyOrigMoveDups(List<OriginalAndDupBackups> originalAndDupBackups) throws IOException {
+		for (OriginalAndDupBackups backups : originalAndDupBackups) {
+			duplicatesDirectory.cp(backups.getOriginalPath(), backups.getOriginalBackupPath());
+			for (PathAndBackup backup : backups) {
+				duplicatesDirectory.mv(backup.getPath(), backup.getBackupPath());
 			}
 		}
 	}
 
-	private List<UnaryPair<Path>> origDupAndTargetPaths(Path filesPath, FileMetadataCopies copies) {
-		Optional<String> optionalOrigFilenameNoExt = filenameNoExt(copies.getOriginal().getPath());
-		Assert.isTrue(optionalOrigFilenameNoExt.isPresent(), "Original filename stripped from extension should exist!");
-		String origFilenameNoExt = optionalOrigFilenameNoExt.get();
-		Path relativeToFiles = filesPath.relativize(copies.getOriginalPath());
-		List<UnaryPair<Path>> pathPairs = new ArrayList<>();
-		pathPairs.add(new UnaryPair<>(copies.getOriginalPath(), relativeToFiles));
-		for (Path dup : copies.getDuplicatePaths()) {
-			Path filesRelativeCopy = filesPath.relativize(dup);
-			String prefixedCopyFilename = origFilenameNoExt + " - " + filesRelativeCopy.getFileName().toString();
-			Path prefixedFilesRelativeCopy = filesRelativeCopy.resolveSibling(prefixedCopyFilename);
-			pathPairs.add(new UnaryPair<>(dup, prefixedFilesRelativeCopy));
-		}
-		return pathPairs;
+	private OriginalAndDupBackups originalAndDupBackups(FileMetadataCopies copies) {
+		PathAndBackup origBackup = createOrigBackup(copies.getOriginal());
+		OriginalAndDupBackups backups = OriginalAndDupBackups.of(origBackup);
+		String origFilenameNoExt = origFilenameNoExt(copies);
+		copies.pathsStream()
+				.map(curry(this::createDupBackup, origFilenameNoExt))
+				.forEach(backups::add);
+		return backups;
 	}
 
-	private FileMetadataCopiesCollection doFind(DocumentIndexReader indexReader) {
-		Stream<FileMetadata> metadataStream = indexReader
-				.getAll(toNamesSet(IndexFieldType.class))
-				.map(toFileMetadataConverter::convert);
-		return FileMetadataCopiesCollection.of(metadataStream);
+	private String origFilenameNoExt(FileMetadataCopies copies) {
+		Optional<String> optionalOrigFilenameNoExt = filenameNoExt(copies.getOriginal().getPath());
+		Assert.isTrue(optionalOrigFilenameNoExt.isPresent(),
+				"Original filename stripped from extension should exist!");
+		return optionalOrigFilenameNoExt.get();
+	}
+
+	private PathAndBackup createOrigBackup(FileMetadata original) {
+		Path originalPath = original.getPath();
+		Path origRelativeToFilesRoot = filesRoot.relativize(originalPath);
+		return new PathAndBackup(originalPath, origRelativeToFilesRoot);
+	}
+
+	private PathAndBackup createDupBackup(String origFilenameNoExt, Path path) {
+		Path filesRootRelativeCopy = filesRoot.relativize(path);
+		String origPrefixedCopyFilename = origFilenameNoExt + " - " + filesRootRelativeCopy.getFileName().toString();
+		Path filesRootRelativeOrigPrefixedCopy = filesRootRelativeCopy.resolveSibling(origPrefixedCopyFilename);
+		return new PathAndBackup(path, filesRootRelativeOrigPrefixedCopy);
 	}
 }

@@ -11,15 +11,11 @@ public record IndexChanges<T>(Collection<T> notIndexed, Collection<String> index
 		return !notIndexed.isEmpty() || !indexIdsMissingData.isEmpty();
 	}
 
-	public Collection<T> notIndexedActualDataCollection() {
-		return notIndexed;
-	}
-
-	public int notIndexedActualDataSize() {
+	public int notIndexedSize() {
 		return notIndexed.size();
 	}
 
-	public int indexIdsMissingActualDataSize() {
+	public int indexIdsMissingDataSize() {
 		return indexIdsMissingData.size();
 	}
 }

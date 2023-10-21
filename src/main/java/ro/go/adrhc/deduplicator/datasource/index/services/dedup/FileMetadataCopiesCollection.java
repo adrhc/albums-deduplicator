@@ -30,13 +30,20 @@ public class FileMetadataCopiesCollection {
 	}
 
 	public Stream<FileMetadataCopies> stream() {
+		return notSortedStream().sorted(Comparator.comparing(FileMetadataCopies::count));
+	}
+
+	private Stream<FileMetadataCopies> notSortedStream() {
 		return duplicates.values().stream()
-				.filter(FileMetadataCopies::hasDuplicates)
-				.sorted(Comparator.comparing(FileMetadataCopies::duplicatesCount));
+				.filter(FileMetadataCopies::hasDuplicates);
 	}
 
 	public long count() {
-		return stream().count();
+		return notSortedStream().count();
+	}
+
+	public boolean isEmpty() {
+		return duplicates.values().stream().noneMatch(FileMetadataCopies::hasDuplicates);
 	}
 
 	public String toString() {
