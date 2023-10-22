@@ -25,8 +25,8 @@ public class FilesIndexFactories {
 	private final LuceneFactories luceneFactories;
 	private final LuceneTokenizer luceneTokenizer;
 	private final FileMetadataProvider fileMetadataProvider;
-	private final DocumentToFileMetadataConverter toFileMetadataConverter;
 	private final FileMetadataToDocumentConverter toDocumentConverter;
+	private final DocumentToFileMetadataConverter toFileMetadataConverter;
 
 	public FilesIndexReaderTemplate createFilesIndexReaderTemplate(Path indexPath) {
 		return new FilesIndexReaderTemplate(toFileMetadataConverter,
