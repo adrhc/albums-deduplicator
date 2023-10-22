@@ -10,7 +10,7 @@ import ro.go.adrhc.deduplicator.datasource.index.domain.IndexFieldType;
 import ro.go.adrhc.persistence.lucene.fsindex.FSLuceneIndex;
 import ro.go.adrhc.persistence.lucene.index.core.tokenizer.LuceneTokenizer;
 import ro.go.adrhc.persistence.lucene.index.spi.DocumentsDatasource;
-import ro.go.adrhc.persistence.lucene.typedindex.spi.DefaultDocumentsDatasource;
+import ro.go.adrhc.persistence.lucene.typedindex.core.DefaultDocumentsDatasource;
 import ro.go.adrhc.persistence.lucene.typedindex.spi.RawDataIdToStringConverter;
 import ro.go.adrhc.persistence.lucene.typedindex.spi.RawDataToDocumentConverter;
 import ro.go.adrhc.persistence.lucene.typedindex.spi.StringToRawDataIdConverter;
