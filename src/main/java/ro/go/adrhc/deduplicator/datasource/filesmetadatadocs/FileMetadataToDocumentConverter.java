@@ -4,7 +4,6 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
 import org.springframework.stereotype.Component;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.index.domain.IndexFieldType;
@@ -33,31 +32,23 @@ public class FileMetadataToDocumentConverter {
 		doc.add(storedButNotAnalyzed(IndexFieldType.lastModified, metadata.getLastModified()));
 		doc.add(storedButNotAnalyzed(IndexFieldType.fileHash, metadata.getFileHash()));
 
-		Optional<Field> filenameNoExt = filenameNoExt(metadata.getPath()).flatMap(this::toField);
-		if (filenameNoExt.isPresent()) {
-			doc.add(filenameNoExt.get());
-		} else {
-			log.warn("\n{} has a weird name!", metadata.getPath());
-		}
+		filenameNoExtTokens(metadata).ifPresentOrElse(
+				tokens -> doc.add(storedAndAnalyzed(IndexFieldType.fileNameNoExt, tokens)),
+				() -> log.warn("\n{} has a weird name!", metadata.getPath()));
 
 		return doc;
 	}
 
-	/**
-	 * this part has to be synchronized with SearchedFileToQueryConverter (tokenizedTitle part)
-	 */
-	private Optional<Field> toField(String filenameNoExt) {
-		Set<String> tokens;
+	private Optional<Set<String>> filenameNoExtTokens(FileMetadata metadata) {
+		return filenameNoExt(metadata.getPath()).flatMap(this::toTokens);
+	}
+
+	private Optional<Set<String>> toTokens(String filenameNoExt) {
 		try {
-			tokens = luceneTokenizer.tokenize(filenameNoExt);
+			return Optional.of(luceneTokenizer.tokenize(filenameNoExt));
 		} catch (IOException e) {
 			log.error(e.getMessage(), e);
 			return Optional.empty();
-		}
-		if (tokens.isEmpty()) {
-			return Optional.empty();
-		} else {
-			return Optional.of(storedAndAnalyzed(IndexFieldType.fileNameNoExt, tokens));
 		}
 	}
 }

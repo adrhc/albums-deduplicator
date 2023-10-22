@@ -14,12 +14,12 @@ import java.util.stream.Collectors;
 public class QueryProperties {
 	private int toMatchExactlyMaxTokenLength;
 	private int minimumWordToMatch;
-	private float minimumWordToMatchWhenMissingDurationPart1;
-	private float minimumWordToMatchWhenMissingDurationPart2;
+	private float minimumWordToMatchPart1;
+	private float minimumWordToMatchPart2;
 	private int levenshteinDistance;
 
 	public int minWordsToFind(int tokensAmount) {
-		float configuredProportion = getWordsToMatchRatioWhenMissingDuration();
+		float configuredProportion = getWordsToMatchRatio();
 		int ratioBasedMinimum = Math.round(tokensAmount * configuredProportion);
 		if (ratioBasedMinimum > minimumWordToMatch) {
 			return ratioBasedMinimum;
@@ -41,7 +41,7 @@ public class QueryProperties {
 				.collect(Collectors.toSet());
 	}
 
-	private float getWordsToMatchRatioWhenMissingDuration() {
-		return minimumWordToMatchWhenMissingDurationPart1 / minimumWordToMatchWhenMissingDurationPart2;
+	private float getWordsToMatchRatio() {
+		return minimumWordToMatchPart1 / minimumWordToMatchPart2;
 	}
 }

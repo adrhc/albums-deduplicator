@@ -26,7 +26,7 @@ lucene:
     minimum-word-to-match: 2
     # tokens searched using levenshtein-distance
     # minimum-word-to-match formula: part1 / part2
-    minimum-word-to-match-when-missing-duration-part1: 5
-    minimum-word-to-match-when-missing-duration-part2: 6
+    minimum-word-to-match-part1: 5
+    minimum-word-to-match-part2: 6
     # see LevenshteinAutomata.MAXIMUM_SUPPORTED_DISTANCE
     levenshtein-distance: 1
