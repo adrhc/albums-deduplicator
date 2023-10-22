@@ -16,7 +16,7 @@ import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDedupS
 import ro.go.adrhc.deduplicator.stub.AppPathsGenerator;
 import ro.go.adrhc.deduplicator.stub.FileGenerator;
 import ro.go.adrhc.deduplicator.stub.ImageFileSpecification;
-import ro.go.adrhc.persistence.lucene.index.IndexCreateService;
+import ro.go.adrhc.persistence.lucene.fsindex.IndexCreateService;
 import ro.go.adrhc.persistence.lucene.index.update.IndexFullUpdateService;
 
 import java.io.IOException;
