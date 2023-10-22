@@ -3,7 +3,7 @@ package ro.go.adrhc.deduplicator.stub;
 import org.apache.lucene.document.Document;
 import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.stereotype.Component;
-import ro.go.adrhc.deduplicator.datasource.filesmetadatadocs.FileMetadataToDocumentConverter;
+import ro.go.adrhc.deduplicator.datasource.index.domain.FileMetadataToDocumentConverter;
 
 import java.io.IOException;
 

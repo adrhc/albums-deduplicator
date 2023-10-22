@@ -1,4 +1,4 @@
-package ro.go.adrhc.deduplicator.datasource.filesmetadatadocs;
+package ro.go.adrhc.deduplicator.datasource.index.domain;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.document.Document;
 import org.springframework.stereotype.Component;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
-import ro.go.adrhc.deduplicator.datasource.index.domain.IndexFieldType;
 import ro.go.adrhc.persistence.lucene.index.core.tokenizer.LuceneTokenizer;
 
 import java.io.IOException;

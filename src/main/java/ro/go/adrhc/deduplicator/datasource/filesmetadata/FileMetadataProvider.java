@@ -3,6 +3,7 @@ package ro.go.adrhc.deduplicator.datasource.filesmetadata;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import ro.go.adrhc.persistence.lucene.typedindex.spi.RawDataDatasource;
 import ro.go.adrhc.util.io.SimpleDirectory;
 
 import java.io.IOException;
@@ -20,7 +21,7 @@ import static ro.go.adrhc.util.ConcurrencyUtils.safelyGetAll;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class FileMetadataProvider {
+public class FileMetadataProvider implements RawDataDatasource<Path, FileMetadata> {
 	private final FileMetadataFactory metadataFactory;
 	private final ExecutorService metadataExecutorService;
 	private final SimpleDirectory filesDirectory;
