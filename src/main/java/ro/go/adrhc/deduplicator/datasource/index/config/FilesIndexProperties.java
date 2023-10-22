@@ -5,7 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
-import ro.go.adrhc.persistence.lucene.domain.tokenizer.TokenizerProperties;
+import ro.go.adrhc.persistence.lucene.index.core.tokenizer.TokenizerProperties;
 
 @ConfigurationProperties(prefix = "lucene")
 @Component

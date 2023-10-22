@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ro.go.adrhc.deduplicator.lib.LuceneTokenizerFactory;
-import ro.go.adrhc.persistence.lucene.domain.tokenizer.LuceneTokenizer;
+import ro.go.adrhc.persistence.lucene.index.core.tokenizer.LuceneTokenizer;
 
 @Configuration
 @RequiredArgsConstructor

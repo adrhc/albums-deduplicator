@@ -8,14 +8,14 @@ import org.apache.lucene.document.Field;
 import org.springframework.stereotype.Component;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.index.domain.IndexFieldType;
-import ro.go.adrhc.persistence.lucene.domain.tokenizer.LuceneTokenizer;
+import ro.go.adrhc.persistence.lucene.index.core.tokenizer.LuceneTokenizer;
 
 import java.io.IOException;
 import java.util.Optional;
 import java.util.Set;
 
-import static ro.go.adrhc.persistence.lucene.domain.field.FieldFactory.storedAndAnalyzed;
-import static ro.go.adrhc.persistence.lucene.domain.field.FieldFactory.storedButNotAnalyzed;
+import static ro.go.adrhc.persistence.lucene.index.domain.field.FieldFactory.storedAndAnalyzed;
+import static ro.go.adrhc.persistence.lucene.index.domain.field.FieldFactory.storedButNotAnalyzed;
 import static ro.go.adrhc.util.io.FilenameUtils.filenameNoExt;
 
 @Component

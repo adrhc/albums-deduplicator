@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
-import ro.go.adrhc.persistence.lucene.services.IndexCreateService;
-import ro.go.adrhc.persistence.lucene.services.update.IndexFullUpdateService;
+import ro.go.adrhc.persistence.lucene.index.IndexCreateService;
+import ro.go.adrhc.persistence.lucene.index.update.IndexFullUpdateService;
 
 import java.io.IOException;
 
