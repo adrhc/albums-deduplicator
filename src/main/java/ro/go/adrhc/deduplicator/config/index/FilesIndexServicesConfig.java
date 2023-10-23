@@ -8,7 +8,7 @@ import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
 import ro.go.adrhc.deduplicator.datasource.index.services.FilesIndexServicesFactories;
 import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDedupService;
 import ro.go.adrhc.persistence.lucene.fsindex.FSIndexCreateService;
-import ro.go.adrhc.persistence.lucene.index.update.IndexFullUpdateService;
+import ro.go.adrhc.persistence.lucene.index.update.DSIndexRestoreService;
 
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
@@ -32,7 +32,7 @@ public class FilesIndexServicesConfig {
 
 	@Bean
 	@Scope(SCOPE_PROTOTYPE)
-	public IndexFullUpdateService indexFullUpdateService() {
+	public DSIndexRestoreService indexFullUpdateService() {
 		return filesIndexServicesFactories.createFilesIndexFullUpdateService(appPaths.getIndexPath());
 	}
 }

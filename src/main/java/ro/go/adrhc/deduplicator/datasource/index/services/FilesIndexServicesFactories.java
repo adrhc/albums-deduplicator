@@ -10,7 +10,7 @@ import ro.go.adrhc.persistence.lucene.fsindex.FSIndexCreateService;
 import ro.go.adrhc.persistence.lucene.fsindex.FSIndexUpdateService;
 import ro.go.adrhc.persistence.lucene.index.core.tokenizer.LuceneTokenizer;
 import ro.go.adrhc.persistence.lucene.index.spi.DocumentsDatasource;
-import ro.go.adrhc.persistence.lucene.index.update.IndexFullUpdateService;
+import ro.go.adrhc.persistence.lucene.index.update.DSIndexRestoreService;
 import ro.go.adrhc.util.io.SimpleDirectory;
 
 import java.nio.file.Path;
@@ -30,8 +30,8 @@ public class FilesIndexServicesFactories {
 				duplicatesDirectory, filesRoot);
 	}
 
-	public IndexFullUpdateService createFilesIndexFullUpdateService(Path indexPath) {
-		return IndexFullUpdateService.create(IndexFieldType.filePath, documentsDatasource,
+	public DSIndexRestoreService createFilesIndexFullUpdateService(Path indexPath) {
+		return DSIndexRestoreService.create(IndexFieldType.filePath, documentsDatasource,
 				luceneFactories.createDocumentIndexReaderTemplate(indexPath),
 				createFilesIndex(indexPath));
 	}

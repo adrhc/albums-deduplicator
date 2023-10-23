@@ -7,7 +7,7 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
 import ro.go.adrhc.persistence.lucene.fsindex.FSIndexCreateService;
-import ro.go.adrhc.persistence.lucene.index.update.IndexFullUpdateService;
+import ro.go.adrhc.persistence.lucene.index.update.DSIndexRestoreService;
 
 import java.io.IOException;
 
@@ -40,7 +40,7 @@ public class IndexCommands {
 	}
 
 	@Lookup
-	protected IndexFullUpdateService indexFullUpdateService() {
+	protected DSIndexRestoreService indexFullUpdateService() {
 		return null;
 	}
 }

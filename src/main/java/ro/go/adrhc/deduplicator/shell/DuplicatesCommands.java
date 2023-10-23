@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDedupService;
-import ro.go.adrhc.persistence.lucene.index.update.IndexFullUpdateService;
+import ro.go.adrhc.persistence.lucene.index.update.DSIndexRestoreService;
 
 import java.io.IOException;
 
@@ -22,7 +22,7 @@ public class DuplicatesCommands {
 	@ShellMethod(value = "Remove the duplicates, update the index and show duplicates.", key = {"remove-dups"})
 	public void removeDuplicates() throws IOException {
 		if (filesIndexDuplicatesMngmtService().removeDups()) {
-			indexFullUpdateService().update();
+			indexFullUpdateService().restore();
 		}
 		findDuplicates();
 	}
@@ -33,7 +33,7 @@ public class DuplicatesCommands {
 	}
 
 	@Lookup
-	protected IndexFullUpdateService indexFullUpdateService() {
+	protected DSIndexRestoreService indexFullUpdateService() {
 		return null;
 	}
 }
