@@ -1,4 +1,4 @@
-package ro.go.adrhc.deduplicator.config;
+package ro.go.adrhc.deduplicator.config.index;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -8,7 +8,7 @@ import ro.go.adrhc.persistence.lucene.index.spi.DocumentsDatasource;
 
 @Configuration
 @RequiredArgsConstructor
-public class FilesIndexPrerequisitesConfig {
+public class FilesIndexFactoriesConfig {
 	private final FilesIndexFactories filesIndexFactories;
 
 	@Bean
