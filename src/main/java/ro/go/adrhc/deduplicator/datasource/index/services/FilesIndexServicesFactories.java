@@ -30,18 +30,18 @@ public class FilesIndexServicesFactories {
 				duplicatesDirectory, filesRoot);
 	}
 
-	public DSIndexRestoreService createFilesIndexFullUpdateService(Path indexPath) {
+	public DSIndexRestoreService createDsIndexRestoreService(Path indexPath) {
 		return DSIndexRestoreService.create(IndexFieldType.filePath, documentsDatasource,
 				luceneFactories.createDocumentIndexReaderTemplate(indexPath),
-				createFilesIndex(indexPath));
+				createFSIndexUpdateService(indexPath));
 	}
 
-	public FSIndexCreateService createFilesFSIndexCreateService(Path indexPath) {
+	public FSIndexCreateService createFSIndexCreateService(Path indexPath) {
 		return new FSIndexCreateService(documentsDatasource,
-				createFilesIndex(indexPath));
+				createFSIndexUpdateService(indexPath));
 	}
 
-	private FSIndexUpdateService createFilesIndex(Path indexPath) {
+	private FSIndexUpdateService createFSIndexUpdateService(Path indexPath) {
 		return FSIndexUpdateService.create(
 				IndexFieldType.filePath, luceneTokenizer.analyzer(), indexPath);
 	}

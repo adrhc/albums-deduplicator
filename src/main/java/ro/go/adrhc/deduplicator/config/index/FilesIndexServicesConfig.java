@@ -21,7 +21,7 @@ public class FilesIndexServicesConfig {
 	@Bean
 	@Scope(SCOPE_PROTOTYPE)
 	public FSIndexCreateService filesIndex() {
-		return filesIndexServicesFactories.createFilesFSIndexCreateService(appPaths.getIndexPath());
+		return filesIndexServicesFactories.createFSIndexCreateService(appPaths.getIndexPath());
 	}
 
 	@Bean
@@ -33,6 +33,6 @@ public class FilesIndexServicesConfig {
 	@Bean
 	@Scope(SCOPE_PROTOTYPE)
 	public DSIndexRestoreService dsIndexRestoreService() {
-		return filesIndexServicesFactories.createFilesIndexFullUpdateService(appPaths.getIndexPath());
+		return filesIndexServicesFactories.createDsIndexRestoreService(appPaths.getIndexPath());
 	}
 }
