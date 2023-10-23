@@ -7,6 +7,8 @@ import ro.go.adrhc.deduplicator.datasource.index.core.LuceneFactories;
 import ro.go.adrhc.deduplicator.datasource.index.domain.IndexFieldType;
 import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDedupService;
 import ro.go.adrhc.persistence.lucene.fsindex.FSIndexCreateService;
+import ro.go.adrhc.persistence.lucene.fsindex.FSIndexUpdateService;
+import ro.go.adrhc.persistence.lucene.index.core.tokenizer.LuceneTokenizer;
 import ro.go.adrhc.persistence.lucene.index.spi.DocumentsDatasource;
 import ro.go.adrhc.persistence.lucene.index.update.IndexFullUpdateService;
 import ro.go.adrhc.util.io.SimpleDirectory;
@@ -20,6 +22,7 @@ public class FilesIndexServicesFactories {
 	private final FilesIndexFactories filesIndexFactories;
 	private final DocumentsDatasource documentsDatasource;
 	private final SimpleDirectory duplicatesDirectory;
+	private final LuceneTokenizer luceneTokenizer;
 
 	public FilesIndexDedupService createFilesIndexDedupService(Path indexPath, Path filesRoot) {
 		return new FilesIndexDedupService(
@@ -30,11 +33,16 @@ public class FilesIndexServicesFactories {
 	public IndexFullUpdateService createFilesIndexFullUpdateService(Path indexPath) {
 		return IndexFullUpdateService.create(IndexFieldType.filePath, documentsDatasource,
 				luceneFactories.createDocumentIndexReaderTemplate(indexPath),
-				filesIndexFactories.createFilesIndex(indexPath));
+				createFilesIndex(indexPath));
 	}
 
 	public FSIndexCreateService createFilesFSIndexCreateService(Path indexPath) {
 		return new FSIndexCreateService(documentsDatasource,
-				filesIndexFactories.createFilesIndex(indexPath));
+				createFilesIndex(indexPath));
+	}
+
+	private FSIndexUpdateService createFilesIndex(Path indexPath) {
+		return FSIndexUpdateService.create(
+				IndexFieldType.filePath, luceneTokenizer.analyzer(), indexPath);
 	}
 }
