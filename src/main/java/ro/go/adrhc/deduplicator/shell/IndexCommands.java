@@ -27,7 +27,7 @@ public class IndexCommands {
 	@ShellMethod(value = "Update the index at the provided path.", key = {"update", "reindex"})
 	public void update() {
 		try {
-			indexFullUpdateService().update();
+			indexFullUpdateService().restore();
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			log.debug("\n{} index update failed!", appPaths.getIndexPath());
