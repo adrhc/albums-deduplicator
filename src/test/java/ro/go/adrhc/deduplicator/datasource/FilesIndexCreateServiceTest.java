@@ -51,7 +51,7 @@ class FilesIndexCreateServiceTest {
 	private void createAndPopulate(ImageFileSpecification... specifications) throws IOException {
 		fsIndexCreateService().createOrReplace();
 		fileGenerator.createImageFiles(specifications);
-		indexFullUpdateService().update();
+		dsIndexRestoreService().restore();
 	}
 
 	private FSIndexCreateService fsIndexCreateService() {
@@ -62,7 +62,7 @@ class FilesIndexCreateServiceTest {
 		return ac.getBean(FilesIndexDedupService.class); // SCOPE_PROTOTYPE
 	}
 
-	private DSIndexRestoreService indexFullUpdateService() {
+	private DSIndexRestoreService dsIndexRestoreService() {
 		return ac.getBean(DSIndexRestoreService.class); // SCOPE_PROTOTYPE
 	}
 }

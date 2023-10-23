@@ -22,7 +22,7 @@ public class DuplicatesCommands {
 	@ShellMethod(value = "Remove the duplicates, update the index and show duplicates.", key = {"remove-dups"})
 	public void removeDuplicates() throws IOException {
 		if (filesIndexDuplicatesMngmtService().removeDups()) {
-			indexFullUpdateService().restore();
+			dsIndexRestoreService().restore();
 		}
 		findDuplicates();
 	}
@@ -33,7 +33,7 @@ public class DuplicatesCommands {
 	}
 
 	@Lookup
-	protected DSIndexRestoreService indexFullUpdateService() {
+	protected DSIndexRestoreService dsIndexRestoreService() {
 		return null;
 	}
 }

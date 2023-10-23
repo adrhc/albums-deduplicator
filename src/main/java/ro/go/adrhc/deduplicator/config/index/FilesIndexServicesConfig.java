@@ -32,7 +32,7 @@ public class FilesIndexServicesConfig {
 
 	@Bean
 	@Scope(SCOPE_PROTOTYPE)
-	public DSIndexRestoreService indexFullUpdateService() {
+	public DSIndexRestoreService dsIndexRestoreService() {
 		return filesIndexServicesFactories.createFilesIndexFullUpdateService(appPaths.getIndexPath());
 	}
 }
