@@ -17,7 +17,7 @@ import ro.go.adrhc.deduplicator.stub.AppPathsGenerator;
 import ro.go.adrhc.deduplicator.stub.FileGenerator;
 import ro.go.adrhc.deduplicator.stub.ImageFileSpecification;
 import ro.go.adrhc.persistence.lucene.fsindex.FSIndexCreateService;
-import ro.go.adrhc.persistence.lucene.index.update.DSIndexRestoreService;
+import ro.go.adrhc.persistence.lucene.index.restore.DSIndexRestoreService;
 
 import java.io.IOException;
 import java.nio.file.Path;

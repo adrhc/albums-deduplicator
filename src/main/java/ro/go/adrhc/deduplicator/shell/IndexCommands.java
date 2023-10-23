@@ -7,7 +7,7 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
 import ro.go.adrhc.persistence.lucene.fsindex.FSIndexCreateService;
-import ro.go.adrhc.persistence.lucene.index.update.DSIndexRestoreService;
+import ro.go.adrhc.persistence.lucene.index.restore.DSIndexRestoreService;
 
 import java.io.IOException;
 

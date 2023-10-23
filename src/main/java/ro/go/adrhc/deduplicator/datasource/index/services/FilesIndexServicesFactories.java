@@ -9,8 +9,8 @@ import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDedupS
 import ro.go.adrhc.persistence.lucene.fsindex.FSIndexCreateService;
 import ro.go.adrhc.persistence.lucene.fsindex.FSIndexUpdateService;
 import ro.go.adrhc.persistence.lucene.index.core.tokenizer.LuceneTokenizer;
+import ro.go.adrhc.persistence.lucene.index.restore.DSIndexRestoreService;
 import ro.go.adrhc.persistence.lucene.index.spi.DocumentsDatasource;
-import ro.go.adrhc.persistence.lucene.index.update.DSIndexRestoreService;
 import ro.go.adrhc.util.io.SimpleDirectory;
 
 import java.nio.file.Path;

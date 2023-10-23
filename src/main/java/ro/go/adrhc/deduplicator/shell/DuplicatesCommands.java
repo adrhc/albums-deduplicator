@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDedupService;
-import ro.go.adrhc.persistence.lucene.index.update.DSIndexRestoreService;
+import ro.go.adrhc.persistence.lucene.index.restore.DSIndexRestoreService;
 
 import java.io.IOException;
 
