@@ -2,11 +2,11 @@ package ro.go.adrhc.deduplicator.datasource.index.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ro.go.adrhc.deduplicator.datasource.index.LuceneFactories;
 import ro.go.adrhc.deduplicator.datasource.index.core.FilesIndexFactories;
+import ro.go.adrhc.deduplicator.datasource.index.core.LuceneFactories;
 import ro.go.adrhc.deduplicator.datasource.index.domain.IndexFieldType;
 import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDedupService;
-import ro.go.adrhc.persistence.lucene.fsindex.IndexCreateService;
+import ro.go.adrhc.persistence.lucene.fsindex.FSIndexCreateService;
 import ro.go.adrhc.persistence.lucene.index.spi.DocumentsDatasource;
 import ro.go.adrhc.persistence.lucene.index.update.IndexFullUpdateService;
 import ro.go.adrhc.util.io.SimpleDirectory;
@@ -33,8 +33,8 @@ public class FilesIndexServicesFactories {
 				filesIndexFactories.createFilesIndex(indexPath));
 	}
 
-	public IndexCreateService createFilesIndexCreateService(Path indexPath) {
-		return new IndexCreateService(documentsDatasource,
+	public FSIndexCreateService createFilesFSIndexCreateService(Path indexPath) {
+		return new FSIndexCreateService(documentsDatasource,
 				filesIndexFactories.createFilesIndex(indexPath));
 	}
 }

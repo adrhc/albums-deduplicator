@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Scope;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
 import ro.go.adrhc.deduplicator.datasource.index.services.FilesIndexServicesFactories;
 import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDedupService;
-import ro.go.adrhc.persistence.lucene.fsindex.IndexCreateService;
+import ro.go.adrhc.persistence.lucene.fsindex.FSIndexCreateService;
 import ro.go.adrhc.persistence.lucene.index.update.IndexFullUpdateService;
 
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
@@ -20,8 +20,8 @@ public class FilesIndexServicesConfig {
 
 	@Bean
 	@Scope(SCOPE_PROTOTYPE)
-	public IndexCreateService filesIndex() {
-		return filesIndexServicesFactories.createFilesIndexCreateService(appPaths.getIndexPath());
+	public FSIndexCreateService filesIndex() {
+		return filesIndexServicesFactories.createFilesFSIndexCreateService(appPaths.getIndexPath());
 	}
 
 	@Bean

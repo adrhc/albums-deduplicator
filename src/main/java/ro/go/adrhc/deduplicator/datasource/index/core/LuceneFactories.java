@@ -1,4 +1,4 @@
-package ro.go.adrhc.deduplicator.datasource.index;
+package ro.go.adrhc.deduplicator.datasource.index.core;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

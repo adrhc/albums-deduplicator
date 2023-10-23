@@ -3,11 +3,10 @@ package ro.go.adrhc.deduplicator.datasource.index.core;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadataProvider;
-import ro.go.adrhc.deduplicator.datasource.index.LuceneFactories;
 import ro.go.adrhc.deduplicator.datasource.index.domain.DocumentToFileMetadataConverter;
 import ro.go.adrhc.deduplicator.datasource.index.domain.FileMetadataToDocumentConverter;
 import ro.go.adrhc.deduplicator.datasource.index.domain.IndexFieldType;
-import ro.go.adrhc.persistence.lucene.fsindex.FSLuceneIndex;
+import ro.go.adrhc.persistence.lucene.fsindex.FSIndexUpdateService;
 import ro.go.adrhc.persistence.lucene.index.core.tokenizer.LuceneTokenizer;
 import ro.go.adrhc.persistence.lucene.index.spi.DocumentsDatasource;
 import ro.go.adrhc.persistence.lucene.typedindex.core.DefaultDocumentsDatasource;
@@ -16,8 +15,6 @@ import ro.go.adrhc.persistence.lucene.typedindex.spi.RawDataToDocumentConverter;
 import ro.go.adrhc.persistence.lucene.typedindex.spi.StringToRawDataIdConverter;
 
 import java.nio.file.Path;
-
-import static ro.go.adrhc.persistence.lucene.fsindex.LuceneIndexFactories.createFSIndex;
 
 @Component
 @RequiredArgsConstructor
@@ -33,8 +30,9 @@ public class FilesIndexFactories {
 				luceneFactories.createDocumentIndexReaderTemplate(indexPath));
 	}
 
-	public FSLuceneIndex createFilesIndex(Path indexPath) {
-		return createFSIndex(IndexFieldType.filePath, luceneTokenizer.analyzer(), indexPath);
+	public FSIndexUpdateService createFilesIndex(Path indexPath) {
+		return FSIndexUpdateService.create(
+				IndexFieldType.filePath, luceneTokenizer.analyzer(), indexPath);
 	}
 
 	public DocumentsDatasource createDocumentsDatasource() {
