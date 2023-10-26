@@ -27,11 +27,11 @@ public class FileMetadataCopies {
 	}
 
 	public Path getOriginalPath() {
-		return original.getPath();
+		return original.path();
 	}
 
 	public Stream<Path> pathsStream() {
-		return duplicates.stream().map(FileMetadata::getPath);
+		return duplicates.stream().map(FileMetadata::path);
 	}
 
 	public boolean hasDuplicates() {
@@ -49,14 +49,14 @@ public class FileMetadataCopies {
 			return """
 					Original: %s
 					No duplicates for %s"""
-					.formatted(original.getPath(), original.getFileHash());
+					.formatted(original.path(), original.fileHash());
 		} else {
 			return """
 					Original: %s
 					%d duplicates for %s:
 					%s"""
-					.formatted(original.getPath(), duplicates.size(), original.getFileHash(),
-							concat(FileMetadata::getPath, duplicates));
+					.formatted(original.path(), duplicates.size(), original.fileHash(),
+							concat(FileMetadata::path, duplicates));
 		}
 	}
 }

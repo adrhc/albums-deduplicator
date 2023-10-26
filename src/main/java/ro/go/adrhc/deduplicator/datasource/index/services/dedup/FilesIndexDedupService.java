@@ -3,7 +3,7 @@ package ro.go.adrhc.deduplicator.datasource.index.services.dedup;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
-import ro.go.adrhc.deduplicator.datasource.index.core.FilesIndexReaderTemplate;
+import ro.go.adrhc.persistence.lucene.typedindex.core.TypedIndexReaderTemplate;
 import ro.go.adrhc.util.Assert;
 import ro.go.adrhc.util.io.SimpleDirectory;
 
@@ -19,12 +19,12 @@ import static ro.go.adrhc.util.text.StringUtils.concat;
 @RequiredArgsConstructor
 @Slf4j
 public class FilesIndexDedupService {
-	private final FilesIndexReaderTemplate filesIndexReaderTemplate;
+	private final TypedIndexReaderTemplate<FileMetadata> filesIndexReaderTemplate;
 	private final SimpleDirectory duplicatesDirectory;
 	private final Path filesRoot;
 
 	public FileMetadataCopiesCollection find() throws IOException {
-		return filesIndexReaderTemplate.transformFileMetadata(FileMetadataCopiesCollection::of);
+		return filesIndexReaderTemplate.transform(FileMetadataCopiesCollection::of);
 	}
 
 	public boolean removeDups() throws IOException {
@@ -59,14 +59,14 @@ public class FilesIndexDedupService {
 	}
 
 	private String origFilenameNoExt(FileMetadataCopies copies) {
-		Optional<String> optionalOrigFilenameNoExt = filenameNoExt(copies.getOriginal().getPath());
+		Optional<String> optionalOrigFilenameNoExt = filenameNoExt(copies.getOriginalPath());
 		Assert.isTrue(optionalOrigFilenameNoExt.isPresent(),
 				"Original filename stripped from extension should exist!");
 		return optionalOrigFilenameNoExt.get();
 	}
 
 	private PathAndBackup createOrigBackup(FileMetadata original) {
-		Path originalPath = original.getPath();
+		Path originalPath = original.path();
 		Path origRelativeToFilesRoot = filesRoot.relativize(originalPath);
 		return new PathAndBackup(originalPath, origRelativeToFilesRoot);
 	}

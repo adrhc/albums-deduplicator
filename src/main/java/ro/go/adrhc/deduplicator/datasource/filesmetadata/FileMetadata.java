@@ -1,22 +1,24 @@
 package ro.go.adrhc.deduplicator.datasource.filesmetadata;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import ro.go.adrhc.persistence.lucene.index.core.docds.rawds.Identifiable;
 
 import java.nio.file.Path;
 import java.time.Instant;
 
-@Getter
-@RequiredArgsConstructor
-@ToString
-public class FileMetadata {
-	private final Path path;
-	private final Instant lastModified;
-	private final long size;
-	private final String fileHash;
+public record FileMetadata(Path path, String fileNameNoExt, Instant
+		lastModified, String fileHash, long size) implements Identifiable<Path> {
+	public String lastModifiedAsString() {
+		return lastModified.toString();
+	}
 
 	public boolean isBefore(FileMetadata metadata) {
 		return lastModified.isBefore(metadata.lastModified);
+	}
+
+	@JsonIgnore
+	@Override
+	public Path getId() {
+		return path;
 	}
 }

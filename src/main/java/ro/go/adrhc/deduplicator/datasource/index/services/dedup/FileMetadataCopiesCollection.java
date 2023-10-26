@@ -25,7 +25,7 @@ public class FileMetadataCopiesCollection {
 
 	public void add(FileMetadata metadata) {
 		FileMetadataCopies metadataCopies = duplicates
-				.computeIfAbsent(metadata.getFileHash(), hash -> new FileMetadataCopies());
+				.computeIfAbsent(metadata.fileHash(), hash -> new FileMetadataCopies());
 		metadataCopies.add(metadata);
 	}
 

@@ -9,5 +9,4 @@ import lombok.ToString;
 @ToString
 public class SearchProperties {
 	private int maxResultsPerSearch;
-	private boolean resultIncludesMissingFiles;
 }

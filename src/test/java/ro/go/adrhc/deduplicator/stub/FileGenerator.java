@@ -24,7 +24,7 @@ public class FileGenerator {
 	}
 
 	public void createImageFile(String filename) throws IOException {
-		createImageFile(ImageFileSpecification.of(filename));
+		createImageFile(ImageFileSpecification.of1024(filename));
 	}
 
 	public void createImageFile(ImageFileSpecification specification) throws IOException {

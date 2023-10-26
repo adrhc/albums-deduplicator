@@ -11,6 +11,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.shell.Shell;
 import ro.go.adrhc.deduplicator.ExcludeShellAutoConfiguration;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
+import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
+import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FileMetadataCopies;
 import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FileMetadataCopiesCollection;
 import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDedupService;
 import ro.go.adrhc.deduplicator.stub.AppPathsGenerator;
@@ -21,8 +23,11 @@ import ro.go.adrhc.persistence.lucene.index.restore.DSIndexRestoreService;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Set;
 
-import static ro.go.adrhc.deduplicator.stub.ImageFileSpecification.of;
+import static org.assertj.core.api.Assertions.assertThat;
+import static ro.go.adrhc.deduplicator.stub.ImageFileSpecification.of1024;
+import static ro.go.adrhc.deduplicator.stub.ImageFileSpecification.of512;
 
 @SpringBootTest(properties = "lucene.search.result-includes-missing-files=true")
 @ExcludeShellAutoConfiguration
@@ -41,11 +46,15 @@ class FilesIndexCreateServiceTest {
 	void findDuplicates(@TempDir Path tempDir) throws IOException {
 		AppPathsGenerator.populateTestPaths(tempDir, appPaths);
 
-		createAndPopulate(of("1sr-file.jpg"), of("2nd-file.jpg"),
-				new ImageFileSpecification("3rd-file.jpg", 512));
+		createAndPopulate(of512("1st-file.jpg"),
+				of512("2nd-file.jpg"), of1024("3rd-file.jpg"));
 
 		FileMetadataCopiesCollection duplicates = filesIndexDuplicatesMngmtService().find();
 		log.debug("\n{}", duplicates);
+		assertThat(duplicates.count()).isEqualTo(1);
+		assertThat(duplicates.stream().map(FileMetadataCopies::getDuplicates)
+				.flatMap(Set::stream).map(FileMetadata::fileNameNoExt))
+				.containsOnly("2nd-file", "3rd-file");
 	}
 
 	private void createAndPopulate(ImageFileSpecification... specifications) throws IOException {

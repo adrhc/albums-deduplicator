@@ -14,6 +14,5 @@ import ro.go.adrhc.persistence.lucene.index.core.tokenizer.TokenizerProperties;
 @ToString
 public class FilesIndexProperties {
 	private TokenizerProperties tokenizer;
-	private QueryProperties query;
 	private SearchProperties search;
 }

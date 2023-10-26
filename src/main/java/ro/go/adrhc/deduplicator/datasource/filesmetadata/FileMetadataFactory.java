@@ -10,10 +10,12 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.nio.file.attribute.FileTime;
 import java.util.Optional;
 
 import static java.nio.file.Files.getLastModifiedTime;
 import static java.nio.file.Files.size;
+import static ro.go.adrhc.util.io.FilenameUtils.filenameNoExt;
 
 @Component
 @Slf4j
@@ -25,8 +27,11 @@ public class FileMetadataFactory {
 
 	private Optional<FileMetadata> toFileMetadata(Path path, String hash) {
 		try {
-			return Optional.of(new FileMetadata(path,
-					getLastModifiedTime(path).toInstant(), size(path), hash));
+			long size = size(path);
+			FileTime lastModified = getLastModifiedTime(path);
+			return filenameNoExt(path).map(filenameNoExt ->
+					new FileMetadata(path, filenameNoExt,
+							lastModified.toInstant(), hash, size));
 		} catch (IOException e) {
 			log.error(e.getMessage(), e);
 			return Optional.empty();
