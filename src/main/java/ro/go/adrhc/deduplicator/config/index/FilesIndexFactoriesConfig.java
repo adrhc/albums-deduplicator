@@ -27,13 +27,13 @@ public class FilesIndexFactoriesConfig {
 	@Bean
 	@Scope(SCOPE_PROTOTYPE)
 	public FilesIndexDedupService filesIndexDuplicatesMngmtService() {
-		return filesIndexFactories.createFilesIndexDedupService(
+		return filesIndexFactories.createDedupService(
 				appPaths.getIndexPath(), appPaths.getFilesPath());
 	}
 
 	@Bean
 	@Scope(SCOPE_PROTOTYPE)
 	public DSIndexRestoreService dsIndexRestoreService() {
-		return filesIndexFactories.createDsIndexRestoreService(appPaths.getIndexPath());
+		return filesIndexFactories.createIndexRestoreService(appPaths.getIndexPath());
 	}
 }

@@ -31,13 +31,13 @@ public class FilesIndexFactories {
 	private final FileMetadataProvider fileMetadataProvider;
 	private final SimpleDirectory duplicatesDirectory;
 
-	public FilesIndexDedupService createFilesIndexDedupService(Path indexPath, Path filesRoot) {
+	public FilesIndexDedupService createDedupService(Path indexPath, Path filesRoot) {
 		return new FilesIndexDedupService(
 				typedIndexFactories.createTypedIndexReaderTemplate(indexPath),
 				duplicatesDirectory, filesRoot);
 	}
 
-	public DSIndexRestoreService createDsIndexRestoreService(Path indexPath) {
+	public DSIndexRestoreService createIndexRestoreService(Path indexPath) {
 		return DSIndexRestoreService.create(FileMetadataFieldType.filePath, createDocsDs(),
 				typedIndexFactories.createDocumentIndexReaderTemplate(indexPath),
 				createUpdateService(indexPath));
