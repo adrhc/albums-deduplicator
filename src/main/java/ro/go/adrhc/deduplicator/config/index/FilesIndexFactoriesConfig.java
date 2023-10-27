@@ -20,13 +20,13 @@ public class FilesIndexFactoriesConfig {
 
 	@Bean
 	@Scope(SCOPE_PROTOTYPE)
-	public FSIndexCreateService filesIndex() {
+	public FSIndexCreateService fsIndexCreateService() {
 		return filesIndexFactories.createCreateService(appPaths.getIndexPath());
 	}
 
 	@Bean
 	@Scope(SCOPE_PROTOTYPE)
-	public FilesIndexDedupService filesIndexDuplicatesMngmtService() {
+	public FilesIndexDedupService filesIndexDedupService() {
 		return filesIndexFactories.createDedupService(
 				appPaths.getIndexPath(), appPaths.getFilesPath());
 	}
