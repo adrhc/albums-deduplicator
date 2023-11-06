@@ -1,6 +1,7 @@
 package ro.go.adrhc.deduplicator.datasource;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.lucene.document.Document;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.io.TempDir;
@@ -12,14 +13,16 @@ import org.springframework.shell.Shell;
 import ro.go.adrhc.deduplicator.ExcludeShellAutoConfiguration;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
+import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadataProvider;
 import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FileMetadataCopies;
 import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FileMetadataCopiesCollection;
 import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDedupService;
 import ro.go.adrhc.deduplicator.stub.AppPathsGenerator;
 import ro.go.adrhc.deduplicator.stub.FileGenerator;
 import ro.go.adrhc.deduplicator.stub.ImageFileSpecification;
-import ro.go.adrhc.persistence.lucene.fsindex.FSIndexCreateService;
-import ro.go.adrhc.persistence.lucene.index.restore.DSIndexRestoreService;
+import ro.go.adrhc.persistence.lucene.typedindex.TypedIndexCreateService;
+import ro.go.adrhc.persistence.lucene.typedindex.restore.DocumentsIndexRestoreService;
+import ro.go.adrhc.persistence.lucene.typedindex.restore.IndexDataSource;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -40,6 +43,10 @@ class FilesIndexCreateServiceTest {
 	@Autowired
 	private AppPaths appPaths;
 	@Autowired
+	private FileMetadataProvider fileMetadataProvider;
+	@Autowired
+	private IndexDataSource<String, Document> indexDataSource;
+	@Autowired
 	private FileGenerator fileGenerator;
 
 	@Test
@@ -58,20 +65,20 @@ class FilesIndexCreateServiceTest {
 	}
 
 	private void createAndPopulate(ImageFileSpecification... specifications) throws IOException {
-		fsIndexCreateService().createOrReplace();
+		fsIndexCreateService().createOrReplace(fileMetadataProvider.loadAll());
 		fileGenerator.createImageFiles(specifications);
-		dsIndexRestoreService().restore();
+		dsIndexRestoreService().restore(indexDataSource);
 	}
 
-	private FSIndexCreateService fsIndexCreateService() {
-		return ac.getBean(FSIndexCreateService.class); // SCOPE_PROTOTYPE
+	private TypedIndexCreateService<FileMetadata> fsIndexCreateService() {
+		return ac.getBean(TypedIndexCreateService.class); // SCOPE_PROTOTYPE
 	}
 
 	private FilesIndexDedupService filesIndexDuplicatesMngmtService() {
 		return ac.getBean(FilesIndexDedupService.class); // SCOPE_PROTOTYPE
 	}
 
-	private DSIndexRestoreService dsIndexRestoreService() {
-		return ac.getBean(DSIndexRestoreService.class); // SCOPE_PROTOTYPE
+	private DocumentsIndexRestoreService<String, FileMetadata> dsIndexRestoreService() {
+		return ac.getBean(DocumentsIndexRestoreService.class); // SCOPE_PROTOTYPE
 	}
 }

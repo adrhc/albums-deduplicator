@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.index.config.FilesIndexProperties;
+import ro.go.adrhc.deduplicator.datasource.index.domain.FileMetadataFieldType;
 import ro.go.adrhc.persistence.lucene.typedindex.TypedIndexFactories;
 
 import java.io.IOException;
@@ -15,8 +16,10 @@ public class TypedIndexFactoriesConfig {
 	private final FilesIndexProperties indexProperties;
 
 	@Bean
-	public TypedIndexFactories<FileMetadata> typedIndexFactories() throws IOException {
-		return TypedIndexFactories.of(indexProperties.getSearch().getMaxResultsPerSearch(),
-				FileMetadata.class, indexProperties.getTokenizer());
+	public TypedIndexFactories<String, FileMetadata, FileMetadataFieldType> typedIndexFactories() throws IOException {
+		return TypedIndexFactories.create(
+				indexProperties.getSearch().getMaxResultsPerSearch(),
+				FileMetadata.class, FileMetadataFieldType.class,
+				indexProperties.getTokenizer());
 	}
 }

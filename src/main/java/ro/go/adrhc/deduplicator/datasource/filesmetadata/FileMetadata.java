@@ -1,13 +1,13 @@
 package ro.go.adrhc.deduplicator.datasource.filesmetadata;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import ro.go.adrhc.persistence.lucene.index.core.docds.rawds.Identifiable;
+import ro.go.adrhc.persistence.lucene.typedindex.core.docds.rawds.Identifiable;
 
 import java.nio.file.Path;
 import java.time.Instant;
 
 public record FileMetadata(Path path, String fileNameNoExt, Instant
-		lastModified, String fileHash, long size) implements Identifiable<Path> {
+		lastModified, String fileHash, long size) implements Identifiable<String> {
 	public String lastModifiedAsString() {
 		return lastModified.toString();
 	}
@@ -18,7 +18,7 @@ public record FileMetadata(Path path, String fileNameNoExt, Instant
 
 	@JsonIgnore
 	@Override
-	public Path getId() {
-		return path;
+	public String getId() {
+		return path.toString();
 	}
 }

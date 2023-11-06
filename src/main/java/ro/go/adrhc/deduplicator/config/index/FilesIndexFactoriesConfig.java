@@ -1,14 +1,17 @@
 package ro.go.adrhc.deduplicator.config.index;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.lucene.document.Document;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
+import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.index.services.FilesIndexFactories;
 import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDedupService;
-import ro.go.adrhc.persistence.lucene.fsindex.FSIndexCreateService;
-import ro.go.adrhc.persistence.lucene.index.restore.DSIndexRestoreService;
+import ro.go.adrhc.persistence.lucene.typedindex.TypedIndexCreateService;
+import ro.go.adrhc.persistence.lucene.typedindex.restore.DocumentsIndexRestoreService;
+import ro.go.adrhc.persistence.lucene.typedindex.restore.IndexDataSource;
 
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
@@ -20,7 +23,7 @@ public class FilesIndexFactoriesConfig {
 
 	@Bean
 	@Scope(SCOPE_PROTOTYPE)
-	public FSIndexCreateService fsIndexCreateService() {
+	public TypedIndexCreateService<FileMetadata> typedIndexCreateService() {
 		return filesIndexFactories.createCreateService(appPaths.getIndexPath());
 	}
 
@@ -33,7 +36,12 @@ public class FilesIndexFactoriesConfig {
 
 	@Bean
 	@Scope(SCOPE_PROTOTYPE)
-	public DSIndexRestoreService dsIndexRestoreService() {
+	public DocumentsIndexRestoreService<String, FileMetadata> documentsIndexRestoreService() {
 		return filesIndexFactories.createIndexRestoreService(appPaths.getIndexPath());
+	}
+
+	@Bean
+	public IndexDataSource<String, Document> indexDataSource() {
+		return filesIndexFactories.createIndexDataSource();
 	}
 }
