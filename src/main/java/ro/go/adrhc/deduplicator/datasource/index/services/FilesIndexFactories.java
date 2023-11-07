@@ -22,7 +22,6 @@ import ro.go.adrhc.persistence.lucene.typedindex.search.TypedSearchByIdService;
 import ro.go.adrhc.util.io.SimpleDirectory;
 
 import java.nio.file.Path;
-import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
@@ -47,8 +46,7 @@ public class FilesIndexFactories {
 	 */
 	public IndexSearchService<QuerySearchResult<FileMetadata>>
 	createSearchService(Path indexPath) {
-		return typedIndexFactories
-				.createTypedIndexSearchService(Stream::findFirst, it -> true, indexPath);
+		return typedIndexFactories.createTypedIndexSearchService(it -> true, indexPath);
 	}
 
 	public TypedSearchByIdService<String, FileMetadata> createSearchByIdService(Path indexPath) {
