@@ -33,6 +33,7 @@ public class FilesIndexFactories {
 			FileMetadata, FileMetadataFieldType> typedIndexFactories;
 	private final FileMetadataProvider fileMetadataProvider;
 	private final SimpleDirectory duplicatesDirectory;
+	private final PathExistsFilter pathExistsFilter;
 
 	public FilesIndexDedupService createDedupService(Path indexPath, Path filesRoot) {
 		return new FilesIndexDedupService(
@@ -46,7 +47,7 @@ public class FilesIndexFactories {
 	 */
 	public IndexSearchService<QuerySearchResult<FileMetadata>>
 	createSearchService(Path indexPath) {
-		return typedIndexFactories.createTypedIndexSearchService(it -> true, indexPath);
+		return typedIndexFactories.createTypedIndexSearchService(pathExistsFilter, indexPath);
 	}
 
 	public TypedSearchByIdService<String, FileMetadata> createSearchByIdService(Path indexPath) {
