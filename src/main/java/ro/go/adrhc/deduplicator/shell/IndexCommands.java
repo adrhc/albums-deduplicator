@@ -20,7 +20,7 @@ public class IndexCommands {
 	private final IndexDataSource<Path, FileMetadata> indexDataSource;
 	private final AppPaths appPaths;
 
-	@ShellMethod(value = "Create the index at the provided path (remove it first, if existing).",
+	@ShellMethod(value = "Create the index at the provided path (remove it first, if exists).",
 			key = {"create", "index"})
 	public void create() throws IOException {
 		indexRepository().initialize(indexDataSource.loadAll());
