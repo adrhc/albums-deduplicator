@@ -1,9 +1,8 @@
-package ro.go.adrhc.deduplicator.config;
+package ro.go.adrhc.deduplicator.config.dir;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ro.go.adrhc.deduplicator.datasource.AppDirectoryFactories;
 import ro.go.adrhc.util.io.SimpleDirectory;
 
 @Configuration
