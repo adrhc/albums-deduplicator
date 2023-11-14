@@ -1,7 +1,6 @@
 package ro.go.adrhc.deduplicator.config;
 
 import lombok.Getter;
-import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import ro.go.adrhc.util.io.SupportedExtensions;
@@ -12,7 +11,6 @@ import static ro.go.adrhc.util.CpuUtils.cpuCoresMultipliedBy;
 
 @Component
 @ConfigurationProperties
-@ToString
 public class AppProperties {
 	@Getter
 	private SupportedExtensions supportedExtensions;

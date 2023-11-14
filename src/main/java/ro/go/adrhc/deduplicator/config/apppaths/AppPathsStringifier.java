@@ -13,6 +13,10 @@ import java.util.stream.Stream;
 public class AppPathsStringifier {
 	private final FileSystemUtils fsUtils;
 
+	public String toString(ObservableAppPaths observableAppPaths) {
+		return toString(observableAppPaths.getAppPaths());
+	}
+
 	public String toString(AppPaths appPaths) {
 		return StringUtils.concat(toContextPathInfos(appPaths));
 	}

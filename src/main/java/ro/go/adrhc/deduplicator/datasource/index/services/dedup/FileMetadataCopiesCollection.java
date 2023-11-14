@@ -17,9 +17,9 @@ public class FileMetadataCopiesCollection {
 		return new FileMetadataCopiesCollection(new HashMap<>());
 	}
 
-	public static FileMetadataCopiesCollection of(Stream<FileMetadata> metadataStream) {
+	public static FileMetadataCopiesCollection of(Stream<FileMetadata> metadata) {
 		FileMetadataCopiesCollection duplicates = create();
-		metadataStream.forEach(duplicates::add);
+		metadata.forEach(duplicates::add);
 		return duplicates;
 	}
 

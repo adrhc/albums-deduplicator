@@ -3,7 +3,7 @@ package ro.go.adrhc.deduplicator.datasource.index.services.dedup;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
-import ro.go.adrhc.persistence.lucene.typedindex.core.TypedIndexReaderTemplate;
+import ro.go.adrhc.persistence.lucene.typedindex.IndexRepository;
 import ro.go.adrhc.util.Assert;
 import ro.go.adrhc.util.io.SimpleDirectory;
 
@@ -19,12 +19,12 @@ import static ro.go.adrhc.util.text.StringUtils.concat;
 @RequiredArgsConstructor
 @Slf4j
 public class FilesIndexDedupService {
-	private final TypedIndexReaderTemplate<FileMetadata> filesIndexReaderTemplate;
 	private final SimpleDirectory duplicatesDirectory;
 	private final Path filesRoot;
+	private final IndexRepository<Path, FileMetadata> indexRepository;
 
 	public FileMetadataCopiesCollection find() throws IOException {
-		return filesIndexReaderTemplate.transform(FileMetadataCopiesCollection::of);
+		return indexRepository.reduce(FileMetadataCopiesCollection::of);
 	}
 
 	public boolean removeDups() throws IOException {

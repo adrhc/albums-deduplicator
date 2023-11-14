@@ -18,7 +18,7 @@ import static ro.go.adrhc.util.io.PathUtils.parentOf;
 @Setter
 @Slf4j
 @ToString
-public class AppPaths implements Cloneable {
+public class AppPaths {
 	private Path indexPath;
 	private Path filesPath;
 	private Path duplicatesPath;
@@ -27,22 +27,9 @@ public class AppPaths implements Cloneable {
 		return parentOf(indexPath).orElse(null);
 	}
 
-	public void copy(AppPaths appPaths) {
-		update(appPaths.indexPath, appPaths.filesPath, appPaths.duplicatesPath);
-	}
-
-	public void update(Path indexPath, Path filesPath, Path duplicatesPath) {
+	void update(Path indexPath, Path filesPath, Path duplicatesPath) {
 		this.indexPath = ObjectUtils.defaultIfNull(indexPath, this.indexPath);
 		this.filesPath = ObjectUtils.defaultIfNull(filesPath, this.filesPath);
-		this.duplicatesPath = ObjectUtils.defaultIfNull(filesPath, this.duplicatesPath);
-	}
-
-	@Override
-	public AppPaths clone() {
-		try {
-			return (AppPaths) super.clone();
-		} catch (CloneNotSupportedException e) {
-			throw new AssertionError();
-		}
+		this.duplicatesPath = ObjectUtils.defaultIfNull(duplicatesPath, this.duplicatesPath);
 	}
 }
