@@ -18,7 +18,7 @@ import static ro.go.adrhc.util.text.StringUtils.concat;
 
 @RequiredArgsConstructor
 @Slf4j
-public class FilesIndexDedupService {
+public class FilesDedupService {
 	private final SimpleDirectory duplicatesDirectory;
 	private final Path filesRoot;
 	private final IndexRepository<Path, FileMetadata> indexRepository;

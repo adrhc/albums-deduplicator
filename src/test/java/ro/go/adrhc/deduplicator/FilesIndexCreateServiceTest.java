@@ -13,7 +13,7 @@ import ro.go.adrhc.deduplicator.config.apppaths.ObservableIndexPath;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FileMetadataCopies;
 import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FileMetadataCopiesCollection;
-import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDedupService;
+import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesDedupService;
 import ro.go.adrhc.deduplicator.stub.AppPathsGenerator;
 import ro.go.adrhc.deduplicator.stub.FileGenerator;
 import ro.go.adrhc.deduplicator.stub.ImageFileSpecification;
@@ -50,7 +50,7 @@ class FilesIndexCreateServiceTest {
 		initializeIndex(of512("1st-file.jpg"),
 				of512("2nd-file.jpg"), of1024("3rd-file.jpg"));
 
-		FileMetadataCopiesCollection duplicates = filesIndexDedupService().find();
+		FileMetadataCopiesCollection duplicates = filesDedupService().find();
 		log.debug("\n{}", duplicates);
 		assertThat(duplicates.count()).isEqualTo(1);
 		assertThat(duplicates.stream().map(FileMetadataCopies::getDuplicates)
@@ -64,8 +64,8 @@ class FilesIndexCreateServiceTest {
 		indexRepository().restore(indexDataSource);
 	}
 
-	private FilesIndexDedupService filesIndexDedupService() {
-		return ac.getBean(FilesIndexDedupService.class); // SCOPE_PROTOTYPE
+	private FilesDedupService filesDedupService() {
+		return ac.getBean(FilesDedupService.class); // SCOPE_PROTOTYPE
 	}
 
 	private IndexRepository<Path, FileMetadata> indexRepository() {

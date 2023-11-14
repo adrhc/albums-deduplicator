@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
-import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesIndexDedupService;
+import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesDedupService;
 import ro.go.adrhc.deduplicator.datasource.index.services.repository.ScopedTypedIndexFactoriesParams;
 import ro.go.adrhc.persistence.lucene.typedindex.IndexRepository;
 import ro.go.adrhc.util.io.SimpleDirectory;
@@ -31,8 +31,8 @@ public class FileMetadataIndexConfig {
 
 	@Bean
 	@Scope(SCOPE_PROTOTYPE)
-	public FilesIndexDedupService filesIndexDedupService() throws IOException {
-		return new FilesIndexDedupService(duplicatesDirectory,
+	public FilesDedupService filesDedupService() throws IOException {
+		return new FilesDedupService(duplicatesDirectory,
 				appPaths.getFilesPath(), fileMetadataRepository());
 	}
 }
