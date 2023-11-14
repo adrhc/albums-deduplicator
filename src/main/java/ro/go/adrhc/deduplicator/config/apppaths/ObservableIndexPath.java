@@ -9,10 +9,10 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class ObservableAppPaths {
+public class ObservableIndexPath {
 	@Getter
 	private final AppPaths appPaths;
-	private final List<AppPathsObserver> pathsObservers;
+	private final List<IndexPathObserver> pathsObservers;
 
 	public void update(Path indexPath, Path filesPath, Path duplicatesPath) {
 		appPaths.update(indexPath, filesPath, duplicatesPath);
@@ -20,6 +20,6 @@ public class ObservableAppPaths {
 	}
 
 	protected void notifyObservers() {
-		pathsObservers.forEach(AppPathsObserver::pathsChanged);
+		pathsObservers.forEach(IndexPathObserver::indexPathChanged);
 	}
 }

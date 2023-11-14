@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
-import ro.go.adrhc.deduplicator.config.apppaths.AppPathsObserver;
+import ro.go.adrhc.deduplicator.config.apppaths.IndexPathObserver;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.index.config.FilesIndexProperties;
 import ro.go.adrhc.deduplicator.datasource.index.domain.FileMetadataFieldType;
@@ -19,7 +19,7 @@ import java.nio.file.Path;
 
 @Component
 @RequiredArgsConstructor
-public class ScopedTypedIndexFactoriesParams implements AppPathsObserver {
+public class ScopedTypedIndexFactoriesParams implements IndexPathObserver {
 	private final AppPaths appPaths;
 	private final FilesIndexProperties indexProperties;
 	private final PathExistsFilter pathExistsFilter;
@@ -35,7 +35,7 @@ public class ScopedTypedIndexFactoriesParams implements AppPathsObserver {
 
 	@SneakyThrows
 	@Override
-	public void pathsChanged() {
+	public void indexPathChanged() {
 		if (params != null) {
 			params.close();
 		}
