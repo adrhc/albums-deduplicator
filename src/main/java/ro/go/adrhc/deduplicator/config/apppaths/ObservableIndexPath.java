@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -15,8 +16,11 @@ public class ObservableIndexPath {
 	private final List<IndexPathObserver> pathsObservers;
 
 	public void update(Path indexPath, Path filesPath, Path duplicatesPath) {
+		Path oldIndexPath = appPaths.getIndexPath();
 		appPaths.update(indexPath, filesPath, duplicatesPath);
-		notifyObservers();
+		if (!Objects.equals(appPaths.getIndexPath(), oldIndexPath)) {
+			notifyObservers();
+		}
 	}
 
 	protected void notifyObservers() {
