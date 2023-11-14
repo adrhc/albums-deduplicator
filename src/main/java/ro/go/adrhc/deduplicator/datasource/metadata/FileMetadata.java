@@ -1,4 +1,4 @@
-package ro.go.adrhc.deduplicator.datasource.filesmetadata;
+package ro.go.adrhc.deduplicator.datasource.metadata;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import ro.go.adrhc.persistence.lucene.typedcore.serde.Identifiable;

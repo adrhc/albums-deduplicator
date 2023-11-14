@@ -1,4 +1,4 @@
-package ro.go.adrhc.deduplicator.datasource.filesmetadata;
+package ro.go.adrhc.deduplicator.datasource.metadata;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

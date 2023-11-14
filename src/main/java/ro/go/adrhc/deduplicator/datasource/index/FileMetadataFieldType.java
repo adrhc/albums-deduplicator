@@ -1,9 +1,9 @@
-package ro.go.adrhc.deduplicator.datasource.index.domain;
+package ro.go.adrhc.deduplicator.datasource.index;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
-import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
+import ro.go.adrhc.deduplicator.datasource.metadata.FileMetadata;
 import ro.go.adrhc.persistence.lucene.core.field.FieldType;
 import ro.go.adrhc.persistence.lucene.typedcore.field.TypedField;
 import ro.go.adrhc.persistence.lucene.typedcore.field.TypedFieldSerde;

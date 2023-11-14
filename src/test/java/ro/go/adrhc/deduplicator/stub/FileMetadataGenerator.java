@@ -1,7 +1,7 @@
 package ro.go.adrhc.deduplicator.stub;
 
 import lombok.experimental.UtilityClass;
-import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
+import ro.go.adrhc.deduplicator.datasource.metadata.FileMetadata;
 
 import java.nio.file.Path;
 import java.time.Instant;

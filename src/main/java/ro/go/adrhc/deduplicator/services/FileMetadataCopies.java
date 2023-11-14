@@ -1,7 +1,7 @@
-package ro.go.adrhc.deduplicator.datasource.index.services.dedup;
+package ro.go.adrhc.deduplicator.services;
 
 import lombok.Getter;
-import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
+import ro.go.adrhc.deduplicator.datasource.metadata.FileMetadata;
 
 import java.nio.file.Path;
 import java.util.HashSet;

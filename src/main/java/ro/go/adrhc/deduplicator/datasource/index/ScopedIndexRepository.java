@@ -1,4 +1,4 @@
-package ro.go.adrhc.deduplicator.datasource.index.services.repository;
+package ro.go.adrhc.deduplicator.datasource.index;
 
 import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
@@ -6,10 +6,8 @@ import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
 import ro.go.adrhc.deduplicator.config.apppaths.IndexPathObserver;
-import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.index.config.FilesIndexProperties;
-import ro.go.adrhc.deduplicator.datasource.index.domain.FileMetadataFieldType;
-import ro.go.adrhc.deduplicator.datasource.index.services.PathExistsFilter;
+import ro.go.adrhc.deduplicator.datasource.metadata.FileMetadata;
 import ro.go.adrhc.persistence.lucene.typedindex.IndexRepository;
 import ro.go.adrhc.persistence.lucene.typedindex.factories.TypedIndexFactoriesParams;
 import ro.go.adrhc.persistence.lucene.typedindex.factories.TypedIndexFactoriesParamsFactory;
