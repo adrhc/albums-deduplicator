@@ -19,7 +19,7 @@ import java.nio.file.Path;
 
 @Component
 @RequiredArgsConstructor
-public class ScopedTypedIndexFactoriesParams implements IndexPathObserver {
+public class ScopedIndexRepository implements IndexPathObserver {
 	private final AppPaths appPaths;
 	private final FilesIndexProperties indexProperties;
 	private final PathExistsFilter pathExistsFilter;

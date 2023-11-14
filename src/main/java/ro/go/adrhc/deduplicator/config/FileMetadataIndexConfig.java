@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Scope;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
 import ro.go.adrhc.deduplicator.datasource.filesmetadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.index.services.dedup.FilesDedupService;
-import ro.go.adrhc.deduplicator.datasource.index.services.repository.ScopedTypedIndexFactoriesParams;
+import ro.go.adrhc.deduplicator.datasource.index.services.repository.ScopedIndexRepository;
 import ro.go.adrhc.persistence.lucene.typedindex.IndexRepository;
 import ro.go.adrhc.util.io.SimpleDirectory;
 
@@ -19,14 +19,14 @@ import static org.springframework.beans.factory.config.ConfigurableBeanFactory.S
 @Configuration
 @RequiredArgsConstructor
 public class FileMetadataIndexConfig {
-	private final ScopedTypedIndexFactoriesParams scopedParams;
+	private final ScopedIndexRepository scopedIndexRepository;
 	private final SimpleDirectory duplicatesDirectory;
 	private final AppPaths appPaths;
 
 	@Bean
 	@Scope(SCOPE_PROTOTYPE)
 	public IndexRepository<Path, FileMetadata> fileMetadataRepository() throws IOException {
-		return scopedParams.getIndexRepository();
+		return scopedIndexRepository.getIndexRepository();
 	}
 
 	@Bean
