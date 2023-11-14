@@ -32,6 +32,7 @@ public class FileMetadataIndexConfig {
 	@Bean
 	@Scope(SCOPE_PROTOTYPE)
 	public FilesIndexDedupService filesIndexDedupService() throws IOException {
-		return new FilesIndexDedupService(duplicatesDirectory, appPaths.getFilesPath(), fileMetadataRepository());
+		return new FilesIndexDedupService(duplicatesDirectory,
+				appPaths.getFilesPath(), fileMetadataRepository());
 	}
 }

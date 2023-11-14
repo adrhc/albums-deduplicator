@@ -43,12 +43,12 @@ public class ScopedTypedIndexFactoriesParams implements AppPathsObserver {
 	}
 
 	protected void initialize() throws IOException {
-		params = create();
+		params = createParams();
 		indexRepository = IndexRepository.create(params);
 	}
 
 	protected TypedIndexFactoriesParams<Path, FileMetadata, FileMetadataFieldType>
-	create() throws IOException {
+	createParams() throws IOException {
 		return TypedIndexFactoriesParamsFactory.create(FileMetadata.class,
 				FileMetadataFieldType.class, indexProperties.getTokenizer(),
 				pathExistsFilter, indexProperties.getSearch().getMaxResultsPerSearch(),
