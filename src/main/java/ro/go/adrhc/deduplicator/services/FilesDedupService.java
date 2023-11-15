@@ -20,8 +20,8 @@ import static ro.go.adrhc.util.text.StringUtils.concat;
 @Slf4j
 public class FilesDedupService {
 	private final SimpleDirectory duplicatesDirectory;
-	private final Path filesRoot;
 	private final IndexRepository<Path, FileMetadata> indexRepository;
+	private final Path filesRoot;
 
 	public FileMetadataCopiesCollection find() throws IOException {
 		return indexRepository.reduce(FileMetadataCopiesCollection::of);

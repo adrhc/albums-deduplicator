@@ -20,13 +20,13 @@ public class AppConfiguration {
 	private final AppProperties appProperties;
 
 	@Bean
-	public FileSystemUtils fileSystemUtils() {
-		return new FileSystemUtils();
+	public ExecutorService metadataExecutorService() {
+		return Executors.newFixedThreadPool(appProperties.getMetadataLoadingThreads());
 	}
 
 	@Bean
-	public ExecutorService metadataExecutorService() {
-		return Executors.newFixedThreadPool(appProperties.getMetadataLoadingThreads());
+	public FileSystemUtils fileSystemUtils() {
+		return new FileSystemUtils();
 	}
 
 	@Bean
