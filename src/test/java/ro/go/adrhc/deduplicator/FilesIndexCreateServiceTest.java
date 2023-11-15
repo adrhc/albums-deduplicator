@@ -50,7 +50,7 @@ class FilesIndexCreateServiceTest {
 		initializeIndex(of512("1st-file.jpg"),
 				of512("2nd-file.jpg"), of1024("3rd-file.jpg"));
 
-		FileMetadataCopiesCollection duplicates = filesDedupService().find();
+		FileMetadataCopiesCollection duplicates = filesDedupService().findDups();
 		log.debug("\n{}", duplicates);
 		assertThat(duplicates.count()).isEqualTo(1);
 		assertThat(duplicates.stream().map(FileMetadataCopies::getDuplicates)

@@ -23,12 +23,8 @@ public class FilesDedupService {
 	private final IndexRepository<Path, FileMetadata> indexRepository;
 	private final Path filesRoot;
 
-	public FileMetadataCopiesCollection find() throws IOException {
-		return indexRepository.reduce(FileMetadataCopiesCollection::of);
-	}
-
 	public boolean removeDups() throws IOException {
-		FileMetadataCopiesCollection duplicates = find();
+		FileMetadataCopiesCollection duplicates = findDups();
 		if (duplicates.isEmpty()) {
 			return false;
 		}
@@ -37,6 +33,10 @@ public class FilesDedupService {
 		log.debug("\n{}", concat("\n\n", originalAndDupBackups));
 		copyOrigMoveDups(originalAndDupBackups);
 		return true;
+	}
+
+	public FileMetadataCopiesCollection findDups() throws IOException {
+		return indexRepository.reduce(FileMetadataCopiesCollection::of);
 	}
 
 	private void copyOrigMoveDups(List<OriginalAndDupBackups> originalAndDupBackups) throws IOException {

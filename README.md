@@ -5,3 +5,7 @@ mvn archetype:generate -DgroupId=ro.go.adrhc -DartifactId=deduplicator -Darchety
 # ERROR No command found for '--spring.config.additional-location=...
 
 see NonInteractiveShellRunnerCustomizer
+
+# run a particular test
+
+```./mvnw test -Dtest="FilesIndexCreateServiceTest#findDuplicates"```

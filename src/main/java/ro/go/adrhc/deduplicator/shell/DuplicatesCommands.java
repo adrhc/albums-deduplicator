@@ -21,7 +21,7 @@ public class DuplicatesCommands {
 
 	@ShellMethod(value = "Find duplicates.", key = {"find-dups"})
 	public void findDuplicates() throws IOException {
-		log.debug("\n{}", filesDedupService().find());
+		log.debug("\n{}", filesDedupService().findDups());
 	}
 
 	@ShellMethod(value = "Remove the duplicates, update the index and show duplicates.", key = {"remove-dups"})
