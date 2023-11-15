@@ -9,7 +9,7 @@ import ro.go.adrhc.util.io.FileSystemUtils;
 
 @Component
 @RequiredArgsConstructor
-public class PathExistsFilter implements SearchResultFilter<ScoreAndTyped<FileMetadata>> {
+public class PathExistsFilter implements SearchResultFilter<FileMetadata> {
 	private final FileSystemUtils fsUtils;
 
 	@Override
