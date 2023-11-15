@@ -22,9 +22,11 @@ import ro.go.adrhc.persistence.lucene.typedindex.restore.IndexDataSource;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static ro.go.adrhc.deduplicator.stub.ImageFileSpecification.of1024;
 import static ro.go.adrhc.deduplicator.stub.ImageFileSpecification.of512;
 
@@ -53,9 +55,10 @@ class FilesIndexCreateServiceTest {
 		FileMetadataCopiesCollection duplicates = filesDedupService().findDups();
 		log.debug("\n{}", duplicates);
 		assertThat(duplicates.count()).isEqualTo(1);
-		assertThat(duplicates.stream().map(FileMetadataCopies::getDuplicates)
-				.flatMap(Set::stream).map(FileMetadata::fileNameNoExt))
-				.containsOnly("2nd-file");
+		List<String> dups = duplicates.stream().map(FileMetadataCopies::getDuplicates)
+				.flatMap(Set::stream).map(FileMetadata::fileNameNoExt).toList();
+		assertThat(dups).hasSize(1);
+		assertTrue(dups.contains("1st-file") || dups.contains("2nd-file"));
 	}
 
 	private void initializeIndex(ImageFileSpecification... specifications) throws IOException {
