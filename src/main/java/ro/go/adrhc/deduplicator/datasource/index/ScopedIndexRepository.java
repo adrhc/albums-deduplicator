@@ -9,7 +9,7 @@ import ro.go.adrhc.deduplicator.config.apppaths.IndexPathObserver;
 import ro.go.adrhc.deduplicator.datasource.index.config.FilesIndexProperties;
 import ro.go.adrhc.deduplicator.datasource.metadata.FileMetadata;
 import ro.go.adrhc.persistence.lucene.typedindex.IndexRepository;
-import ro.go.adrhc.persistence.lucene.typedindex.factories.TypedIndexFactoriesParams;
+import ro.go.adrhc.persistence.lucene.typedindex.factories.TypedIndexContext;
 import ro.go.adrhc.persistence.lucene.typedindex.factories.TypedIndexFactoriesParamsFactory;
 
 import java.io.IOException;
@@ -21,7 +21,7 @@ public class ScopedIndexRepository implements IndexPathObserver {
 	private final AppPaths appPaths;
 	private final FilesIndexProperties indexProperties;
 	private final PathExistsFilter pathExistsFilter;
-	private TypedIndexFactoriesParams<Path, FileMetadata> params;
+	private TypedIndexContext<Path, FileMetadata> params;
 	private IndexRepository<Path, FileMetadata> indexRepository;
 
 	public IndexRepository<Path, FileMetadata> getIndexRepository() throws IOException {
@@ -45,7 +45,7 @@ public class ScopedIndexRepository implements IndexPathObserver {
 		indexRepository = IndexRepository.create(params);
 	}
 
-	protected TypedIndexFactoriesParams<Path, FileMetadata>
+	protected TypedIndexContext<Path, FileMetadata>
 	createParams() throws IOException {
 		return TypedIndexFactoriesParamsFactory.create(FileMetadata.class,
 				FileMetadataFieldType.class, indexProperties.getTokenizer(),
