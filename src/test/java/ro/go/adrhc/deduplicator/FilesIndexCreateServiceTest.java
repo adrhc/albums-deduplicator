@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.shell.Shell;
-import ro.go.adrhc.deduplicator.config.apppaths.ObservableIndexPath;
+import ro.go.adrhc.deduplicator.config.apppaths.ObservableAppPaths;
 import ro.go.adrhc.deduplicator.datasource.metadata.FileMetadata;
 import ro.go.adrhc.deduplicator.services.FileMetadataCopies;
 import ro.go.adrhc.deduplicator.services.FileMetadataCopiesCollection;
@@ -37,7 +37,7 @@ class FilesIndexCreateServiceTest {
 	@Autowired
 	private ApplicationContext ac;
 	@Autowired
-	private ObservableIndexPath observableIndexPath;
+	private ObservableAppPaths observableAppPaths;
 	@Autowired
 	private IndexDataSource<Path, FileMetadata> indexDataSource;
 	@Autowired
@@ -45,7 +45,7 @@ class FilesIndexCreateServiceTest {
 
 	@Test
 	void findDuplicates(@TempDir Path tempDir) throws IOException {
-		AppPathsGenerator.populateTestPaths(tempDir, observableIndexPath);
+		AppPathsGenerator.populateTestPaths(tempDir, observableAppPaths);
 
 		initializeIndex(of512("1st-file.jpg"),
 				of512("2nd-file.jpg"), of1024("3rd-file.jpg"));

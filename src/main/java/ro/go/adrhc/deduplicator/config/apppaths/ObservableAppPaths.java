@@ -10,7 +10,7 @@ import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
-public class ObservableIndexPath {
+public class ObservableAppPaths {
 	@Getter
 	private final AppPaths appPaths;
 	private final List<IndexPathObserver> pathsObservers;

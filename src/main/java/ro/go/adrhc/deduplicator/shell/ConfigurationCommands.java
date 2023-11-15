@@ -8,7 +8,7 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPathsStringifier;
-import ro.go.adrhc.deduplicator.config.apppaths.ObservableIndexPath;
+import ro.go.adrhc.deduplicator.config.apppaths.ObservableAppPaths;
 
 import java.nio.file.Path;
 import java.util.stream.Stream;
@@ -20,20 +20,20 @@ import static org.springframework.shell.standard.ShellOption.NULL;
 @Slf4j
 public class ConfigurationCommands {
 	private final ApplicationContext ac;
-	private final ObservableIndexPath observableIndexPath;
+	private final ObservableAppPaths observableAppPaths;
 	private final AppPathsStringifier stringifier;
 
 	@ShellMethod("Set (optionally) the paths of the used resources.")
 	public void setPaths(@ShellOption(defaultValue = NULL) Path indexPath,
 			@ShellOption(defaultValue = NULL) Path filesPath,
 			@ShellOption(defaultValue = NULL) Path duplicatesPath) {
-		observableIndexPath.update(indexPath, filesPath, duplicatesPath);
-		log.debug("\n{}", stringifier.toString(observableIndexPath));
+		observableAppPaths.update(indexPath, filesPath, duplicatesPath);
+		log.debug("\n{}", stringifier.toString(observableAppPaths));
 	}
 
 	@ShellMethod(value = "Show the known paths.")
 	public void showPaths() {
-		log.debug("\n{}", stringifier.toString(observableIndexPath));
+		log.debug("\n{}", stringifier.toString(observableAppPaths));
 	}
 
 	@ShellMethod("Show the application startup configuration.")
