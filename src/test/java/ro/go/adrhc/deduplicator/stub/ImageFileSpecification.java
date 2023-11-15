@@ -6,6 +6,6 @@ public record ImageFileSpecification(String filename, int size) {
 	}
 
 	public static ImageFileSpecification of512(String filename) {
-		return new ImageFileSpecification(filename, 1024);
+		return new ImageFileSpecification(filename, 512);
 	}
 }

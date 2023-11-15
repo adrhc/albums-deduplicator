@@ -47,15 +47,15 @@ class FilesIndexCreateServiceTest {
 	void findDuplicates(@TempDir Path tempDir) throws IOException {
 		AppPathsGenerator.populateTestPaths(tempDir, observableAppPaths);
 
-		initializeIndex(of512("1st-file.jpg"),
-				of512("2nd-file.jpg"), of1024("3rd-file.jpg"));
+		initializeIndex(of1024("3rd-file.jpg"),
+				of512("1st-file.jpg"), of512("2nd-file.jpg"));
 
 		FileMetadataCopiesCollection duplicates = filesDedupService().findDups();
 		log.debug("\n{}", duplicates);
 		assertThat(duplicates.count()).isEqualTo(1);
 		assertThat(duplicates.stream().map(FileMetadataCopies::getDuplicates)
 				.flatMap(Set::stream).map(FileMetadata::fileNameNoExt))
-				.containsOnly("2nd-file", "3rd-file");
+				.containsOnly("2nd-file");
 	}
 
 	private void initializeIndex(ImageFileSpecification... specifications) throws IOException {
