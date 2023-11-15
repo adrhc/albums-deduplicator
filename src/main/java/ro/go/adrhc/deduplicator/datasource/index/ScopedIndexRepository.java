@@ -21,7 +21,7 @@ public class ScopedIndexRepository implements IndexPathObserver {
 	private final AppPaths appPaths;
 	private final FilesIndexProperties indexProperties;
 	private final PathExistsFilter pathExistsFilter;
-	private TypedIndexFactoriesParams<Path, FileMetadata, FileMetadataFieldType> params;
+	private TypedIndexFactoriesParams<Path, FileMetadata> params;
 	private IndexRepository<Path, FileMetadata> indexRepository;
 
 	public IndexRepository<Path, FileMetadata> getIndexRepository() throws IOException {
@@ -45,7 +45,7 @@ public class ScopedIndexRepository implements IndexPathObserver {
 		indexRepository = IndexRepository.create(params);
 	}
 
-	protected TypedIndexFactoriesParams<Path, FileMetadata, FileMetadataFieldType>
+	protected TypedIndexFactoriesParams<Path, FileMetadata>
 	createParams() throws IOException {
 		return TypedIndexFactoriesParamsFactory.create(FileMetadata.class,
 				FileMetadataFieldType.class, indexProperties.getTokenizer(),
