@@ -20,7 +20,7 @@ import static ro.go.adrhc.util.ConcurrencyUtils.safelyGetAll;
 @RequiredArgsConstructor
 @Slf4j
 public class FileMetadataProvider implements IndexDataSource<Path, FileMetadata> {
-	private final FileMetadataFactory metadataFactory;
+	private final FileMetadataLoader metadataFactory;
 	private final ExecutorService metadataExecutorService;
 	private final SimpleDirectory filesDirectory;
 
@@ -45,7 +45,7 @@ public class FileMetadataProvider implements IndexDataSource<Path, FileMetadata>
 	}
 
 	private CompletableFuture<Optional<FileMetadata>> asyncMetadataSupplier(Path path) {
-		return CompletableFuture.supplyAsync(() -> metadataFactory.create(path), metadataExecutorService);
+		return CompletableFuture.supplyAsync(() -> metadataFactory.load(path), metadataExecutorService);
 	}
 
 	private Stream<Path> getContainedPaths(Path path) {

@@ -19,8 +19,8 @@ import static ro.go.adrhc.util.io.FilenameUtils.filenameNoExt;
 
 @Component
 @Slf4j
-public class FileMetadataFactory {
-	public Optional<FileMetadata> create(Path path) {
+public class FileMetadataLoader {
+	public Optional<FileMetadata> load(Path path) {
 		return hash(path).map(Base64::encodeBase64).map(String::new)
 				.flatMap(hash -> toFileMetadata(path, hash));
 	}
