@@ -23,14 +23,19 @@ public class IndexCommands {
 	@ShellMethod(key = {"create", "reset"},
 			value = "Create the index at the provided path (remove it first, if exists).")
 	public void reset() throws IOException {
-		indexRepository().reset(indexDataSource.loadAll());
+		fileMetadataRepository().reset(indexDataSource.loadAll());
 		log.debug("\n{} index created!", appPaths.getIndexPath());
+	}
+
+	@ShellMethod("Get the index size.")
+	public void count() throws IOException {
+		log.debug("\nindex size is {}", fileMetadataRepository().count());
 	}
 
 	@ShellMethod(value = "Update the index at the provided path.", key = {"update", "reindex"})
 	public void update() {
 		try {
-			indexRepository().restore(indexDataSource);
+			fileMetadataRepository().restore(indexDataSource);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			log.debug("\n{} index update failed!", appPaths.getIndexPath());
@@ -38,7 +43,7 @@ public class IndexCommands {
 	}
 
 	@Lookup
-	protected IndexRepository<Path, FileMetadata> indexRepository() {
+	protected IndexRepository<Path, FileMetadata> fileMetadataRepository() {
 		return null;
 	}
 }
