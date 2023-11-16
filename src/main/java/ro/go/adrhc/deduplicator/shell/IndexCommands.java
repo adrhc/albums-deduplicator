@@ -21,9 +21,9 @@ public class IndexCommands {
 	private final AppPaths appPaths;
 
 	@ShellMethod(value = "Create the index at the provided path (remove it first, if exists).",
-			key = {"create", "index"})
-	public void create() throws IOException {
-		indexRepository().initialize(indexDataSource.loadAll());
+			key = {"create", "index", "reset"})
+	public void reset() throws IOException {
+		indexRepository().reset(indexDataSource.loadAll());
 		log.debug("\n{} index created!", appPaths.getIndexPath());
 	}
 

@@ -49,7 +49,7 @@ class FilesIndexCreateServiceTest {
 	void findDuplicates(@TempDir Path tempDir) throws IOException {
 		AppPathsGenerator.populateTestPaths(tempDir, observableAppPaths);
 
-		initializeIndex(of1024("3rd-file.jpg"),
+		resetIndex(of1024("3rd-file.jpg"),
 				of512("1st-file.jpg"), of512("2nd-file.jpg"));
 
 		FileMetadataCopiesCollection duplicates = filesDedupService().findDups();
@@ -61,8 +61,8 @@ class FilesIndexCreateServiceTest {
 		assertTrue(dups.contains("1st-file") || dups.contains("2nd-file"));
 	}
 
-	private void initializeIndex(ImageFileSpecification... specifications) throws IOException {
-		indexRepository().initialize(indexDataSource.loadAll());
+	private void resetIndex(ImageFileSpecification... specifications) throws IOException {
+		indexRepository().reset(indexDataSource.loadAll());
 		fileGenerator.createImageFiles(specifications);
 		indexRepository().restore(indexDataSource);
 	}
