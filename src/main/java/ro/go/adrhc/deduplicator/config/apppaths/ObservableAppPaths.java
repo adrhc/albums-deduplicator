@@ -26,4 +26,8 @@ public class ObservableAppPaths {
 	protected void notifyObservers() {
 		pathsObservers.forEach(IndexPathObserver::indexPathChanged);
 	}
+
+	public void setFilesPath(Path filesPath) {
+		appPaths.setFilesPath(filesPath);
+	}
 }
