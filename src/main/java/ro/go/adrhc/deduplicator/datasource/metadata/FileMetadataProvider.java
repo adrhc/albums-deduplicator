@@ -63,7 +63,7 @@ public class FileMetadataProvider implements IndexDataSource<Path, FileMetadata>
 	}
 
 	private void doWithPath(Consumer<FileMetadata> metadataConsumer, Path path) {
-		log.info("\nprocessing: {}", path.getFileName().toString());
+		log.info("\nloading metadata: {}", path.getFileName().toString());
 		metadataFactory.load(path).ifPresent(metadataConsumer);
 	}
 
