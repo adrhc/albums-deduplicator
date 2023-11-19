@@ -2,7 +2,7 @@ package ro.go.adrhc.deduplicator.shell;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Lookup;
+import org.springframework.context.ApplicationContext;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import ro.go.adrhc.deduplicator.config.apppaths.AppPaths;
@@ -17,6 +17,7 @@ import java.nio.file.Path;
 @RequiredArgsConstructor
 @Slf4j
 public class IndexCommands {
+	protected final ApplicationContext ac;
 	private final IndexDataSource<Path, FileMetadata> indexDataSource;
 	private final AppPaths appPaths;
 
@@ -42,8 +43,12 @@ public class IndexCommands {
 		}
 	}
 
-	@Lookup
+	/**
+	 * solves 2nd call to count(), otherwise (from 2nd call on):
+	 * No qualifying bean of type 'ro.go.adrhc.persistence.lucene.typedindex.IndexRepository
+	 * <java.nio.file.Path, ro.go.adrhc.deduplicator.datasource.metadata.FileMetadata>' available
+	 */
 	protected IndexRepository<Path, FileMetadata> fileMetadataRepository() {
-		return null;
+		return ac.getBean(IndexRepository.class);
 	}
 }
