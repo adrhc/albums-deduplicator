@@ -30,4 +30,8 @@ public class ObservableAppPaths {
 	public void setFilesPath(Path filesPath) {
 		appPaths.setFilesPath(filesPath);
 	}
+
+	public Path getIndexPath() {
+		return appPaths.getIndexPath();
+	}
 }
