@@ -5,11 +5,16 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.shell.boot.NonInteractiveShellRunnerCustomizer;
+import ro.go.adrhc.deduplicator.datasource.metadata.FileMetadata;
+import ro.go.adrhc.deduplicator.datasource.metadata.FileMetadataLoader;
 import ro.go.adrhc.util.concurrency.CompletableFuturesToOutcomeStreamConverter;
 import ro.go.adrhc.util.io.FileSystemUtils;
+import ro.go.adrhc.util.io.FilesMetadataLoader;
+import ro.go.adrhc.util.io.SimpleDirectory;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -26,13 +31,20 @@ public class AppConfiguration {
 	}
 
 	@Bean
-	public CompletableFuturesToOutcomeStreamConverter futuresToStreamConverter() {
-		return new CompletableFuturesToOutcomeStreamConverter(adminExecutorService());
+	public FilesMetadataLoader<Optional<FileMetadata>> filesMetadataLoader(
+			SimpleDirectory filesDirectory, FileMetadataLoader metadataFactory) {
+		return new FilesMetadataLoader<>(metadataExecutorService(),
+				futuresToStreamConverter(), filesDirectory, metadataFactory::load);
 	}
 
 	@Bean
 	public ExecutorService metadataExecutorService() {
 		return Executors.newFixedThreadPool(appProperties.getMetadataLoadingThreads());
+	}
+
+	@Bean
+	public CompletableFuturesToOutcomeStreamConverter futuresToStreamConverter() {
+		return new CompletableFuturesToOutcomeStreamConverter(adminExecutorService());
 	}
 
 	@Bean
