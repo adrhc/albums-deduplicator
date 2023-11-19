@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.shell.boot.NonInteractiveShellRunnerCustomizer;
 import ro.go.adrhc.deduplicator.datasource.metadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.metadata.FileMetadataLoader;
-import ro.go.adrhc.util.concurrency.CompletableFuturesToOutcomeStreamConverter;
 import ro.go.adrhc.util.io.FileSystemUtils;
 import ro.go.adrhc.util.io.FilesMetadataLoader;
 import ro.go.adrhc.util.io.SimpleDirectory;
@@ -33,18 +32,13 @@ public class AppConfiguration {
 	@Bean
 	public FilesMetadataLoader<Optional<FileMetadata>> filesMetadataLoader(
 			SimpleDirectory filesDirectory, FileMetadataLoader metadataFactory) {
-		return new FilesMetadataLoader<>(metadataExecutorService(),
-				futuresToStreamConverter(), filesDirectory, metadataFactory::load);
+		return FilesMetadataLoader.create(adminExecutorService(),
+				metadataExecutorService(), filesDirectory, metadataFactory::load);
 	}
 
 	@Bean
 	public ExecutorService metadataExecutorService() {
 		return Executors.newFixedThreadPool(appProperties.getMetadataLoadingThreads());
-	}
-
-	@Bean
-	public CompletableFuturesToOutcomeStreamConverter futuresToStreamConverter() {
-		return new CompletableFuturesToOutcomeStreamConverter(adminExecutorService());
 	}
 
 	@Bean
