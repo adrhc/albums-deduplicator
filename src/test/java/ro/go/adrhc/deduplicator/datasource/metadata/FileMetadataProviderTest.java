@@ -33,7 +33,7 @@ class FileMetadataProviderTest {
 		Stream<FileMetadata> metadataStream = indexDataSource.loadAll();
 		StreamCounter counter = new StreamCounter();
 		counter.countedStream(metadataStream)
-				.forEach(m -> log.info("\nreceived: {}", m.fileNameNoExt()));
+				.forEach(m -> log.info("\nprocessing done for: {}", m.fileNameNoExt()));
 		assertThat(counter.getCount()).isPositive();
 	}
 }

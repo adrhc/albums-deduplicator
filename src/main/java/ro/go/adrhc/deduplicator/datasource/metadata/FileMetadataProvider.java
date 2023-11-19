@@ -2,26 +2,26 @@ package ro.go.adrhc.deduplicator.datasource.metadata;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.stereotype.Component;
 import ro.go.adrhc.persistence.lucene.typedindex.restore.IndexDataSource;
-import ro.go.adrhc.util.concurrency.AsyncStream;
+import ro.go.adrhc.util.concurrency.CompletableFuturesToOutcomeStreamConverter;
 import ro.go.adrhc.util.io.SimpleDirectory;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
-import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class FileMetadataProvider implements IndexDataSource<Path, FileMetadata> {
-	private final FileMetadataLoader metadataFactory;
 	private final ExecutorService metadataExecutorService;
+	private final CompletableFuturesToOutcomeStreamConverter futuresToStreamConverter;
+	private final FileMetadataLoader metadataFactory;
 	private final SimpleDirectory filesDirectory;
 
 	@Override
@@ -31,44 +31,42 @@ public class FileMetadataProvider implements IndexDataSource<Path, FileMetadata>
 
 	@Override
 	public Stream<FileMetadata> loadByIds(Stream<Path> ids) {
-		return metadataAsyncStream()
-				.toStream(mc -> ids.flatMap(p -> traverseAndAsyncConsume(mc, p)));
+		return ids.flatMap(this::safelyLoadByPath);
 	}
 
 	@Override
-	public Stream<FileMetadata> loadAll() {
-		return metadataAsyncStream()
-				.toStream(mc -> traverseAndAsyncConsume(mc, filesDirectory.getRoot()));
+	public Stream<FileMetadata> loadAll() throws IOException {
+		return loadByStartPath(filesDirectory.getRoot());
 	}
 
-	private Stream<CompletableFuture<?>> traverseAndAsyncConsume(
-			Consumer<FileMetadata> metadataConsumer, Path path) {
-		if (Files.isDirectory(path)) {
-			try {
-				return filesDirectory.getPaths(path).stream()
-						.flatMap(p -> traverseAndAsyncConsume(metadataConsumer, p));
-			} catch (IOException e) {
-				log.error(e.getMessage(), e);
-				return Stream.of();
-			}
-		} else {
-			return Stream.of(asyncPathConsumer(metadataConsumer, path));
+	protected Stream<FileMetadata> safelyLoadByPath(Path startPath) {
+		try {
+			return loadByStartPath(startPath);
+		} catch (IOException e) {
+			log.error(e.getMessage(), e);
+			return Stream.empty();
 		}
 	}
 
-	private CompletableFuture<?> asyncPathConsumer(
-			Consumer<FileMetadata> metadataConsumer, Path path) {
-		return CompletableFuture.runAsync(() ->
-				doWithPath(metadataConsumer, path), metadataExecutorService);
+	protected Stream<FileMetadata> loadByStartPath(Path startPath) throws IOException {
+		return toFileMetadataStream(filesDirectory.getPaths(startPath));
 	}
 
-	private void doWithPath(Consumer<FileMetadata> metadataConsumer, Path path) {
-		log.info("\nloading metadata: {}", path.getFileName().toString());
-		metadataFactory.load(path).ifPresent(metadataConsumer);
+	protected Stream<FileMetadata> toFileMetadataStream(Collection<Path> filePaths) {
+		return futuresToStreamConverter
+				.toStream(filePaths.stream().map(this::loadMetadata))
+				.flatMap(Optional::stream);
 	}
 
-	@Lookup
-	protected AsyncStream<FileMetadata> metadataAsyncStream() {
-		return null;
+	protected CompletableFuture<Optional<FileMetadata>> loadMetadata(Path filePath) {
+		return CompletableFuture.supplyAsync(() -> doLoadMetadata(filePath), metadataExecutorService);
+	}
+
+	private Optional<FileMetadata> doLoadMetadata(Path path) {
+		try {
+			return metadataFactory.load(path);
+		} finally {
+			log.debug("\nloaded metadata for: {}", path);
+		}
 	}
 }
