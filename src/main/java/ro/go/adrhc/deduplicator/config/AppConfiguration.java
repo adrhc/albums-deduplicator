@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.shell.boot.NonInteractiveShellRunnerCustomizer;
 import ro.go.adrhc.deduplicator.datasource.metadata.FileMetadata;
 import ro.go.adrhc.deduplicator.datasource.metadata.FileMetadataLoader;
-import ro.go.adrhc.util.io.DirectoryPathsStreamCreator;
 import ro.go.adrhc.util.io.FileSystemUtils;
 import ro.go.adrhc.util.io.FilesMetadataLoader;
 import ro.go.adrhc.util.io.SimpleDirectory;
@@ -34,14 +33,7 @@ public class AppConfiguration {
 	public FilesMetadataLoader<Optional<FileMetadata>> filesMetadataLoader(
 			SimpleDirectory filesDirectory, FileMetadataLoader metadataFactory) {
 		return FilesMetadataLoader.create(adminExecutorService(),
-				metadataExecutorService(),
-				filePathsStreamCreator(filesDirectory),
-				metadataFactory::load);
-	}
-
-	@Bean
-	public DirectoryPathsStreamCreator filePathsStreamCreator(SimpleDirectory filesDirectory) {
-		return new DirectoryPathsStreamCreator(metadataExecutorService(), filesDirectory);
+				metadataExecutorService(), filesDirectory, metadataFactory::load);
 	}
 
 	@Bean
