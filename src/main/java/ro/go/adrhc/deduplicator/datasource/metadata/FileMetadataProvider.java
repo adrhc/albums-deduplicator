@@ -30,7 +30,7 @@ public class FileMetadataProvider implements IndexDataSource<Path, FileMetadata>
 	}
 
 	@Override
-	public Stream<FileMetadata> loadAll() throws IOException {
+	public Stream<FileMetadata> loadAll() {
 		return filesMetadataLoader.loadAll().flatMap(Optional::stream);
 	}
 }
