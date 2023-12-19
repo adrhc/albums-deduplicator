@@ -10,7 +10,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.shell.Shell;
 import ro.go.adrhc.deduplicator.ExcludeShellAutoConfiguration;
 import ro.go.adrhc.persistence.lucene.typedindex.restore.IndexDataSource;
-import ro.go.adrhc.util.collection.StreamCounter;
+import ro.go.adrhc.util.stream.StreamCounter;
 
 import java.io.IOException;
 import java.nio.file.Path;
