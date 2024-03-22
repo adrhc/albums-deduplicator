@@ -6,7 +6,7 @@ see NonInteractiveShellRunnerCustomizer
 
 ```./mvnw test -Dtest="FilesIndexCreateServiceTest#findDuplicates"```
 
-# bootstrap
+# maven project creation
 
 mvn archetype:generate -DgroupId=ro.go.adrhc -DartifactId=albums-deduplicator
 -DarchetypeArtifactId=maven-archetype-quickstart
