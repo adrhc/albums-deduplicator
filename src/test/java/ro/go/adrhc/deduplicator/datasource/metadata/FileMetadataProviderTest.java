@@ -25,15 +25,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Slf4j
 class FileMetadataProviderTest {
-	@Autowired
-	private IndexDataSource<Path, FileMetadata> indexDataSource;
+    @Autowired
+    private IndexDataSource<Path, FileMetadata> indexDataSource;
 
-	@Test
-	void loadAll() throws IOException {
-		Stream<FileMetadata> metadataStream = indexDataSource.loadAll();
-		StreamCounter counter = new StreamCounter();
-		counter.countedStream(metadataStream)
-				.forEach(m -> log.info("\nprocessing done for: {}", m.fileNameNoExt()));
-		assertThat(counter.getCount()).isPositive();
-	}
+    @Test
+    void loadAll() throws IOException {
+        Stream<FileMetadata> metadataStream = indexDataSource.loadAll();
+        StreamCounter counter = new StreamCounter();
+        counter.countedStream(metadataStream)
+                .forEach(m -> log.info("\nprocessing done for: {}", m.fileNameNoExt()));
+        assertThat(counter.getCount()).isPositive();
+    }
 }

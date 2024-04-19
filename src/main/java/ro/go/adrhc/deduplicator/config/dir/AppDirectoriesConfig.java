@@ -8,15 +8,15 @@ import ro.go.adrhc.util.io.SimpleDirectory;
 @Configuration
 @RequiredArgsConstructor
 public class AppDirectoriesConfig {
-	private final AppDirectoryFactories appDirectoryFactories;
+    private final AppDirectoryFactories appDirectoryFactories;
 
-	@Bean
-	public SimpleDirectory duplicatesDirectory() {
-		return appDirectoryFactories.duplicatesDirectory();
-	}
+    @Bean
+    public SimpleDirectory duplicatesDirectory() {
+        return appDirectoryFactories.duplicatesDirectory();
+    }
 
-	@Bean
-	public SimpleDirectory filesDirectory() {
-		return appDirectoryFactories.filesDirectory();
-	}
+    @Bean
+    public SimpleDirectory filesDirectory() {
+        return appDirectoryFactories.filesDirectory();
+    }
 }

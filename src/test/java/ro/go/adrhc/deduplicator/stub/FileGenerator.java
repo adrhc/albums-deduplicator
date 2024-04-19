@@ -14,25 +14,25 @@ import java.util.Arrays;
 
 @Component
 public class FileGenerator {
-	@Autowired
-	private AppPaths appPaths;
+    @Autowired
+    private AppPaths appPaths;
 
-	public void createImageFiles(ImageFileSpecification... specifications) throws IOException {
-		for (ImageFileSpecification spec : specifications) {
-			createImageFile(spec);
-		}
-	}
+    public void createImageFiles(ImageFileSpecification... specifications) throws IOException {
+        for (ImageFileSpecification spec : specifications) {
+            createImageFile(spec);
+        }
+    }
 
-	public void createImageFile(String filename) throws IOException {
-		createImageFile(ImageFileSpecification.of1024(filename));
-	}
+    public void createImageFile(String filename) throws IOException {
+        createImageFile(ImageFileSpecification.of1024(filename));
+    }
 
-	public void createImageFile(ImageFileSpecification specification) throws IOException {
-		Path path = Files.createFile(appPaths.getFilesPath().resolve(specification.filename()));
-		byte[] content = new byte[specification.size()];
-		Arrays.fill(content, (byte) 'a');
-		try (FileWriter writer = new FileWriter(path.toFile())) {
-			IOUtils.write(content, writer, StandardCharsets.UTF_8);
-		}
-	}
+    public void createImageFile(ImageFileSpecification specification) throws IOException {
+        Path path = Files.createFile(appPaths.getFilesPath().resolve(specification.filename()));
+        byte[] content = new byte[specification.size()];
+        Arrays.fill(content, (byte) 'a');
+        try (FileWriter writer = new FileWriter(path.toFile())) {
+            IOUtils.write(content, writer, StandardCharsets.UTF_8);
+        }
+    }
 }

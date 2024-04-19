@@ -11,27 +11,27 @@ import java.util.Objects;
 @Component
 @RequiredArgsConstructor
 public class ObservableAppPaths {
-	@Getter
-	private final AppPaths appPaths;
-	private final List<IndexPathObserver> pathsObservers;
+    @Getter
+    private final AppPaths appPaths;
+    private final List<IndexPathObserver> pathsObservers;
 
-	public void update(Path indexPath, Path filesPath, Path duplicatesPath) {
-		Path oldIndexPath = appPaths.getIndexPath();
-		appPaths.update(indexPath, filesPath, duplicatesPath);
-		if (!Objects.equals(appPaths.getIndexPath(), oldIndexPath)) {
-			notifyObservers();
-		}
-	}
+    public void update(Path indexPath, Path filesPath, Path duplicatesPath) {
+        Path oldIndexPath = appPaths.getIndexPath();
+        appPaths.update(indexPath, filesPath, duplicatesPath);
+        if (!Objects.equals(appPaths.getIndexPath(), oldIndexPath)) {
+            notifyObservers();
+        }
+    }
 
-	protected void notifyObservers() {
-		pathsObservers.forEach(IndexPathObserver::indexPathChanged);
-	}
+    protected void notifyObservers() {
+        pathsObservers.forEach(IndexPathObserver::indexPathChanged);
+    }
 
-	public void setFilesPath(Path filesPath) {
-		appPaths.setFilesPath(filesPath);
-	}
+    public void setFilesPath(Path filesPath) {
+        appPaths.setFilesPath(filesPath);
+    }
 
-	public Path getIndexPath() {
-		return appPaths.getIndexPath();
-	}
+    public Path getIndexPath() {
+        return appPaths.getIndexPath();
+    }
 }

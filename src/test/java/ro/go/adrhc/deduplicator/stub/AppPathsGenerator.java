@@ -10,9 +10,9 @@ import static java.nio.file.Files.createDirectories;
 
 @UtilityClass
 public class AppPathsGenerator {
-	public static void populateTestPaths(Path rootPath,
-			ObservableAppPaths observableAppPaths) throws IOException {
-		observableAppPaths.update(createDirectories(rootPath.resolve("Index")),
-				createDirectories(rootPath.resolve("Files")), null);
-	}
+    public static void populateTestPaths(Path rootPath,
+            ObservableAppPaths observableAppPaths) throws IOException {
+        observableAppPaths.update(createDirectories(rootPath.resolve("Index")),
+                createDirectories(rootPath.resolve("Files")), null);
+    }
 }

@@ -6,8 +6,8 @@ import org.springframework.shell.boot.LineReaderAutoConfiguration;
 import org.springframework.shell.boot.SpringShellAutoConfiguration;
 
 @EnableAutoConfiguration(exclude = {
-		SpringShellAutoConfiguration.class,
-		JLineShellAutoConfiguration.class,
-		LineReaderAutoConfiguration.class})
+        SpringShellAutoConfiguration.class,
+        JLineShellAutoConfiguration.class,
+        LineReaderAutoConfiguration.class})
 public @interface ExcludeShellAutoConfiguration {
 }

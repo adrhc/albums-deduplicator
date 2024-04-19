@@ -8,5 +8,5 @@ import lombok.ToString;
 @Getter
 @ToString
 public class SearchProperties {
-	private int maxResultsPerSearch;
+    private int maxResultsPerSearch;
 }

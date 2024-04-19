@@ -16,21 +16,21 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 @Slf4j
 public class FileMetadataProvider implements IndexDataSource<Path, FileMetadata> {
-	private final SimpleDirectory filesDirectory;
-	private final FilesMetadataLoader<Optional<FileMetadata>> filesMetadataLoader;
+    private final SimpleDirectory filesDirectory;
+    private final FilesMetadataLoader<Optional<FileMetadata>> filesMetadataLoader;
 
-	@Override
-	public Stream<Path> loadAllIds() throws IOException {
-		return filesDirectory.getAllPaths().stream();
-	}
+    @Override
+    public Stream<Path> loadAllIds() throws IOException {
+        return filesDirectory.getAllPaths().stream();
+    }
 
-	@Override
-	public Stream<FileMetadata> loadByIds(Stream<Path> paths) {
-		return filesMetadataLoader.loadByPaths(paths).flatMap(Optional::stream);
-	}
+    @Override
+    public Stream<FileMetadata> loadByIds(Stream<Path> paths) {
+        return filesMetadataLoader.loadByPaths(paths).flatMap(Optional::stream);
+    }
 
-	@Override
-	public Stream<FileMetadata> loadAll() {
-		return filesMetadataLoader.loadAll().flatMap(Optional::stream);
-	}
+    @Override
+    public Stream<FileMetadata> loadAll() {
+        return filesMetadataLoader.loadAll().flatMap(Optional::stream);
+    }
 }

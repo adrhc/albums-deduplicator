@@ -11,32 +11,32 @@ import static ro.go.adrhc.util.text.StringUtils.concat;
 
 @RequiredArgsConstructor
 public class OriginalAndDupBackups implements Iterable<PathAndBackup> {
-	private final PathAndBackup originalBackup;
-	private final List<PathAndBackup> dupBackups;
+    private final PathAndBackup originalBackup;
+    private final List<PathAndBackup> dupBackups;
 
-	public static OriginalAndDupBackups of(PathAndBackup originalBackup) {
-		return new OriginalAndDupBackups(originalBackup, new ArrayList<>());
-	}
+    public static OriginalAndDupBackups of(PathAndBackup originalBackup) {
+        return new OriginalAndDupBackups(originalBackup, new ArrayList<>());
+    }
 
-	public void add(PathAndBackup pathAndBackup) {
-		dupBackups.add(pathAndBackup);
-	}
+    public void add(PathAndBackup pathAndBackup) {
+        dupBackups.add(pathAndBackup);
+    }
 
-	public Path getOriginalPath() {
-		return originalBackup.getPath();
-	}
+    public Path getOriginalPath() {
+        return originalBackup.getPath();
+    }
 
-	public Path getOriginalBackupPath() {
-		return originalBackup.getBackupPath();
-	}
+    public Path getOriginalBackupPath() {
+        return originalBackup.getBackupPath();
+    }
 
-	@Override
-	public String toString() {
-		return originalBackup.toString() + '\n' + concat(dupBackups.stream());
-	}
+    @Override
+    public String toString() {
+        return originalBackup.toString() + '\n' + concat(dupBackups.stream());
+    }
 
-	@Override
-	public Iterator<PathAndBackup> iterator() {
-		return dupBackups.iterator();
-	}
+    @Override
+    public Iterator<PathAndBackup> iterator() {
+        return dupBackups.iterator();
+    }
 }

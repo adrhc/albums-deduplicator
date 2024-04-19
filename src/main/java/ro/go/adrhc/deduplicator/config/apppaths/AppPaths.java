@@ -19,17 +19,17 @@ import static ro.go.adrhc.util.io.PathUtils.parentOf;
 @Slf4j
 @ToString
 public class AppPaths {
-	private Path indexPath;
-	private Path filesPath;
-	private Path duplicatesPath;
+    private Path indexPath;
+    private Path filesPath;
+    private Path duplicatesPath;
 
-	public Path getIndexPathParent() {
-		return parentOf(indexPath).orElse(null);
-	}
+    public Path getIndexPathParent() {
+        return parentOf(indexPath).orElse(null);
+    }
 
-	void update(Path indexPath, Path filesPath, Path duplicatesPath) {
-		this.indexPath = ObjectUtils.defaultIfNull(indexPath, this.indexPath);
-		this.filesPath = ObjectUtils.defaultIfNull(filesPath, this.filesPath);
-		this.duplicatesPath = ObjectUtils.defaultIfNull(duplicatesPath, this.duplicatesPath);
-	}
+    void update(Path indexPath, Path filesPath, Path duplicatesPath) {
+        this.indexPath = ObjectUtils.defaultIfNull(indexPath, this.indexPath);
+        this.filesPath = ObjectUtils.defaultIfNull(filesPath, this.filesPath);
+        this.duplicatesPath = ObjectUtils.defaultIfNull(duplicatesPath, this.duplicatesPath);
+    }
 }

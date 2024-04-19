@@ -67,15 +67,6 @@ public class ScopedIndexRepository implements IndexPathObserver, Closeable {
 			return new IndexObjects(params, IndexRepositoryFactory.create(params));
 		}
 
-		public Path getIndexPath() {
-			return params.getIndexPath();
-		}
-
-		@Override
-		public void close() throws IOException {
-			params.close();
-		}
-
 		private static TypedIndexContext<FileMetadata>
 		createParams(ScopedIndexRepository scopedIndexRepository) throws IOException {
 			return TypedIndexFactoriesParamsFactory.create(
@@ -84,6 +75,15 @@ public class ScopedIndexRepository implements IndexPathObserver, Closeable {
 					scopedIndexRepository.pathExistsFilter,
 					scopedIndexRepository.indexProperties.getSearch().getMaxResultsPerSearch(),
 					scopedIndexRepository.appPaths.getIndexPath());
+		}
+
+		public Path getIndexPath() {
+			return params.getIndexPath();
+		}
+
+		@Override
+		public void close() throws IOException {
+			params.close();
 		}
 	}
 }

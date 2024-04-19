@@ -19,31 +19,31 @@ import static org.springframework.shell.standard.ShellOption.NULL;
 @RequiredArgsConstructor
 @Slf4j
 public class ConfigurationCommands {
-	private final ApplicationContext ac;
-	private final ObservableAppPaths observableAppPaths;
-	private final AppPathsStringifier stringifier;
+    private final ApplicationContext ac;
+    private final ObservableAppPaths observableAppPaths;
+    private final AppPathsStringifier stringifier;
 
-	@ShellMethod("Set (optionally) the paths of the used resources.")
-	public void setPaths(@ShellOption(defaultValue = NULL) Path indexPath,
-			@ShellOption(defaultValue = NULL) Path filesPath,
-			@ShellOption(defaultValue = NULL) Path duplicatesPath) {
-		observableAppPaths.update(indexPath, filesPath, duplicatesPath);
-		log.debug("\n{}", stringifier.toString(observableAppPaths));
-	}
+    @ShellMethod("Set (optionally) the paths of the used resources.")
+    public void setPaths(@ShellOption(defaultValue = NULL) Path indexPath,
+            @ShellOption(defaultValue = NULL) Path filesPath,
+            @ShellOption(defaultValue = NULL) Path duplicatesPath) {
+        observableAppPaths.update(indexPath, filesPath, duplicatesPath);
+        log.debug("\n{}", stringifier.toString(observableAppPaths));
+    }
 
-	@ShellMethod(value = "Show the known paths.")
-	public void showPaths() {
-		log.debug("\n{}", stringifier.toString(observableAppPaths));
-	}
+    @ShellMethod(value = "Show the known paths.")
+    public void showPaths() {
+        log.debug("\n{}", stringifier.toString(observableAppPaths));
+    }
 
-	@ShellMethod("Show the application startup configuration.")
-	public void showConfig() {
-		configurationProperties().forEach(p -> log.debug("\n{}", p));
-	}
+    @ShellMethod("Show the application startup configuration.")
+    public void showConfig() {
+        configurationProperties().forEach(p -> log.debug("\n{}", p));
+    }
 
-	private Stream<?> configurationProperties() {
-		return ac.getBeansWithAnnotation(ConfigurationProperties.class)
-				.values().stream()
-				.filter(p -> p.getClass().getName().startsWith("ro.go.adrhc.deduplicator"));
-	}
+    private Stream<?> configurationProperties() {
+        return ac.getBeansWithAnnotation(ConfigurationProperties.class)
+                .values().stream()
+                .filter(p -> p.getClass().getName().startsWith("ro.go.adrhc.deduplicator"));
+    }
 }
