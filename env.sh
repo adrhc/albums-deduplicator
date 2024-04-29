@@ -6,7 +6,8 @@
 # export JAVA_HOME=$HOME/.sdkman/candidates/java/17.0.1-tem
 #export JAVA_HOME=$HOME/.sdkman/candidates/java/18.0.1-oracle/
 #export JAVA_HOME=$HOME/.sdkman/candidates/java/19.0.2-oracle/
-export JAVA_HOME=$HOME/.sdkman/candidates/java/20.0.1-oracle/
+#export JAVA_HOME=$HOME/.sdkman/candidates/java/20.0.1-oracle/
+export JAVA_HOME=$HOME/.sdkman/candidates/java/21.0.3-oracle
 export PATH=$JAVA_HOME/bin:$PATH
 #export MAVEN_OPTS="$MAVEN_OPTS --enable-preview"
 
